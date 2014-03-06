@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="ubet" transaction-type="RESOURCE_LOCAL">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <class>org.cheetah.youbet.entities.MetodoDivisore</class>
+    <class>org.cheetah.youbet.entities.Incontro</class>
+    <class>org.cheetah.youbet.entities.Esito</class>
+    <class>org.cheetah.youbet.entities.Manifestazione</class>
+    <class>org.cheetah.youbet.entities.Classe</class>
+    <class>org.cheetah.youbet.entities.Disciplina</class>
+    <class>org.cheetah.youbet.entities.Quota</class>
+    <class>org.cheetah.youbet.entities.Palinsesto</class>
+    <class>org.cheetah.youbet.entities.LogError</class>
+    <class>org.cheetah.youbet.entities.Campo</class>
+    <class>org.cheetah.youbet.entities.MediaGolSquadra</class>
+    <class>org.cheetah.youbet.entities.Poisson</class>
+    <class>org.cheetah.youbet.entities.PercentualeSingoliEsiti</class>
+    <properties>
+      <property name="hibernate.connection.username" value="ubet"/>
+      <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
+      <property name="hibernate.connection.password" value="ubet"/>
+      <property name="hibernate.connection.url" value="jdbc:mysql://10.211.55.3:3306/ubet?zeroDateTimeBehavior=convertToNull"/>
+      <property name="hibernate.show_sql" value="true"/>
+      <property name="hibernate.format_sql" value="true"/>
+      <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect"/>
+      <property name="hibernate.max_fetch_depth" value="1"/>
+      <property name="hibernate.default_batch_fetch_size" value="4"/>
+    </properties>
+    <!--    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://10.211.55.3:3306/ubet?zeroDateTimeBehavior=convertToNull"/>
+      <property name="javax.persistence.jdbc.password" value="password"/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.user" value="ubet"/>
+    </properties>-->
+  </persistence-unit>
+</persistence>
