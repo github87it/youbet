@@ -40,5 +40,23 @@ public interface IncontroRepository extends JpaRepository<Incontro, String>{
     
     @Query("select i from Incontro i where i.awayTeam=?1 and i.competizione=?2 order by i.dataEvento Desc")
     public Page<Incontro> findByAwayTeamAndCompetizione(String awayTeam,String competizione,Pageable pageable);
+
+    
+    /**
+     * Trova tutte le partite giocate fuori casa da awayTeam per competizione
+     * @param homeTeam
+     * @param competizione
+     * @return 
+     */
+    public List<Incontro> findByAwayTeamAndCompetizione(String awayTeam, String competizione);
+
+    
+    /**
+     * Trova tutte le partite giocate in casa da homeTeam per competizione
+     * @param homeTeam
+     * @param competizione
+     * @return 
+     */
+    public List<Incontro> findByHomeTeamAndCompetizione(String homeTeam, String competizione);
     
 }

@@ -5,12 +5,16 @@
  */
 package org.cheetah.youbet.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import org.cheetah.youbet.entities.Incontro;
+import org.cheetah.youbet.entities.Serie;
 import org.cheetah.youbet.repositories.IncontroRepository;
+import org.cheetah.youbet.repositories.SerieRepository;
+import org.cheetah.youbet.util.Calculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,6 +35,8 @@ public class IncontroService {
     public static final int AWAY_TEAM = 2;
     public static final int HOME_TEAM = 4;
     
+    @Autowired
+    SerieRepository serieRepository;
 
     @Transactional
     public Date findByMaxDate() {
@@ -39,8 +45,21 @@ public class IncontroService {
 
     @Transactional
     public List<Incontro> saveAll(Iterable<Incontro> incontros) {
-        return repository.save(incontros);
+
+        List<Incontro> result = repository.save(incontros);
+
+//        List<Serie> series = new ArrayList<Serie>();
+//        for (Incontro incontro : result) {
+//            List<Incontro> ht = findByHomeTeamAndCompetizione(incontro.getHomeTeam(), incontro.getCompetizione());
+//            List<Incontro> at = findByAwayTeamAndCompetizione(incontro.getAwayTeam(), incontro.getCompetizione());
+//            Calculator.calcolaSerie(incontro, ht, at,serieRepository);
+//
+//        }
+
+        return result;
     }
+
+
 
     public Page<Incontro> findByHomeTeam(String homeTeam, Pageable pageable) {
         return repository.findByHomeTeam(homeTeam, pageable);
@@ -58,7 +77,7 @@ public class IncontroService {
         return repository.findByAwayTeamAndCompetizione(homeTeam, competizione, pageable);
     }
 
-    public Stat getSumGoalByTeam(String team, String competizione, int teamType,  int maxResults) {
+    public Stat getSumGoalByTeam(String team, String competizione, int teamType, int maxResults) {
         Page<Incontro> incontros = (competizione == null || competizione.trim().equals("")
                 ? (teamType == HOME_TEAM ? findByHomeTeam(team, new PageRequest(0, maxResults)) : findByAwayTeam(team, new PageRequest(0, maxResults)))
                 : (teamType == HOME_TEAM ? findByHomeTeamAndCompetizione(team, competizione, new PageRequest(0, maxResults)) : findByAwayTeamAndCompetizione(team, competizione, new PageRequest(0, maxResults))));
@@ -66,8 +85,8 @@ public class IncontroService {
         int gs = 0;
         Stat stat = new Stat();
         for (Incontro incontro : incontros) {
-            gf += teamType==HOME_TEAM?incontro.getGolHome().intValue():incontro.getGolAway().intValue();
-            gs += teamType==HOME_TEAM?incontro.getGolAway().intValue():incontro.getGolHome().intValue();
+            gf += teamType == HOME_TEAM ? incontro.getGolHome().intValue() : incontro.getGolAway().intValue();
+            gs += teamType == HOME_TEAM ? incontro.getGolAway().intValue() : incontro.getGolHome().intValue();
         }
         stat.setGf(gf);
         stat.setGs(gs);
@@ -75,10 +94,10 @@ public class IncontroService {
         return stat;
     }
 
-    public Stat getSumGoalByTeam(String team,String competizione, int teamType) {
-        return getSumGoalByTeam(team, competizione, teamType,DEFAULT_ROWS_PER_PAGE);
+    public Stat getSumGoalByTeam(String team, String competizione, int teamType) {
+        return getSumGoalByTeam(team, competizione, teamType, DEFAULT_ROWS_PER_PAGE);
     }
-    
+
     public Stat getSumGoalByTeam(String team, int teamType, int maxResults) {
         return getSumGoalByTeam(team, null, teamType, maxResults);
     }
@@ -91,12 +110,22 @@ public class IncontroService {
         return repository.findAll();
     }
 
+    public List<Incontro> findByAwayTeamAndCompetizione(String awayTeam, String competizione) {
+        return repository.findByAwayTeamAndCompetizione(awayTeam, competizione);
+    }
+
+    public List<Incontro> findByHomeTeamAndCompetizione(String homeTeam, String competizione) {
+        return repository.findByHomeTeamAndCompetizione(homeTeam, competizione);
+    }
+
     public static class Stat {
+
         //gol fatti
-        private double gf; 
+        private double gf;
         private double giocate;
         //gol subiti        
         private double gs;
+
         public Stat() {
         }
 
@@ -128,54 +157,56 @@ public class IncontroService {
         public String toString() {
             return "Stat{" + "gf=" + gf + ", gs=" + gs + '}';
         }
-        
-        public double mediaGfPartita(){
-            return getGf()/getGiocate();
+
+        public double mediaGfPartita() {
+            return getGf() / getGiocate();
         }
-        public double mediaGsPartita(){
-            return getGs()/getGiocate();
+
+        public double mediaGsPartita() {
+            return getGs() / getGiocate();
         }
-        
+
         /**
-         * Restituisce una mappa con il valore della distribuzione per nnumero di eventi(gol)
+         * Restituisce una mappa con il valore della distribuzione per nnumero
+         * di eventi(gol)
+         *
          * @param golmax
-         * @return 
+         * @return
          */
-        public Map<Integer,Double> poisson(int golmax,double media){
-            Map<Integer,Double> p = new TreeMap<Integer, Double>();
-            
+        public Map<Integer, Double> poisson(int golmax, double media) {
+            Map<Integer, Double> p = new TreeMap<Integer, Double>();
+
             for (int i = 0; i <= golmax; i++) {
 //                System.out.println(Math.E+"^"+media*-1+": "+Math.pow(Math.E, (media*-1)));
 //                System.out.println(media+"^"+i+": "+Math.pow(media, i));
 //                System.out.println(i+"!: "+fattoriale(i));
-                double ris = Math.pow(Math.E, (media*-1))*Math.pow(media, i)/fattoriale(i);
+                double ris = Math.pow(Math.E, (media * -1)) * Math.pow(media, i) / fattoriale(i);
                 p.put(i, ris);
 //                System.out.println(ris);
             }
 //            System.out.println(p);
             return p;
         }
-        
-        public int fattoriale(int x){
+
+        public int fattoriale(int x) {
             int result = 1;
-            if(x==0 ){
+            if (x == 0) {
                 return result;
             }
-            
-            while(x>0){
-                result*=x--;
+
+            while (x > 0) {
+                result *= x--;
             }
             return result;
-            
+
         }
-        
-       
-        
+
     }
-     public static void main(String[] a){
-            System.out.println(new Stat().fattoriale(1));
-            System.out.println(Math.pow(5, -2));
-            
-        }
+
+    public static void main(String[] a) {
+        System.out.println(new Stat().fattoriale(1));
+        System.out.println(Math.pow(5, -2));
+
+    }
 
 }
