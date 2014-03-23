@@ -38,8 +38,8 @@ public class App {
 //        System.out.println(manifestazioneService.findAll());
         try {
             insertScores(ctx);
-//            insertBooks(ctx);
-//            calcolaStats(ctx);
+            insertBooks(ctx);
+            calcolaStats(ctx);
 
             
 
