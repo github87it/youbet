@@ -57,25 +57,28 @@ public class Calculator {
             String homeTeam = palinsesto.getHomeTeam();
             String awayTeam = palinsesto.getAwayTeam();
             Manifestazione m = palinsesto.getIdManifestazione();
-            if (palinsesto.getHomeTeam().equals("SAN LORENZO")) {
-                System.out.println("");
-            }
+
             IncontroService.Stat statHomeTeam = incontroService.getSumGoalByTeam(homeTeam, m.getDescrizioneLunga(), IncontroService.HOME_TEAM);
             IncontroService.Stat statAwayTeam = incontroService.getSumGoalByTeam(awayTeam, m.getDescrizioneLunga(), IncontroService.AWAY_TEAM);
             System.out.println("Incontro: " + homeTeam + " - " + awayTeam);
 
-            Map<Integer, Double> ht_gf_Poisson = statHomeTeam.poisson(6, statHomeTeam.mediaGfPartita());
-            Map<Integer, Double> at_gs_Poisson = statAwayTeam.poisson(6, statAwayTeam.mediaGsPartita());
-            System.out.println(ht_gf_Poisson);
-            mediaPoissonByGol(at_gs_Poisson, ht_gf_Poisson);
+            //Cambio calcolo 14-03-2014
+//            Map<Integer, Double> ht_gf_Poisson = statHomeTeam.poisson(6, statHomeTeam.mediaGfPartita());
+//            Map<Integer, Double> at_gs_Poisson = statAwayTeam.poisson(6, statAwayTeam.mediaGsPartita());
+            Map<Integer, Double> ht_gf_Poisson = statHomeTeam.poisson(6, (statHomeTeam.mediaGfPartita() + statAwayTeam.mediaGsPartita()) / 2.0d);
+
+//            System.out.println(ht_gf_Poisson);
+//            mediaPoissonByGol(at_gs_Poisson, ht_gf_Poisson);
             //distribuzione della probabilità di fare gol della squadra di casa. E' contentuta in ht_gf_Poisson
             System.out.println("\t" + ht_gf_Poisson);
 
-            Map<Integer, Double> at_gf_Poisson = statAwayTeam.poisson(6, statAwayTeam.mediaGfPartita());
-            Map<Integer, Double> ht_gs_Poisson = statHomeTeam.poisson(6, statHomeTeam.mediaGsPartita());
+            Map<Integer, Double> at_gf_Poisson = statAwayTeam.poisson(6, (statAwayTeam.mediaGfPartita()+statHomeTeam.mediaGsPartita())/2.0d);
+//            Map<Integer, Double> ht_gs_Poisson = statHomeTeam.poisson(6, statHomeTeam.mediaGsPartita());
 
+//            Map<Integer, Double> at_gf_Poisson = statAwayTeam.poisson(6, statAwayTeam.mediaGfPartita());
+//            Map<Integer, Double> ht_gs_Poisson = statHomeTeam.poisson(6, statHomeTeam.mediaGsPartita());
             System.out.println(at_gf_Poisson);
-            mediaPoissonByGol(ht_gs_Poisson, at_gf_Poisson);
+//            mediaPoissonByGol(ht_gs_Poisson, at_gf_Poisson);
             //distribuzione della probabilità di fare gol della squadra in trasferts. E' contentuta in at_gf_Poisson
             System.out.println("\t" + at_gf_Poisson);
             for (Map.Entry<Integer, Double> entry : ht_gf_Poisson.entrySet()) {
@@ -158,11 +161,11 @@ public class Calculator {
                 numPartiteGolSubitiCasa = incontroHt.getGolAway() > 0 ? ++numPartiteGolSubitiCasa : 0;
             }
         } else {
-            serieVittorieCasa = incontro.getGolHome() > incontro.getGolAway() ? serieHt.getSerieVittorieCasa()==null? ++serieVittorieCasa:serieHt.getSerieVittorieCasa()+1 : 0;
-            seriePareggiCasa = incontro.getGolHome() == incontro.getGolAway() ? serieHt.getSeriePareggiCasa()==null?++seriePareggiCasa:serieHt.getSeriePareggiCasa()+1 : 0;
-            serieSconfitteCasa = incontro.getGolHome() < incontro.getGolAway() ? serieHt.getSerieSconfitteCasa()==null?++serieSconfitteCasa:serieHt.getSerieSconfitteCasa()+1 : 0;
-            numPartSenzaSubireGolCasa = incontro.getGolAway() == 0 ? serieHt.getNumeroPartiteSenzaSubireGolCasa()==null?++numPartSenzaSubireGolCasa:serieHt.getNumeroPartiteSenzaSubireGolCasa()+1 : 0;
-            numPartiteGolSubitiCasa = incontro.getGolAway() > 0 ? serieHt.getNumeroPartiteGolSubitiCasa()==null?++numPartiteGolSubitiCasa:serieHt.getNumeroPartiteGolSubitiCasa()+1 : 0;
+            serieVittorieCasa = incontro.getGolHome() > incontro.getGolAway() ? serieHt.getSerieVittorieCasa() == null ? ++serieVittorieCasa : serieHt.getSerieVittorieCasa() + 1 : 0;
+            seriePareggiCasa = incontro.getGolHome() == incontro.getGolAway() ? serieHt.getSeriePareggiCasa() == null ? ++seriePareggiCasa : serieHt.getSeriePareggiCasa() + 1 : 0;
+            serieSconfitteCasa = incontro.getGolHome() < incontro.getGolAway() ? serieHt.getSerieSconfitteCasa() == null ? ++serieSconfitteCasa : serieHt.getSerieSconfitteCasa() + 1 : 0;
+            numPartSenzaSubireGolCasa = incontro.getGolAway() == 0 ? serieHt.getNumeroPartiteSenzaSubireGolCasa() == null ? ++numPartSenzaSubireGolCasa : serieHt.getNumeroPartiteSenzaSubireGolCasa() + 1 : 0;
+            numPartiteGolSubitiCasa = incontro.getGolAway() > 0 ? serieHt.getNumeroPartiteGolSubitiCasa() == null ? ++numPartiteGolSubitiCasa : serieHt.getNumeroPartiteGolSubitiCasa() + 1 : 0;
 
         }
         if (isNewSerieAt) {
@@ -174,11 +177,11 @@ public class Calculator {
                 numPartiteGolSubitiFuori = incontroAt.getGolHome() > 0 ? ++numPartiteGolSubitiFuori : 0;
             }
         } else {
-            serieVittorieFuori = incontro.getGolAway() > incontro.getGolHome() ? serieAt.getSerieVittorieFuori()==null?++serieVittorieFuori:serieAt.getSerieVittorieFuori()+1 : 0;
-            seriePareggiFuori = incontro.getGolAway() == incontro.getGolHome() ? serieAt.getSeriePareggiFuori()==null?++seriePareggiFuori:serieAt.getSeriePareggiFuori()+1 : 0;
-            serieSconfitteFuori = incontro.getGolAway() < incontro.getGolHome() ? serieAt.getSerieSconfitteFuori()==null?++serieSconfitteFuori:serieAt.getSerieSconfitteFuori()+1 : 0;
-            numPartSenzaSubireGolFuori = incontro.getGolHome() == 0 ? serieAt.getNumeroPartiteSenzaSubireGolFuori()==null?++numPartSenzaSubireGolFuori:serieAt.getNumeroPartiteSenzaSubireGolFuori()+1 : 0;
-            numPartiteGolSubitiFuori = incontro.getGolHome() > 0 ? serieAt.getNumeroPartiteGolSubitiFuori()==null?++numPartiteGolSubitiFuori:serieAt.getNumeroPartiteGolSubitiFuori()+1 : 0;
+            serieVittorieFuori = incontro.getGolAway() > incontro.getGolHome() ? serieAt.getSerieVittorieFuori() == null ? ++serieVittorieFuori : serieAt.getSerieVittorieFuori() + 1 : 0;
+            seriePareggiFuori = incontro.getGolAway() == incontro.getGolHome() ? serieAt.getSeriePareggiFuori() == null ? ++seriePareggiFuori : serieAt.getSeriePareggiFuori() + 1 : 0;
+            serieSconfitteFuori = incontro.getGolAway() < incontro.getGolHome() ? serieAt.getSerieSconfitteFuori() == null ? ++serieSconfitteFuori : serieAt.getSerieSconfitteFuori() + 1 : 0;
+            numPartSenzaSubireGolFuori = incontro.getGolHome() == 0 ? serieAt.getNumeroPartiteSenzaSubireGolFuori() == null ? ++numPartSenzaSubireGolFuori : serieAt.getNumeroPartiteSenzaSubireGolFuori() + 1 : 0;
+            numPartiteGolSubitiFuori = incontro.getGolHome() > 0 ? serieAt.getNumeroPartiteGolSubitiFuori() == null ? ++numPartiteGolSubitiFuori : serieAt.getNumeroPartiteGolSubitiFuori() + 1 : 0;
         }
         serieHt.setNumeroPartiteGolSubitiCasa(numPartiteGolSubitiCasa);
         serieHt.setNumeroPartiteSenzaSubireGolCasa(numPartSenzaSubireGolCasa);
