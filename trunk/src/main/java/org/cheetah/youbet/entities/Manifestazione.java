@@ -13,7 +13,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -34,12 +33,9 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 @NamedQueries({
     @NamedQuery(name = "Manifestazione.findAll", query = "SELECT m FROM Manifestazione m"),
     @NamedQuery(name = "Manifestazione.findByIdManifestazione", query = "SELECT m FROM Manifestazione m WHERE m.idManifestazione = :idManifestazione"),
-    @NamedQuery(name = "Manifestazione.findByDescrizione", query = "SELECT m FROM Manifestazione m WHERE m.descrizione = :descrizione")})
+    @NamedQuery(name = "Manifestazione.findByDescrizione", query = "SELECT m FROM Manifestazione m WHERE m.descrizione = :descrizione"),
+    @NamedQuery(name = "Manifestazione.findByDescrizioneLunga", query = "SELECT m FROM Manifestazione m WHERE m.descrizioneLunga = :descrizioneLunga")})
 public class Manifestazione implements Serializable {
-    @Column(name = "DESCRIZIONE_LUNGA")
-    private String descrizioneLunga;
-    @OneToMany(mappedBy = "idManifestazione")
-    private Collection<Palinsesto> palinsestoCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -47,14 +43,15 @@ public class Manifestazione implements Serializable {
     private Integer idManifestazione;
     @Column(name = "DESCRIZIONE")
     private String descrizione;
-    @JoinTable(name = "MANIFESTAZIONE_CLASSE", joinColumns = {
-        @JoinColumn(name = "ID_MANIFESTAZIONE", referencedColumnName = "ID_MANIFESTAZIONE")}, inverseJoinColumns = {
-        @JoinColumn(name = "ID_CLASSE", referencedColumnName = "ID_CLASSE")})
-    @ManyToMany
+    @Column(name = "DESCRIZIONE_LUNGA")
+    private String descrizioneLunga;
+    @ManyToMany(mappedBy = "manifestazioneCollection")
     private Collection<Classe> classeCollection;
     @JoinColumn(name = "ID_DISCIPLINA", referencedColumnName = "ID_DISCIPLINA")
     @ManyToOne
     private Disciplina idDisciplina;
+    @OneToMany(mappedBy = "idManifestazione")
+    private Collection<Palinsesto> palinsestoCollection;
 
     public Manifestazione() {
     }
@@ -79,6 +76,14 @@ public class Manifestazione implements Serializable {
         this.descrizione = descrizione;
     }
 
+    public String getDescrizioneLunga() {
+        return descrizioneLunga;
+    }
+
+    public void setDescrizioneLunga(String descrizioneLunga) {
+        this.descrizioneLunga = descrizioneLunga;
+    }
+
     @XmlTransient
     @JsonIgnore
     public Collection<Classe> getClasseCollection() {
@@ -95,6 +100,16 @@ public class Manifestazione implements Serializable {
 
     public void setIdDisciplina(Disciplina idDisciplina) {
         this.idDisciplina = idDisciplina;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<Palinsesto> getPalinsestoCollection() {
+        return palinsestoCollection;
+    }
+
+    public void setPalinsestoCollection(Collection<Palinsesto> palinsestoCollection) {
+        this.palinsestoCollection = palinsestoCollection;
     }
 
     @Override
@@ -120,24 +135,6 @@ public class Manifestazione implements Serializable {
     @Override
     public String toString() {
         return "org.cheetah.youbet.entities.Manifestazione[ idManifestazione=" + idManifestazione + " ]";
-    }
-
-    @XmlTransient
-    @JsonIgnore
-    public Collection<Palinsesto> getPalinsestoCollection() {
-        return palinsestoCollection;
-    }
-
-    public void setPalinsestoCollection(Collection<Palinsesto> palinsestoCollection) {
-        this.palinsestoCollection = palinsestoCollection;
-    }
-
-    public String getDescrizioneLunga() {
-        return descrizioneLunga;
-    }
-
-    public void setDescrizioneLunga(String descrizioneLunga) {
-        this.descrizioneLunga = descrizioneLunga;
     }
     
 }

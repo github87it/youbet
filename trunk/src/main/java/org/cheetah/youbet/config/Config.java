@@ -6,6 +6,7 @@
 
 package org.cheetah.youbet.config;
 
+import org.cheetah.youbet.gui.model.PoissonTableModel;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +28,8 @@ public class Config {
     public HibernateExceptionTranslator hibernateExceptionTranslator() {
         return new HibernateExceptionTranslator();
     }
+    
+    
     
     
 }

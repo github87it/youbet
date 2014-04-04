@@ -40,13 +40,13 @@ public class IncontroService {
 
     @Transactional
     public Date findByMaxDate() {
-        return repository.findByMaxDate();
+        return getRepository().findByMaxDate();
     }
 
     @Transactional
     public List<Incontro> saveAll(Iterable<Incontro> incontros) {
 
-        List<Incontro> result = repository.save(incontros);
+        List<Incontro> result = getRepository().save(incontros);
 
 //        List<Serie> series = new ArrayList<Serie>();
 //        for (Incontro incontro : result) {
@@ -62,19 +62,19 @@ public class IncontroService {
 
 
     public Page<Incontro> findByHomeTeam(String homeTeam, Pageable pageable) {
-        return repository.findByHomeTeam(homeTeam, pageable);
+        return getRepository().findByHomeTeam(homeTeam, pageable);
     }
 
     public Page<Incontro> findByAwayTeam(String homeTeam, Pageable pageable) {
-        return repository.findByAwayTeam(homeTeam, pageable);
+        return getRepository().findByAwayTeam(homeTeam, pageable);
     }
 
     public Page<Incontro> findByHomeTeamAndCompetizione(String homeTeam, String competizione, Pageable pageable) {
-        return repository.findByHomeTeamAndCompetizione(homeTeam, competizione, pageable);
+        return getRepository().findByHomeTeamAndCompetizione(homeTeam, competizione, pageable);
     }
 
     public Page<Incontro> findByAwayTeamAndCompetizione(String homeTeam, String competizione, Pageable pageable) {
-        return repository.findByAwayTeamAndCompetizione(homeTeam, competizione, pageable);
+        return getRepository().findByAwayTeamAndCompetizione(homeTeam, competizione, pageable);
     }
 
     public Stat getSumGoalByTeam(String team, String competizione, int teamType, int maxResults) {
@@ -107,15 +107,22 @@ public class IncontroService {
     }
 
     public List<Incontro> findAll() {
-        return repository.findAll();
+        return getRepository().findAll();
     }
 
     public List<Incontro> findByAwayTeamAndCompetizione(String awayTeam, String competizione) {
-        return repository.findByAwayTeamAndCompetizione(awayTeam, competizione);
+        return getRepository().findByAwayTeamAndCompetizione(awayTeam, competizione);
     }
 
     public List<Incontro> findByHomeTeamAndCompetizione(String homeTeam, String competizione) {
-        return repository.findByHomeTeamAndCompetizione(homeTeam, competizione);
+        return getRepository().findByHomeTeamAndCompetizione(homeTeam, competizione);
+    }
+
+    /**
+     * @return the repository
+     */
+    public IncontroRepository getRepository() {
+        return repository;
     }
 
     public static class Stat {

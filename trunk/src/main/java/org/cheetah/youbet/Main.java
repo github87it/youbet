@@ -5,9 +5,14 @@
  */
 package org.cheetah.youbet;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.Locale;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
+import java.io.File;
+import org.cheetah.youbet.config.Config;
+import org.cheetah.youbet.entities.Palinsesto;
+import org.cheetah.youbet.service.PalinsestoService;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
  *
@@ -22,13 +27,24 @@ public class Main {
 //        fout.flush();
 //        fout.close();
 //        System.out.println(d.toString());
-        DecimalFormat df = (DecimalFormat) DecimalFormat.getNumberInstance(Locale.ENGLISH);
-        df.applyPattern("#.####");
-        System.out.println(df.format(3.45E-4*100));
+//        DecimalFormat df = (DecimalFormat) DecimalFormat.getNumberInstance(Locale.ENGLISH);
+//        df.applyPattern("#.####");
+//        System.out.println(df.format(3.45E-4*100));
+//        
+//        System.out.println((2.0+3.5));
+        AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(Config.class);
+        PalinsestoService ps = (PalinsestoService) ctx.getBean("palinsestoService");
+        Palinsesto palinsesto = ps.findByPk(17,12695);
+        System.out.println("------");
+        System.out.println(palinsesto);
+        System.out.println("------");
+        ObjectMapper mapper = new ObjectMapper();
+        Hibernate4Module hbm = new Hibernate4Module();
+        hbm.enable(Hibernate4Module.Feature.USE_TRANSIENT_ANNOTATION);
+        mapper.registerModule(hbm);
         
-        System.out.println((2.0+3.5));
         
-        
+        System.out.println(mapper.writeValueAsString(palinsesto));
     }
 
 }

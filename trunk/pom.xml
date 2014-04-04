@@ -18,6 +18,11 @@
             <name>Project Amateras Maven2 Repository</name>
             <url>http://amateras.sourceforge.jp/mvn/</url>
         </repository>
+        <repository>
+            <id>unknown-jars-temp-repo</id>
+            <name>A temporary repository created by NetBeans for libraries and jars it could not identify. Please replace the dependencies in this repository with correct ones and delete this repository.</name>
+            <url>file:${project.basedir}/lib</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -33,8 +38,8 @@
             <version>3.8.1</version>
             <scope>test</scope>
         </dependency>
-    
-    
+     
+   
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
@@ -364,6 +369,16 @@
             <artifactId>eclipselink</artifactId>
             <version>2.5.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.jdesktop</groupId>
+            <artifactId>beansbinding</artifactId>
+            <version>1.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>unknown.binary</groupId>
+            <artifactId>AbsoluteLayout</artifactId>
+            <version>SNAPSHOT</version>
+        </dependency>
     </dependencies>
         
         
@@ -392,8 +407,14 @@
                             </filters>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>org.cheetah.youbet.core.YouBet</mainClass>
+                                    <mainClass>org.cheetah.youbet.App</mainClass>
                                 </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>META-INF/spring.handlers</resource>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>META-INF/spring.schemas</resource>
+                                </transformer>                            
                             </transformers>
                             <shadedArtifactAttached>true</shadedArtifactAttached>
                             <!-- configures the suffix name for the executable jar
@@ -406,25 +427,25 @@
             </plugin>
             
             
-                    <plugin>
+            <!--                    <plugin>
 <groupId>org.ep.remote</groupId>
-	<artifactId>rdeploy-maven-plugin</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-                        <executions>
-                            <execution>
-                                <phase>install</phase>
-                                <goals>
-                                    <goal>rdeploy</goal>
-                                </goals>
-			<configuration>
-          <sftpUrl>tomcat:7nanis8illett0@109.233.125.152</sftpUrl>
-		<destinationPath>_WEBAPPS/noOne</destinationPath>
-	<deployPath>/opt/tomcat/webapps</deployPath>
-	<contextName>noOne</contextName>
+<artifactId>rdeploy-maven-plugin</artifactId>
+<version>0.0.1-SNAPSHOT</version>
+                <executions>
+                    <execution>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>rdeploy</goal>
+                        </goals>
+                <configuration>
+  <sftpUrl>tomcat:7nanis8illett0@109.233.125.152</sftpUrl>
+        <destinationPath>_WEBAPPS/noOne</destinationPath>
+<deployPath>/opt/tomcat/webapps</deployPath>
+<contextName>noOne</contextName>
 </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
+                    </execution>
+                </executions>
+            </plugin>-->
                 
         </plugins>
     </build>

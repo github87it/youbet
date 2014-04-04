@@ -25,4 +25,12 @@ public class PoissonService {
     public List<Poisson> saveAll(Iterable<Poisson> p){
         return poissonRepository.save(p);
     }
+    
+    public List<Poisson> findByIdPalinsestoAndIdAvvenimento(int idPalinsesto, int idAvvenimento){
+        return poissonRepository.findByIdPalinsestoAndIdAvvenimento(idPalinsesto, idAvvenimento);
+    }
+
+    public List<Poisson> findByIdPalinsestoAndIdAvvenimentoAndPercentualeGreaterThan(int idPalinsesto, int idAvvenimento, double percentuale) {
+        return poissonRepository.findByIdPalinsestoAndIdAvvenimentoAndPercentualeGreaterThan(idPalinsesto,idAvvenimento, percentuale);
+    }
 }

@@ -24,5 +24,9 @@ public interface PoissonRepository extends JpaRepository<Poisson, PoissonPK>{
 
     @Query("SELECT p FROM Poisson p where p.poissonPK.idAvvenimento=?2 and p.poissonPK.idPalinsesto=?1")
     public List<Poisson> findByIdPalinsestoAndIdAvvenimento(int idPalinsesto, int idAvvenimento);
+
+    @Query("SELECT p FROM Poisson p where p.poissonPK.idAvvenimento=?2 and p.poissonPK.idPalinsesto=?1 and p.percentuale>=?3 order by p.percentuale desc")
+    public List<Poisson> findByIdPalinsestoAndIdAvvenimentoAndPercentualeGreaterThan(int idPalinsesto, int idAvvenimento, double percentuale);
+    
     
 }
