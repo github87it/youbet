@@ -13,6 +13,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -41,7 +43,10 @@ public class Classe implements Serializable {
     private Integer idClasse;
     @Column(name = "DESCRIZIONE")
     private String descrizione;
-    @ManyToMany(mappedBy = "classeCollection")
+    @JoinTable(name = "MANIFESTAZIONE_CLASSE", joinColumns = {
+        @JoinColumn(name = "ID_CLASSE", referencedColumnName = "ID_CLASSE")}, inverseJoinColumns = {
+        @JoinColumn(name = "ID_MANIFESTAZIONE", referencedColumnName = "ID_MANIFESTAZIONE")})
+    @ManyToMany
     private Collection<Manifestazione> manifestazioneCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "classe")
     private Collection<Esito> esitoCollection;

@@ -6,6 +6,7 @@ import org.cheetah.youbet.config.Config;
 import org.cheetah.youbet.entities.Incontro;
 import org.cheetah.youbet.entities.PercentualeSingoliEsiti;
 import org.cheetah.youbet.entities.Poisson;
+import org.cheetah.youbet.repositories.IncontroRepository;
 import org.cheetah.youbet.repositories.SerieRepository;
 import org.cheetah.youbet.service.IncontroService;
 import org.cheetah.youbet.service.PercentualeSingoliEsitiService;
@@ -37,6 +38,8 @@ public class App {
 //        ManifestazioneService manifestazioneService = (ManifestazioneService) ctx.getBean("manifestazioneService");
 //        System.out.println(manifestazioneService.findAll());
         try {
+            
+            
             insertScores(ctx);
             insertBooks(ctx);
             calcolaStats(ctx);

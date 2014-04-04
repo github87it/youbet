@@ -42,9 +42,6 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     @NamedQuery(name = "Palinsesto.findByDataEvento", query = "SELECT p FROM Palinsesto p WHERE p.dataEvento = :dataEvento"),
     @NamedQuery(name = "Palinsesto.findByOraEvento", query = "SELECT p FROM Palinsesto p WHERE p.oraEvento = :oraEvento")})
 public class Palinsesto implements Serializable {
-    @JoinColumn(name = "ID_MANIFESTAZIONE", referencedColumnName = "ID_MANIFESTAZIONE")
-    @ManyToOne
-    private Manifestazione idManifestazione;
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected PalinsestoPK palinsestoPK;
@@ -62,6 +59,9 @@ public class Palinsesto implements Serializable {
     private Date oraEvento;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "palinsesto")
     private Collection<Quota> quotaCollection;
+    @JoinColumn(name = "ID_MANIFESTAZIONE", referencedColumnName = "ID_MANIFESTAZIONE")
+    @ManyToOne
+    private Manifestazione idManifestazione;
 
     public Palinsesto() {
     }
@@ -132,6 +132,14 @@ public class Palinsesto implements Serializable {
         this.quotaCollection = quotaCollection;
     }
 
+    public Manifestazione getIdManifestazione() {
+        return idManifestazione;
+    }
+
+    public void setIdManifestazione(Manifestazione idManifestazione) {
+        this.idManifestazione = idManifestazione;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -155,14 +163,6 @@ public class Palinsesto implements Serializable {
     @Override
     public String toString() {
         return "org.cheetah.youbet.entities.Palinsesto[ palinsestoPK=" + palinsestoPK + " ]";
-    }
-
-    public Manifestazione getIdManifestazione() {
-        return idManifestazione;
-    }
-
-    public void setIdManifestazione(Manifestazione idManifestazione) {
-        this.idManifestazione = idManifestazione;
     }
     
 }

@@ -20,36 +20,36 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author edoardo
  */
 @Entity
-@Table(name = "PERCENTUALE_SINGOLI_ESITI")
+@Table(name = "MY_QUOTE")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "PercentualeSingoliEsiti.findAll", query = "SELECT p FROM PercentualeSingoliEsiti p"),
-    @NamedQuery(name = "PercentualeSingoliEsiti.findByIdPalinsesto", query = "SELECT p FROM PercentualeSingoliEsiti p WHERE p.percentualeSingoliEsitiPK.idPalinsesto = :idPalinsesto"),
-    @NamedQuery(name = "PercentualeSingoliEsiti.findByIdAvvenimento", query = "SELECT p FROM PercentualeSingoliEsiti p WHERE p.percentualeSingoliEsitiPK.idAvvenimento = :idAvvenimento"),
-    @NamedQuery(name = "PercentualeSingoliEsiti.findByHomeTeam", query = "SELECT p FROM PercentualeSingoliEsiti p WHERE p.homeTeam = :homeTeam"),
-    @NamedQuery(name = "PercentualeSingoliEsiti.findByAwayTeam", query = "SELECT p FROM PercentualeSingoliEsiti p WHERE p.awayTeam = :awayTeam"),
-    @NamedQuery(name = "PercentualeSingoliEsiti.findByVittoriaCasa", query = "SELECT p FROM PercentualeSingoliEsiti p WHERE p.vittoriaCasa = :vittoriaCasa"),
-    @NamedQuery(name = "PercentualeSingoliEsiti.findByPareggio", query = "SELECT p FROM PercentualeSingoliEsiti p WHERE p.pareggio = :pareggio"),
-    @NamedQuery(name = "PercentualeSingoliEsiti.findByVittoriaFuori", query = "SELECT p FROM PercentualeSingoliEsiti p WHERE p.vittoriaFuori = :vittoriaFuori"),
-    @NamedQuery(name = "PercentualeSingoliEsiti.findByDoppiaChanceIn", query = "SELECT p FROM PercentualeSingoliEsiti p WHERE p.doppiaChanceIn = :doppiaChanceIn"),
-    @NamedQuery(name = "PercentualeSingoliEsiti.findByDoppiaChanceInOut", query = "SELECT p FROM PercentualeSingoliEsiti p WHERE p.doppiaChanceInOut = :doppiaChanceInOut"),
-    @NamedQuery(name = "PercentualeSingoliEsiti.findByDoppiaChanceOut", query = "SELECT p FROM PercentualeSingoliEsiti p WHERE p.doppiaChanceOut = :doppiaChanceOut"),
-    @NamedQuery(name = "PercentualeSingoliEsiti.findByPari", query = "SELECT p FROM PercentualeSingoliEsiti p WHERE p.pari = :pari"),
-    @NamedQuery(name = "PercentualeSingoliEsiti.findByDispari", query = "SELECT p FROM PercentualeSingoliEsiti p WHERE p.dispari = :dispari"),
-    @NamedQuery(name = "PercentualeSingoliEsiti.findByOverUnoCinque", query = "SELECT p FROM PercentualeSingoliEsiti p WHERE p.overUnoCinque = :overUnoCinque"),
-    @NamedQuery(name = "PercentualeSingoliEsiti.findByUnderUnoCinque", query = "SELECT p FROM PercentualeSingoliEsiti p WHERE p.underUnoCinque = :underUnoCinque"),
-    @NamedQuery(name = "PercentualeSingoliEsiti.findByOverDueCinque", query = "SELECT p FROM PercentualeSingoliEsiti p WHERE p.overDueCinque = :overDueCinque"),
-    @NamedQuery(name = "PercentualeSingoliEsiti.findByUnderDueCinque", query = "SELECT p FROM PercentualeSingoliEsiti p WHERE p.underDueCinque = :underDueCinque"),
-    @NamedQuery(name = "PercentualeSingoliEsiti.findByOverTreCinque", query = "SELECT p FROM PercentualeSingoliEsiti p WHERE p.overTreCinque = :overTreCinque"),
-    @NamedQuery(name = "PercentualeSingoliEsiti.findByUnderTreCinque", query = "SELECT p FROM PercentualeSingoliEsiti p WHERE p.underTreCinque = :underTreCinque"),
-    @NamedQuery(name = "PercentualeSingoliEsiti.findByOverQuattroCinque", query = "SELECT p FROM PercentualeSingoliEsiti p WHERE p.overQuattroCinque = :overQuattroCinque"),
-    @NamedQuery(name = "PercentualeSingoliEsiti.findByUnderQuattroCinque", query = "SELECT p FROM PercentualeSingoliEsiti p WHERE p.underQuattroCinque = :underQuattroCinque"),
-    @NamedQuery(name = "PercentualeSingoliEsiti.findByGol", query = "SELECT p FROM PercentualeSingoliEsiti p WHERE p.gol = :gol"),
-    @NamedQuery(name = "PercentualeSingoliEsiti.findByNoGol", query = "SELECT p FROM PercentualeSingoliEsiti p WHERE p.noGol = :noGol")})
-public class PercentualeSingoliEsiti implements Serializable {
+    @NamedQuery(name = "MyQuote.findAll", query = "SELECT m FROM MyQuote m"),
+    @NamedQuery(name = "MyQuote.findByIdPalinsesto", query = "SELECT m FROM MyQuote m WHERE m.myQuotePK.idPalinsesto = :idPalinsesto"),
+    @NamedQuery(name = "MyQuote.findByIdAvvenimento", query = "SELECT m FROM MyQuote m WHERE m.myQuotePK.idAvvenimento = :idAvvenimento"),
+    @NamedQuery(name = "MyQuote.findByHomeTeam", query = "SELECT m FROM MyQuote m WHERE m.homeTeam = :homeTeam"),
+    @NamedQuery(name = "MyQuote.findByAwayTeam", query = "SELECT m FROM MyQuote m WHERE m.awayTeam = :awayTeam"),
+    @NamedQuery(name = "MyQuote.findByVittoriaCasa", query = "SELECT m FROM MyQuote m WHERE m.vittoriaCasa = :vittoriaCasa"),
+    @NamedQuery(name = "MyQuote.findByPareggio", query = "SELECT m FROM MyQuote m WHERE m.pareggio = :pareggio"),
+    @NamedQuery(name = "MyQuote.findByVittoriaFuori", query = "SELECT m FROM MyQuote m WHERE m.vittoriaFuori = :vittoriaFuori"),
+    @NamedQuery(name = "MyQuote.findByDoppiaChanceIn", query = "SELECT m FROM MyQuote m WHERE m.doppiaChanceIn = :doppiaChanceIn"),
+    @NamedQuery(name = "MyQuote.findByDoppiaChanceInOut", query = "SELECT m FROM MyQuote m WHERE m.doppiaChanceInOut = :doppiaChanceInOut"),
+    @NamedQuery(name = "MyQuote.findByDoppiaChanceOut", query = "SELECT m FROM MyQuote m WHERE m.doppiaChanceOut = :doppiaChanceOut"),
+    @NamedQuery(name = "MyQuote.findByPari", query = "SELECT m FROM MyQuote m WHERE m.pari = :pari"),
+    @NamedQuery(name = "MyQuote.findByDispari", query = "SELECT m FROM MyQuote m WHERE m.dispari = :dispari"),
+    @NamedQuery(name = "MyQuote.findByOverUnoCinque", query = "SELECT m FROM MyQuote m WHERE m.overUnoCinque = :overUnoCinque"),
+    @NamedQuery(name = "MyQuote.findByUnderUnoCinque", query = "SELECT m FROM MyQuote m WHERE m.underUnoCinque = :underUnoCinque"),
+    @NamedQuery(name = "MyQuote.findByOverDueCinque", query = "SELECT m FROM MyQuote m WHERE m.overDueCinque = :overDueCinque"),
+    @NamedQuery(name = "MyQuote.findByUnderDueCinque", query = "SELECT m FROM MyQuote m WHERE m.underDueCinque = :underDueCinque"),
+    @NamedQuery(name = "MyQuote.findByOverTreCinque", query = "SELECT m FROM MyQuote m WHERE m.overTreCinque = :overTreCinque"),
+    @NamedQuery(name = "MyQuote.findByUnderTreCinque", query = "SELECT m FROM MyQuote m WHERE m.underTreCinque = :underTreCinque"),
+    @NamedQuery(name = "MyQuote.findByOverQuattroCinque", query = "SELECT m FROM MyQuote m WHERE m.overQuattroCinque = :overQuattroCinque"),
+    @NamedQuery(name = "MyQuote.findByUnderQuattroCinque", query = "SELECT m FROM MyQuote m WHERE m.underQuattroCinque = :underQuattroCinque"),
+    @NamedQuery(name = "MyQuote.findByGol", query = "SELECT m FROM MyQuote m WHERE m.gol = :gol"),
+    @NamedQuery(name = "MyQuote.findByNoGol", query = "SELECT m FROM MyQuote m WHERE m.noGol = :noGol")})
+public class MyQuote implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
-    protected PercentualeSingoliEsitiPK percentualeSingoliEsitiPK;
+    protected MyQuotePK myQuotePK;
     @Column(name = "HOME_TEAM")
     private String homeTeam;
     @Column(name = "AWAY_TEAM")
@@ -92,23 +92,23 @@ public class PercentualeSingoliEsiti implements Serializable {
     @Column(name = "NO_GOL")
     private Double noGol;
 
-    public PercentualeSingoliEsiti() {
+    public MyQuote() {
     }
 
-    public PercentualeSingoliEsiti(PercentualeSingoliEsitiPK percentualeSingoliEsitiPK) {
-        this.percentualeSingoliEsitiPK = percentualeSingoliEsitiPK;
+    public MyQuote(MyQuotePK myQuotePK) {
+        this.myQuotePK = myQuotePK;
     }
 
-    public PercentualeSingoliEsiti(int idPalinsesto, int idAvvenimento) {
-        this.percentualeSingoliEsitiPK = new PercentualeSingoliEsitiPK(idPalinsesto, idAvvenimento);
+    public MyQuote(int idPalinsesto, int idAvvenimento) {
+        this.myQuotePK = new MyQuotePK(idPalinsesto, idAvvenimento);
     }
 
-    public PercentualeSingoliEsitiPK getPercentualeSingoliEsitiPK() {
-        return percentualeSingoliEsitiPK;
+    public MyQuotePK getMyQuotePK() {
+        return myQuotePK;
     }
 
-    public void setPercentualeSingoliEsitiPK(PercentualeSingoliEsitiPK percentualeSingoliEsitiPK) {
-        this.percentualeSingoliEsitiPK = percentualeSingoliEsitiPK;
+    public void setMyQuotePK(MyQuotePK myQuotePK) {
+        this.myQuotePK = myQuotePK;
     }
 
     public String getHomeTeam() {
@@ -274,18 +274,18 @@ public class PercentualeSingoliEsiti implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (percentualeSingoliEsitiPK != null ? percentualeSingoliEsitiPK.hashCode() : 0);
+        hash += (myQuotePK != null ? myQuotePK.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof PercentualeSingoliEsiti)) {
+        if (!(object instanceof MyQuote)) {
             return false;
         }
-        PercentualeSingoliEsiti other = (PercentualeSingoliEsiti) object;
-        if ((this.percentualeSingoliEsitiPK == null && other.percentualeSingoliEsitiPK != null) || (this.percentualeSingoliEsitiPK != null && !this.percentualeSingoliEsitiPK.equals(other.percentualeSingoliEsitiPK))) {
+        MyQuote other = (MyQuote) object;
+        if ((this.myQuotePK == null && other.myQuotePK != null) || (this.myQuotePK != null && !this.myQuotePK.equals(other.myQuotePK))) {
             return false;
         }
         return true;
@@ -293,7 +293,7 @@ public class PercentualeSingoliEsiti implements Serializable {
 
     @Override
     public String toString() {
-        return "org.cheetah.youbet.entities.PercentualeSingoliEsiti[ percentualeSingoliEsitiPK=" + percentualeSingoliEsitiPK + " ]";
+        return "org.cheetah.youbet.entities.MyQuote[ myQuotePK=" + myQuotePK + " ]";
     }
     
 }

@@ -16,12 +16,13 @@
     <class>org.cheetah.youbet.entities.Poisson</class>
     <class>org.cheetah.youbet.entities.PercentualeSingoliEsiti</class>
     <class>org.cheetah.youbet.entities.Serie</class>
+    <class>org.cheetah.youbet.entities.MyQuote</class>
     <properties>
       <property name="hibernate.connection.username" value="ubet"/>
       <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
       <property name="hibernate.connection.password" value="ubet"/>
       <property name="hibernate.connection.url" value="jdbc:mysql://10.211.55.3:3306/ubet?zeroDateTimeBehavior=convertToNull"/>
-<!--      <property name="hibernate.show_sql" value="true"/>
+      <!--      <property name="hibernate.show_sql" value="true"/>
       <property name="hibernate.format_sql" value="true"/>-->
       <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect"/>
       <property name="hibernate.max_fetch_depth" value="1"/>
