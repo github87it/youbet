@@ -5,17 +5,28 @@
  */
 package org.cheetah.youbet.gui;
 
-import java.awt.event.MouseEvent;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JSlider;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import org.cheetah.youbet.ContextSpringFactory;
 import org.cheetah.youbet.entities.Palinsesto;
 import org.cheetah.youbet.gui.model.PalinsestoTableModel;
 import org.cheetah.youbet.gui.model.PoissonTableModel;
+import org.cheetah.youbet.gui.popupmenu.PoissonPopupMenu;
+import org.cheetah.youbet.json.JsonTable;
+import org.cheetah.youbet.json.JsonTableRow;
+import org.cheetah.youbet.service.GenericService;
+import org.cheetah.youbet.util.ObjectMapperFactory;
 import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
 
 /**
  *
@@ -47,6 +58,23 @@ public class PoissonDialog extends javax.swing.JFrame {
         splitPane = new javax.swing.JSplitPane();
         palinsestoScrollPane = new javax.swing.JScrollPane();
         palinsestoTable = new javax.swing.JTable();
+        jSplitPane1 = new javax.swing.JSplitPane();
+        panelRiepilogo = new javax.swing.JPanel();
+        tabRiepilogoPoisson = new javax.swing.JTabbedPane();
+        jPanel1 = new javax.swing.JPanel();
+        label_1 = new javax.swing.JLabel();
+        labelPerc_1 = new javax.swing.JLabel();
+        label_X = new javax.swing.JLabel();
+        labelPerc_X = new javax.swing.JLabel();
+        label_2 = new javax.swing.JLabel();
+        labelPerc_2 = new javax.swing.JLabel();
+        label_1X = new javax.swing.JLabel();
+        labelPerc_1X = new javax.swing.JLabel();
+        label_X2 = new javax.swing.JLabel();
+        labelPerc_X2 = new javax.swing.JLabel();
+        label_12 = new javax.swing.JLabel();
+        labelPerc_12 = new javax.swing.JLabel();
+        panelPoissonScrollPane = new javax.swing.JPanel();
         poissonScrollPane = new javax.swing.JScrollPane();
         poissonTable = new javax.swing.JTable();
         topPanel = new javax.swing.JPanel();
@@ -63,6 +91,7 @@ public class PoissonDialog extends javax.swing.JFrame {
         palinsestoTable.setModel(new PalinsestoTableModel(this.palinsestos,
             new PalinsestoTableModel.PalinsestoColumn[]{PalinsestoTableModel.PalinsestoColumn.ID_PALINSESTO,
                 PalinsestoTableModel.PalinsestoColumn.ID_AVVENIMENTO,PalinsestoTableModel.PalinsestoColumn.DESCRIZIONE}));
+    palinsestoTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
     palinsestoTable.addMouseListener(new java.awt.event.MouseAdapter() {
         public void mouseClicked(java.awt.event.MouseEvent evt) {
             palinsestoTableMouseClicked(evt);
@@ -77,6 +106,124 @@ public class PoissonDialog extends javax.swing.JFrame {
 
     splitPane.setLeftComponent(palinsestoScrollPane);
 
+    jSplitPane1.setDividerLocation(0.75);
+    jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+
+    panelRiepilogo.setLayout(new java.awt.GridBagLayout());
+
+    jPanel1.setLayout(new java.awt.GridBagLayout());
+
+    label_1.setText("1");
+    gridBagConstraints = new java.awt.GridBagConstraints();
+    gridBagConstraints.gridx = 0;
+    gridBagConstraints.gridy = 0;
+    gridBagConstraints.ipadx = 5;
+    gridBagConstraints.ipady = 5;
+    jPanel1.add(label_1, gridBagConstraints);
+
+    labelPerc_1.setText("---");
+    gridBagConstraints = new java.awt.GridBagConstraints();
+    gridBagConstraints.gridx = 1;
+    gridBagConstraints.gridy = 0;
+    gridBagConstraints.ipadx = 15;
+    gridBagConstraints.ipady = 5;
+    jPanel1.add(labelPerc_1, gridBagConstraints);
+
+    label_X.setText("X");
+    gridBagConstraints = new java.awt.GridBagConstraints();
+    gridBagConstraints.gridx = 0;
+    gridBagConstraints.gridy = 1;
+    gridBagConstraints.ipadx = 5;
+    gridBagConstraints.ipady = 5;
+    jPanel1.add(label_X, gridBagConstraints);
+
+    labelPerc_X.setText("---");
+    gridBagConstraints = new java.awt.GridBagConstraints();
+    gridBagConstraints.gridx = 1;
+    gridBagConstraints.gridy = 1;
+    gridBagConstraints.ipadx = 15;
+    gridBagConstraints.ipady = 5;
+    jPanel1.add(labelPerc_X, gridBagConstraints);
+
+    label_2.setText("2");
+    gridBagConstraints = new java.awt.GridBagConstraints();
+    gridBagConstraints.gridx = 0;
+    gridBagConstraints.gridy = 2;
+    gridBagConstraints.ipadx = 5;
+    gridBagConstraints.ipady = 5;
+    jPanel1.add(label_2, gridBagConstraints);
+
+    labelPerc_2.setText("---");
+    gridBagConstraints = new java.awt.GridBagConstraints();
+    gridBagConstraints.gridx = 1;
+    gridBagConstraints.gridy = 2;
+    gridBagConstraints.ipadx = 15;
+    gridBagConstraints.ipady = 5;
+    jPanel1.add(labelPerc_2, gridBagConstraints);
+
+    label_1X.setText("1X");
+    gridBagConstraints = new java.awt.GridBagConstraints();
+    gridBagConstraints.gridx = 2;
+    gridBagConstraints.gridy = 0;
+    gridBagConstraints.ipadx = 15;
+    gridBagConstraints.ipady = 5;
+    jPanel1.add(label_1X, gridBagConstraints);
+
+    labelPerc_1X.setText("---");
+    gridBagConstraints = new java.awt.GridBagConstraints();
+    gridBagConstraints.gridx = 3;
+    gridBagConstraints.gridy = 0;
+    gridBagConstraints.ipadx = 5;
+    gridBagConstraints.ipady = 5;
+    jPanel1.add(labelPerc_1X, gridBagConstraints);
+
+    label_X2.setText("X2");
+    gridBagConstraints = new java.awt.GridBagConstraints();
+    gridBagConstraints.gridx = 2;
+    gridBagConstraints.gridy = 1;
+    gridBagConstraints.ipadx = 15;
+    gridBagConstraints.ipady = 5;
+    jPanel1.add(label_X2, gridBagConstraints);
+
+    labelPerc_X2.setText("---");
+    gridBagConstraints = new java.awt.GridBagConstraints();
+    gridBagConstraints.gridx = 3;
+    gridBagConstraints.gridy = 1;
+    gridBagConstraints.ipadx = 5;
+    gridBagConstraints.ipady = 5;
+    jPanel1.add(labelPerc_X2, gridBagConstraints);
+
+    label_12.setText("12");
+    gridBagConstraints = new java.awt.GridBagConstraints();
+    gridBagConstraints.gridx = 2;
+    gridBagConstraints.gridy = 2;
+    gridBagConstraints.ipadx = 15;
+    gridBagConstraints.ipady = 5;
+    jPanel1.add(label_12, gridBagConstraints);
+
+    labelPerc_12.setText("---");
+    gridBagConstraints = new java.awt.GridBagConstraints();
+    gridBagConstraints.gridx = 3;
+    gridBagConstraints.gridy = 2;
+    gridBagConstraints.ipadx = 5;
+    gridBagConstraints.ipady = 5;
+    jPanel1.add(labelPerc_12, gridBagConstraints);
+
+    tabRiepilogoPoisson.addTab("Esito 1X2", jPanel1);
+
+    gridBagConstraints = new java.awt.GridBagConstraints();
+    gridBagConstraints.gridx = 0;
+    gridBagConstraints.gridy = 0;
+    gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+    gridBagConstraints.weightx = 1.0;
+    gridBagConstraints.weighty = 1.0;
+    panelRiepilogo.add(tabRiepilogoPoisson, gridBagConstraints);
+    tabRiepilogoPoisson.getAccessibleContext().setAccessibleName("Esito 1X2");
+
+    jSplitPane1.setRightComponent(panelRiepilogo);
+
+    panelPoissonScrollPane.setLayout(new java.awt.GridBagLayout());
+
     poissonTable.setModel(new javax.swing.table.DefaultTableModel(
         new Object [][] {
         },
@@ -85,7 +232,17 @@ public class PoissonDialog extends javax.swing.JFrame {
     ));
     poissonScrollPane.setViewportView(poissonTable);
 
-    splitPane.setRightComponent(poissonScrollPane);
+    gridBagConstraints = new java.awt.GridBagConstraints();
+    gridBagConstraints.gridx = 0;
+    gridBagConstraints.gridy = 0;
+    gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+    gridBagConstraints.weightx = 1.0;
+    gridBagConstraints.weighty = 1.0;
+    panelPoissonScrollPane.add(poissonScrollPane, gridBagConstraints);
+
+    jSplitPane1.setLeftComponent(panelPoissonScrollPane);
+
+    splitPane.setRightComponent(jSplitPane1);
 
     gridBagConstraints = new java.awt.GridBagConstraints();
     gridBagConstraints.gridx = 0;
@@ -131,13 +288,33 @@ public class PoissonDialog extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void palinsestoTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_palinsestoTableMouseClicked
-        changePalinsestoTableData();
+        if(SwingUtilities.isLeftMouseButton(evt)){
+            try {
+                changePalinsestoTableData();
+            } catch (BeansException ex) {
+                Logger.getLogger(PoissonDialog.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(PoissonDialog.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(PoissonDialog.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if(SwingUtilities.isRightMouseButton(evt) && !evt.isPopupTrigger()){
+            int row = palinsestoTable.rowAtPoint(evt.getPoint());
+            palinsestoTable.getSelectionModel().addSelectionInterval(row, row);
+            
+            new PoissonPopupMenu(palinsestos.get(row)).show(evt.getComponent(), evt.getX(), evt.getY());
+        }
     }
 
-    private void changePalinsestoTableData() throws BeansException {
+    private void changePalinsestoTableData() throws BeansException, SQLException, IOException {
         Palinsesto palinsestoSelected = getPalinsestoRowSelected(palinsestoTable);
-        PoissonTableModel model = ContextSpringFactory.getInstance().getContext().getBean(PoissonTableModel.class);
+        ApplicationContext ctx = ContextSpringFactory.getInstance().getContext();
+        PoissonTableModel model = ctx.getBean(PoissonTableModel.class);
+        GenericService serv = ctx.getBean(GenericService.class);
         initPoissonModel(model, palinsestoSelected);
+        calcolaMatch(serv, palinsestoSelected);
+        
         model.loadDataPercentualeGreaterThan(palinsestoSelected, filtraPercentualeSlider.getValue());
         poissonTable.setModel(model);
         JTableHeader header = poissonTable.getTableHeader();
@@ -149,6 +326,50 @@ public class PoissonDialog extends javax.swing.JFrame {
             header.repaint();
         }
         model.fireTableDataChanged();
+    }
+
+    private void calcolaMatch(GenericService serv, Palinsesto palinsestoSelected) throws SQLException, IOException {
+        ObjectMapper map = ObjectMapperFactory.mapper;
+        String prob1 = serv.getProbabilita1(
+                        palinsestoSelected.getPalinsestoPK().getIdPalinsesto(),
+                        palinsestoSelected.getPalinsestoPK().getIdAvvenimento(),
+                        filtraPercentualeSlider.getValue());
+        String probX = serv.getProbabilitaX(
+                        palinsestoSelected.getPalinsestoPK().getIdPalinsesto(),
+                        palinsestoSelected.getPalinsestoPK().getIdAvvenimento(),
+                        filtraPercentualeSlider.getValue());
+        String prob2 = serv.getProbabilita2(
+                        palinsestoSelected.getPalinsestoPK().getIdPalinsesto(),
+                        palinsestoSelected.getPalinsestoPK().getIdAvvenimento(),
+                        filtraPercentualeSlider.getValue());
+        String probX2 = serv.getProbabilitaX2(
+                        palinsestoSelected.getPalinsestoPK().getIdPalinsesto(),
+                        palinsestoSelected.getPalinsestoPK().getIdAvvenimento(),
+                        filtraPercentualeSlider.getValue());
+        String prob1X = serv.getProbabilita1X(
+                        palinsestoSelected.getPalinsestoPK().getIdPalinsesto(),
+                        palinsestoSelected.getPalinsestoPK().getIdAvvenimento(),
+                        filtraPercentualeSlider.getValue());
+        String prob12 = serv.getProbabilita12(
+                        palinsestoSelected.getPalinsestoPK().getIdPalinsesto(),
+                        palinsestoSelected.getPalinsestoPK().getIdAvvenimento(),
+                        filtraPercentualeSlider.getValue());
+        JsonTableRow row = jsonToJsonTableRow(map, prob1);
+        labelPerc_1.setText(row.getColumnValue());
+        labelPerc_X.setText(jsonToJsonTableRow(map, probX).getColumnValue());
+        labelPerc_2.setText(jsonToJsonTableRow(map, prob2).getColumnValue());
+        labelPerc_12.setText(jsonToJsonTableRow(map, prob12).getColumnValue());
+        labelPerc_X2.setText(jsonToJsonTableRow(map, probX2).getColumnValue());
+        labelPerc_1X.setText(jsonToJsonTableRow(map, prob1X).getColumnValue());
+        
+        
+    }
+
+    private JsonTableRow jsonToJsonTableRow(ObjectMapper map, String prob1) throws IOException {
+        JsonTable t = map.readValue(
+                prob1, JsonTable.class);
+        JsonTableRow row = t.getRows().get(0);
+        return row;
     }
 
     private void initPoissonModel(PoissonTableModel model, Palinsesto palinsestoSelected) {
@@ -170,20 +391,37 @@ public class PoissonDialog extends javax.swing.JFrame {
         JSlider slider = (JSlider) evt.getSource();
         filtraPercentualeLabel.setText(Integer.toString(slider.getValue()));
         if (palinsestoTable.getSelectedRow() != -1) {
-//            Palinsesto p = getPalinsestoRowSelected(palinsestoTable);
+            try {
+                //            Palinsesto p = getPalinsestoRowSelected(palinsestoTable);
 //            PoissonTableModel model = ContextSpringFactory.getInstance().getContext().getBean(PoissonTableModel.class);
 //            initPoissonModel(model, p);
 //            model.loadDataPercentualeGreaterThan(p,slider.getValue());
 //            poissonTable.setModel(model);
 //            model.fireTableDataChanged();
-            changePalinsestoTableData();
+                changePalinsestoTableData();
+            } catch (BeansException ex) {
+                
+                Logger.getLogger(PoissonDialog.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(PoissonDialog.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(PoissonDialog.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
 
     }//GEN-LAST:event_filtraPercentualeSliderStateChanged
 
     private void palinsestoTableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_palinsestoTableKeyReleased
-        changePalinsestoTableData();
+        try {
+            changePalinsestoTableData();
+        } catch (BeansException ex) {
+            Logger.getLogger(PoissonDialog.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(PoissonDialog.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(PoissonDialog.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_palinsestoTableKeyReleased
 
     /**
@@ -194,12 +432,29 @@ public class PoissonDialog extends javax.swing.JFrame {
     private javax.swing.JLabel filtraPercentualeLabel;
     private javax.swing.JSlider filtraPercentualeSlider;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JLabel labelPerc_1;
+    private javax.swing.JLabel labelPerc_12;
+    private javax.swing.JLabel labelPerc_1X;
+    private javax.swing.JLabel labelPerc_2;
+    private javax.swing.JLabel labelPerc_X;
+    private javax.swing.JLabel labelPerc_X2;
+    private javax.swing.JLabel label_1;
+    private javax.swing.JLabel label_12;
+    private javax.swing.JLabel label_1X;
+    private javax.swing.JLabel label_2;
+    private javax.swing.JLabel label_X;
+    private javax.swing.JLabel label_X2;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JScrollPane palinsestoScrollPane;
     private javax.swing.JTable palinsestoTable;
+    private javax.swing.JPanel panelPoissonScrollPane;
+    private javax.swing.JPanel panelRiepilogo;
     private javax.swing.JScrollPane poissonScrollPane;
     private javax.swing.JTable poissonTable;
     private javax.swing.JSplitPane splitPane;
+    private javax.swing.JTabbedPane tabRiepilogoPoisson;
     private javax.swing.JPanel topPanel;
     // End of variables declaration//GEN-END:variables
 
