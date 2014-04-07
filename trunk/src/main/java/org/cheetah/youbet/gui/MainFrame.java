@@ -87,6 +87,7 @@ public class MainFrame extends javax.swing.JFrame {
         mainTable.setModel(new PalinsestoTableModel(        palinsestoService.findPartiteDaGiocare(new Date())) );
         mainTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         mainTable.setColumnSelectionAllowed(true);
+        mainTable.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         mainTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 mainTableMouseReleased(evt);
@@ -97,7 +98,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
         mainScrollPane.setViewportView(mainTable);
         mainTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        mainTable.setComponentPopupMenu(new PalinsestoPopupMenu());
+        //mainTable.setComponentPopupMenu(new PalinsestoPopupMenu());
 
         mainPanel.add(mainScrollPane, java.awt.BorderLayout.CENTER);
 
@@ -159,12 +160,12 @@ public class MainFrame extends javax.swing.JFrame {
     private void mainTableMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mainTableMouseReleased
         if (SwingUtilities.isRightMouseButton(evt) && !evt.isPopupTrigger()) {
             JTable source = (JTable) evt.getSource();
+            
             int row = source.rowAtPoint(evt.getPoint());
-            int column = source.columnAtPoint(evt.getPoint());
+//            int column = source.columnAtPoint(evt.getPoint());
 
-            if (!source.isRowSelected(row)) {
-                source.changeSelection(row, column, false, false);
-            }
+                source.getSelectionModel().addSelectionInterval(row, row);
+//                source.changeSelection(row, column, false, false);
             new PalinsestoPopupMenu(source).show(evt.getComponent(), evt.getX(), evt.getY());
         }
     }//GEN-LAST:event_mainTableMouseReleased
