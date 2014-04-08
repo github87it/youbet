@@ -5,16 +5,14 @@
  */
 package org.cheetah.youbet.service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import org.cheetah.youbet.entities.Incontro;
-import org.cheetah.youbet.entities.Serie;
+import org.cheetah.youbet.entities.Palinsesto;
 import org.cheetah.youbet.repositories.IncontroRepository;
 import org.cheetah.youbet.repositories.SerieRepository;
-import org.cheetah.youbet.util.Calculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -92,6 +90,21 @@ public class IncontroService {
         stat.setGs(gs);
         stat.setGiocate(incontros.getSize());
         return stat;
+    }
+    
+    public Page<Incontro> findIncontroByTeam(Palinsesto p,int teamType,int maxResults){
+        Page<Incontro> incontros = null;
+        switch(teamType){
+            case HOME_TEAM:
+                return repository.findByHomeTeamAndCompetizione(p.getHomeTeam(), p.getIdManifestazione().getDescrizioneLunga(), new PageRequest(0, maxResults));
+            case AWAY_TEAM:
+                return repository.findByAwayTeamAndCompetizione(p.getAwayTeam(), p.getIdManifestazione().getDescrizioneLunga(), new PageRequest(0, maxResults));
+        }
+        return null;
+    }
+    
+    public Page<Incontro> findIncontroByTeam(String competizione,String squadra,int maxResults){
+        return repository.findIncontroByTeam(competizione,squadra, new PageRequest(0, maxResults));
     }
 
     public Stat getSumGoalByTeam(String team, String competizione, int teamType) {
