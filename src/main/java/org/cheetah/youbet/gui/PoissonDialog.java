@@ -8,6 +8,7 @@ package org.cheetah.youbet.gui;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,6 +20,9 @@ import javax.swing.table.TableColumn;
 import org.cheetah.youbet.ContextSpringFactory;
 import org.cheetah.youbet.entities.Incontro;
 import org.cheetah.youbet.entities.Palinsesto;
+import org.cheetah.youbet.entities.PercentualeSingoliEsiti;
+import org.cheetah.youbet.entities.PercentualeSingoliEsitiPK;
+import org.cheetah.youbet.gui.model.IncontroTableModel;
 import org.cheetah.youbet.gui.model.PalinsestoTableModel;
 import org.cheetah.youbet.gui.model.PoissonTableModel;
 import org.cheetah.youbet.gui.popupmenu.PoissonPopupMenu;
@@ -26,7 +30,7 @@ import org.cheetah.youbet.json.JsonTable;
 import org.cheetah.youbet.json.JsonTableRow;
 import org.cheetah.youbet.service.GenericService;
 import org.cheetah.youbet.service.IncontroService;
-import org.cheetah.youbet.util.ObjectMapperFactory;
+import org.cheetah.youbet.service.PercentualeSingoliEsitiService;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Page;
@@ -85,8 +89,28 @@ public class PoissonDialog extends javax.swing.JFrame {
         labelPerc_Pari = new javax.swing.JLabel();
         label_Dispari = new javax.swing.JLabel();
         labelPerc_Dispari = new javax.swing.JLabel();
+        label_ov15 = new javax.swing.JLabel();
+        labelPerc_ov15 = new javax.swing.JLabel();
+        label_un15 = new javax.swing.JLabel();
+        labelPerc_un15 = new javax.swing.JLabel();
+        label_ov25 = new javax.swing.JLabel();
+        labelPerc_ov25 = new javax.swing.JLabel();
+        label_un25 = new javax.swing.JLabel();
+        labelPerc_un25 = new javax.swing.JLabel();
+        label_ov35 = new javax.swing.JLabel();
+        labelPerc_ov35 = new javax.swing.JLabel();
+        label_un35 = new javax.swing.JLabel();
+        labelPerc_un35 = new javax.swing.JLabel();
+        label_ov45 = new javax.swing.JLabel();
+        labelPerc_ov45 = new javax.swing.JLabel();
+        label_un45 = new javax.swing.JLabel();
+        labelPerc_un45 = new javax.swing.JLabel();
         panelStatsHomeTeam = new javax.swing.JPanel();
+        scrollPaneStatsHomeTeam = new javax.swing.JScrollPane();
+        tableIncontriHomeTeam = new IncontroTable();
         panelStatsAwayTeam = new javax.swing.JPanel();
+        scrollPaneStatsAwayTeam = new javax.swing.JScrollPane();
+        tableIncontriAwayTeam = new IncontroTable();
         panelPoissonScrollPane = new javax.swing.JPanel();
         poissonScrollPane = new javax.swing.JScrollPane();
         poissonTable = new javax.swing.JTable();
@@ -132,6 +156,7 @@ public class PoissonDialog extends javax.swing.JFrame {
     gridBagConstraints.gridy = 0;
     gridBagConstraints.ipadx = 5;
     gridBagConstraints.ipady = 5;
+    gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
     panel1X2.add(label_1, gridBagConstraints);
 
     labelPerc_1.setText("---");
@@ -140,6 +165,7 @@ public class PoissonDialog extends javax.swing.JFrame {
     gridBagConstraints.gridy = 0;
     gridBagConstraints.ipadx = 15;
     gridBagConstraints.ipady = 5;
+    gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
     panel1X2.add(labelPerc_1, gridBagConstraints);
 
     label_X.setText("X");
@@ -148,6 +174,7 @@ public class PoissonDialog extends javax.swing.JFrame {
     gridBagConstraints.gridy = 1;
     gridBagConstraints.ipadx = 5;
     gridBagConstraints.ipady = 5;
+    gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
     panel1X2.add(label_X, gridBagConstraints);
 
     labelPerc_X.setText("---");
@@ -156,6 +183,7 @@ public class PoissonDialog extends javax.swing.JFrame {
     gridBagConstraints.gridy = 1;
     gridBagConstraints.ipadx = 15;
     gridBagConstraints.ipady = 5;
+    gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
     panel1X2.add(labelPerc_X, gridBagConstraints);
 
     label_2.setText("2");
@@ -164,6 +192,7 @@ public class PoissonDialog extends javax.swing.JFrame {
     gridBagConstraints.gridy = 2;
     gridBagConstraints.ipadx = 5;
     gridBagConstraints.ipady = 5;
+    gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
     panel1X2.add(label_2, gridBagConstraints);
 
     labelPerc_2.setText("---");
@@ -172,6 +201,7 @@ public class PoissonDialog extends javax.swing.JFrame {
     gridBagConstraints.gridy = 2;
     gridBagConstraints.ipadx = 15;
     gridBagConstraints.ipady = 5;
+    gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
     panel1X2.add(labelPerc_2, gridBagConstraints);
 
     label_1X.setText("1X");
@@ -180,6 +210,7 @@ public class PoissonDialog extends javax.swing.JFrame {
     gridBagConstraints.gridy = 0;
     gridBagConstraints.ipadx = 15;
     gridBagConstraints.ipady = 5;
+    gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
     panel1X2.add(label_1X, gridBagConstraints);
 
     labelPerc_1X.setText("---");
@@ -188,6 +219,7 @@ public class PoissonDialog extends javax.swing.JFrame {
     gridBagConstraints.gridy = 0;
     gridBagConstraints.ipadx = 5;
     gridBagConstraints.ipady = 5;
+    gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
     panel1X2.add(labelPerc_1X, gridBagConstraints);
 
     label_X2.setText("X2");
@@ -196,6 +228,7 @@ public class PoissonDialog extends javax.swing.JFrame {
     gridBagConstraints.gridy = 1;
     gridBagConstraints.ipadx = 15;
     gridBagConstraints.ipady = 5;
+    gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
     panel1X2.add(label_X2, gridBagConstraints);
 
     labelPerc_X2.setText("---");
@@ -204,6 +237,7 @@ public class PoissonDialog extends javax.swing.JFrame {
     gridBagConstraints.gridy = 1;
     gridBagConstraints.ipadx = 5;
     gridBagConstraints.ipady = 5;
+    gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
     panel1X2.add(labelPerc_X2, gridBagConstraints);
 
     label_12.setText("12");
@@ -212,6 +246,7 @@ public class PoissonDialog extends javax.swing.JFrame {
     gridBagConstraints.gridy = 2;
     gridBagConstraints.ipadx = 15;
     gridBagConstraints.ipady = 5;
+    gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
     panel1X2.add(label_12, gridBagConstraints);
 
     labelPerc_12.setText("---");
@@ -220,6 +255,7 @@ public class PoissonDialog extends javax.swing.JFrame {
     gridBagConstraints.gridy = 2;
     gridBagConstraints.ipadx = 5;
     gridBagConstraints.ipady = 5;
+    gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
     panel1X2.add(labelPerc_12, gridBagConstraints);
 
     label_Gol.setText("Gol");
@@ -228,6 +264,7 @@ public class PoissonDialog extends javax.swing.JFrame {
     gridBagConstraints.gridy = 3;
     gridBagConstraints.ipadx = 5;
     gridBagConstraints.ipady = 5;
+    gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
     panel1X2.add(label_Gol, gridBagConstraints);
 
     labelPerc_Gol.setText("---");
@@ -236,6 +273,7 @@ public class PoissonDialog extends javax.swing.JFrame {
     gridBagConstraints.gridy = 3;
     gridBagConstraints.ipadx = 15;
     gridBagConstraints.ipady = 5;
+    gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
     panel1X2.add(labelPerc_Gol, gridBagConstraints);
 
     label_NoGol.setText("No Gol");
@@ -244,6 +282,7 @@ public class PoissonDialog extends javax.swing.JFrame {
     gridBagConstraints.gridy = 3;
     gridBagConstraints.ipadx = 5;
     gridBagConstraints.ipady = 5;
+    gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
     panel1X2.add(label_NoGol, gridBagConstraints);
 
     labelPerc_NoGol.setText("---");
@@ -252,6 +291,7 @@ public class PoissonDialog extends javax.swing.JFrame {
     gridBagConstraints.gridy = 3;
     gridBagConstraints.ipadx = 15;
     gridBagConstraints.ipady = 5;
+    gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
     panel1X2.add(labelPerc_NoGol, gridBagConstraints);
 
     label_Pari.setText("Pari");
@@ -260,6 +300,7 @@ public class PoissonDialog extends javax.swing.JFrame {
     gridBagConstraints.gridy = 4;
     gridBagConstraints.ipadx = 5;
     gridBagConstraints.ipady = 5;
+    gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
     panel1X2.add(label_Pari, gridBagConstraints);
 
     labelPerc_Pari.setText("---");
@@ -268,6 +309,7 @@ public class PoissonDialog extends javax.swing.JFrame {
     gridBagConstraints.gridy = 4;
     gridBagConstraints.ipadx = 15;
     gridBagConstraints.ipady = 5;
+    gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
     panel1X2.add(labelPerc_Pari, gridBagConstraints);
 
     label_Dispari.setText("Dispari");
@@ -276,6 +318,7 @@ public class PoissonDialog extends javax.swing.JFrame {
     gridBagConstraints.gridy = 4;
     gridBagConstraints.ipadx = 5;
     gridBagConstraints.ipady = 5;
+    gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
     panel1X2.add(label_Dispari, gridBagConstraints);
 
     labelPerc_Dispari.setText("---");
@@ -284,14 +327,187 @@ public class PoissonDialog extends javax.swing.JFrame {
     gridBagConstraints.gridy = 4;
     gridBagConstraints.ipadx = 15;
     gridBagConstraints.ipady = 5;
+    gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
     panel1X2.add(labelPerc_Dispari, gridBagConstraints);
+
+    label_ov15.setText("Over1.5");
+    gridBagConstraints = new java.awt.GridBagConstraints();
+    gridBagConstraints.gridx = 0;
+    gridBagConstraints.gridy = 5;
+    gridBagConstraints.ipadx = 5;
+    gridBagConstraints.ipady = 5;
+    gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+    panel1X2.add(label_ov15, gridBagConstraints);
+
+    labelPerc_ov15.setText("---");
+    gridBagConstraints = new java.awt.GridBagConstraints();
+    gridBagConstraints.gridx = 1;
+    gridBagConstraints.gridy = 5;
+    gridBagConstraints.ipadx = 15;
+    gridBagConstraints.ipady = 5;
+    gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+    panel1X2.add(labelPerc_ov15, gridBagConstraints);
+
+    label_un15.setText("Under 1.5");
+    gridBagConstraints = new java.awt.GridBagConstraints();
+    gridBagConstraints.gridx = 2;
+    gridBagConstraints.gridy = 5;
+    gridBagConstraints.ipadx = 15;
+    gridBagConstraints.ipady = 5;
+    gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+    panel1X2.add(label_un15, gridBagConstraints);
+
+    labelPerc_un15.setText("---");
+    gridBagConstraints = new java.awt.GridBagConstraints();
+    gridBagConstraints.gridx = 3;
+    gridBagConstraints.gridy = 5;
+    gridBagConstraints.ipadx = 5;
+    gridBagConstraints.ipady = 5;
+    gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+    panel1X2.add(labelPerc_un15, gridBagConstraints);
+
+    label_ov25.setText("Over2.5");
+    gridBagConstraints = new java.awt.GridBagConstraints();
+    gridBagConstraints.gridx = 0;
+    gridBagConstraints.gridy = 6;
+    gridBagConstraints.ipadx = 5;
+    gridBagConstraints.ipady = 5;
+    gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+    panel1X2.add(label_ov25, gridBagConstraints);
+
+    labelPerc_ov25.setText("---");
+    gridBagConstraints = new java.awt.GridBagConstraints();
+    gridBagConstraints.gridx = 1;
+    gridBagConstraints.gridy = 6;
+    gridBagConstraints.ipadx = 15;
+    gridBagConstraints.ipady = 5;
+    gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+    panel1X2.add(labelPerc_ov25, gridBagConstraints);
+
+    label_un25.setText("Under 2.5");
+    gridBagConstraints = new java.awt.GridBagConstraints();
+    gridBagConstraints.gridx = 2;
+    gridBagConstraints.gridy = 6;
+    gridBagConstraints.ipadx = 15;
+    gridBagConstraints.ipady = 5;
+    gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+    panel1X2.add(label_un25, gridBagConstraints);
+
+    labelPerc_un25.setText("---");
+    gridBagConstraints = new java.awt.GridBagConstraints();
+    gridBagConstraints.gridx = 3;
+    gridBagConstraints.gridy = 6;
+    gridBagConstraints.ipadx = 5;
+    gridBagConstraints.ipady = 5;
+    gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+    panel1X2.add(labelPerc_un25, gridBagConstraints);
+
+    label_ov35.setText("Over3.5");
+    gridBagConstraints = new java.awt.GridBagConstraints();
+    gridBagConstraints.gridx = 0;
+    gridBagConstraints.gridy = 7;
+    gridBagConstraints.ipadx = 5;
+    gridBagConstraints.ipady = 5;
+    gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+    panel1X2.add(label_ov35, gridBagConstraints);
+
+    labelPerc_ov35.setText("---");
+    gridBagConstraints = new java.awt.GridBagConstraints();
+    gridBagConstraints.gridx = 1;
+    gridBagConstraints.gridy = 7;
+    gridBagConstraints.ipadx = 15;
+    gridBagConstraints.ipady = 5;
+    gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+    panel1X2.add(labelPerc_ov35, gridBagConstraints);
+
+    label_un35.setText("Under 3.5");
+    gridBagConstraints = new java.awt.GridBagConstraints();
+    gridBagConstraints.gridx = 2;
+    gridBagConstraints.gridy = 7;
+    gridBagConstraints.ipadx = 15;
+    gridBagConstraints.ipady = 5;
+    gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+    panel1X2.add(label_un35, gridBagConstraints);
+
+    labelPerc_un35.setText("---");
+    gridBagConstraints = new java.awt.GridBagConstraints();
+    gridBagConstraints.gridx = 3;
+    gridBagConstraints.gridy = 7;
+    gridBagConstraints.ipadx = 5;
+    gridBagConstraints.ipady = 5;
+    gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+    panel1X2.add(labelPerc_un35, gridBagConstraints);
+
+    label_ov45.setText("Over4.5");
+    gridBagConstraints = new java.awt.GridBagConstraints();
+    gridBagConstraints.gridx = 0;
+    gridBagConstraints.gridy = 8;
+    gridBagConstraints.ipadx = 5;
+    gridBagConstraints.ipady = 5;
+    gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+    panel1X2.add(label_ov45, gridBagConstraints);
+
+    labelPerc_ov45.setText("---");
+    gridBagConstraints = new java.awt.GridBagConstraints();
+    gridBagConstraints.gridx = 1;
+    gridBagConstraints.gridy = 8;
+    gridBagConstraints.ipadx = 15;
+    gridBagConstraints.ipady = 5;
+    gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+    panel1X2.add(labelPerc_ov45, gridBagConstraints);
+
+    label_un45.setText("Under 4.5");
+    gridBagConstraints = new java.awt.GridBagConstraints();
+    gridBagConstraints.gridx = 2;
+    gridBagConstraints.gridy = 8;
+    gridBagConstraints.ipadx = 15;
+    gridBagConstraints.ipady = 5;
+    gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+    panel1X2.add(label_un45, gridBagConstraints);
+
+    labelPerc_un45.setText("---");
+    gridBagConstraints = new java.awt.GridBagConstraints();
+    gridBagConstraints.gridx = 3;
+    gridBagConstraints.gridy = 8;
+    gridBagConstraints.ipadx = 5;
+    gridBagConstraints.ipady = 5;
+    gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+    panel1X2.add(labelPerc_un45, gridBagConstraints);
 
     tabRiepilogoPoisson.addTab("Esito 1X2", panel1X2);
 
     panelStatsHomeTeam.setLayout(new java.awt.GridBagLayout());
+
+    tableIncontriHomeTeam.setModel(new IncontroTableModel(new ArrayList<Incontro>())
+    );
+    tableIncontriHomeTeam.setRowSelectionAllowed(false);
+    scrollPaneStatsHomeTeam.setViewportView(tableIncontriHomeTeam);
+
+    gridBagConstraints = new java.awt.GridBagConstraints();
+    gridBagConstraints.gridx = 0;
+    gridBagConstraints.gridy = 0;
+    gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+    gridBagConstraints.weightx = 1.0;
+    gridBagConstraints.weighty = 1.0;
+    panelStatsHomeTeam.add(scrollPaneStatsHomeTeam, gridBagConstraints);
+
     tabRiepilogoPoisson.addTab("SQUADRA CASA", panelStatsHomeTeam);
 
     panelStatsAwayTeam.setLayout(new java.awt.GridBagLayout());
+
+    tableIncontriAwayTeam.setModel(new IncontroTableModel(new ArrayList<Incontro>())
+    );
+    tableIncontriAwayTeam.setRowSelectionAllowed(false);
+    scrollPaneStatsAwayTeam.setViewportView(tableIncontriAwayTeam);
+
+    gridBagConstraints = new java.awt.GridBagConstraints();
+    gridBagConstraints.gridx = 0;
+    gridBagConstraints.gridy = 0;
+    gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+    gridBagConstraints.weightx = 1.0;
+    gridBagConstraints.weighty = 1.0;
+    panelStatsAwayTeam.add(scrollPaneStatsAwayTeam, gridBagConstraints);
+
     tabRiepilogoPoisson.addTab("SQUADRA OSPITE", panelStatsAwayTeam);
 
     gridBagConstraints = new java.awt.GridBagConstraints();
@@ -371,9 +587,11 @@ public class PoissonDialog extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void palinsestoTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_palinsestoTableMouseClicked
-        if(SwingUtilities.isLeftMouseButton(evt)){
+        if (SwingUtilities.isLeftMouseButton(evt)) {
             try {
                 changePalinsestoTableData();
+                calcolaMatch(getPalinsestoRowSelected(palinsestoTable));
+
             } catch (BeansException ex) {
                 Logger.getLogger(PoissonDialog.class.getName()).log(Level.SEVERE, null, ex);
             } catch (SQLException ex) {
@@ -382,10 +600,10 @@ public class PoissonDialog extends javax.swing.JFrame {
                 Logger.getLogger(PoissonDialog.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        if(SwingUtilities.isRightMouseButton(evt) && !evt.isPopupTrigger()){
+        if (SwingUtilities.isRightMouseButton(evt) && !evt.isPopupTrigger()) {
             int row = palinsestoTable.rowAtPoint(evt.getPoint());
             palinsestoTable.getSelectionModel().addSelectionInterval(row, row);
-            
+
             new PoissonPopupMenu(palinsestos.get(row)).show(evt.getComponent(), evt.getX(), evt.getY());
         }
     }
@@ -396,8 +614,7 @@ public class PoissonDialog extends javax.swing.JFrame {
         PoissonTableModel model = ctx.getBean(PoissonTableModel.class);
         GenericService serv = ctx.getBean(GenericService.class);
         initPoissonModel(model, palinsestoSelected);
-        calcolaMatch(serv, palinsestoSelected);
-        
+
         model.loadDataPercentualeGreaterThan(palinsestoSelected, filtraPercentualeSlider.getValue());
         poissonTable.setModel(model);
         JTableHeader header = poissonTable.getTableHeader();
@@ -411,76 +628,59 @@ public class PoissonDialog extends javax.swing.JFrame {
         model.fireTableDataChanged();
     }
 
-    private void calcolaMatch(GenericService serv, Palinsesto palinsestoSelected) throws SQLException, IOException {
-        ObjectMapper map = ObjectMapperFactory.mapper;
-        String prob1 = serv.getProbabilita1(
+    private void calcolaMatch(Palinsesto palinsestoSelected) throws SQLException, IOException {
+        PercentualeSingoliEsitiService serv = ContextSpringFactory.getInstance().getContext().getBean(PercentualeSingoliEsitiService.class);
+        PercentualeSingoliEsiti pse = serv.findByPk(
+                new PercentualeSingoliEsitiPK(
                         palinsestoSelected.getPalinsestoPK().getIdPalinsesto(),
-                        palinsestoSelected.getPalinsestoPK().getIdAvvenimento(),
-                        filtraPercentualeSlider.getValue());
-        String probX = serv.getProbabilitaX(
-                        palinsestoSelected.getPalinsestoPK().getIdPalinsesto(),
-                        palinsestoSelected.getPalinsestoPK().getIdAvvenimento(),
-                        filtraPercentualeSlider.getValue());
-        String prob2 = serv.getProbabilita2(
-                        palinsestoSelected.getPalinsestoPK().getIdPalinsesto(),
-                        palinsestoSelected.getPalinsestoPK().getIdAvvenimento(),
-                        filtraPercentualeSlider.getValue());
-        String probX2 = serv.getProbabilitaX2(
-                        palinsestoSelected.getPalinsestoPK().getIdPalinsesto(),
-                        palinsestoSelected.getPalinsestoPK().getIdAvvenimento(),
-                        filtraPercentualeSlider.getValue());
-        String prob1X = serv.getProbabilita1X(
-                        palinsestoSelected.getPalinsestoPK().getIdPalinsesto(),
-                        palinsestoSelected.getPalinsestoPK().getIdAvvenimento(),
-                        filtraPercentualeSlider.getValue());
-        String prob12 = serv.getProbabilita12(
-                        palinsestoSelected.getPalinsestoPK().getIdPalinsesto(),
-                        palinsestoSelected.getPalinsestoPK().getIdAvvenimento(),
-                        filtraPercentualeSlider.getValue());
-        String probGol = serv.getProbabilitaGol(
-                        palinsestoSelected.getPalinsestoPK().getIdPalinsesto(),
-                        palinsestoSelected.getPalinsestoPK().getIdAvvenimento(),
-                        filtraPercentualeSlider.getValue());
+                        palinsestoSelected.getPalinsestoPK().getIdAvvenimento()));
+        labelPerc_1.setText(Double.toString(pse.getVittoriaCasa()));
+        labelPerc_X.setText(Double.toString(pse.getPareggio()));
+        labelPerc_2.setText(Double.toString(pse.getVittoriaFuori()));
+        labelPerc_12.setText(Double.toString(pse.getDoppiaChanceInOut()));
+        labelPerc_X2.setText(Double.toString(pse.getDoppiaChanceOut()));
+        labelPerc_1X.setText(Double.toString(pse.getDoppiaChanceIn()));
+        labelPerc_Dispari.setText(Double.toString(pse.getDispari()));
+        labelPerc_Pari.setText(Double.toString(pse.getPari()));
+        labelPerc_Gol.setText(Double.toString(pse.getGol()));
+        labelPerc_NoGol.setText(Double.toString(pse.getNoGol()));
+        labelPerc_NoGol.setText(Double.toString(pse.getNoGol()));
+        labelPerc_ov15.setText(Double.toString(pse.getOverUnoCinque()));
+        labelPerc_un15.setText(Double.toString(pse.getUnderUnoCinque()));
+        labelPerc_ov25.setText(Double.toString(pse.getOverDueCinque()));
+        labelPerc_un25.setText(Double.toString(pse.getUnderDueCinque()));
+        labelPerc_ov35.setText(Double.toString(pse.getOverTreCinque()));
+        labelPerc_un35.setText(Double.toString(pse.getUnderTreCinque()));
+        labelPerc_ov45.setText(Double.toString(pse.getOverQuattroCinque()));
+        labelPerc_un45.setText(Double.toString(pse.getUnderQuattroCinque()));
+
         
-        String probNoGol = serv.getProbabilitaNoGol(
-                        palinsestoSelected.getPalinsestoPK().getIdPalinsesto(),
-                        palinsestoSelected.getPalinsestoPK().getIdAvvenimento(),
-                        filtraPercentualeSlider.getValue());
-        String probPari = serv.getProbabilitaPari(
-                        palinsestoSelected.getPalinsestoPK().getIdPalinsesto(),
-                        palinsestoSelected.getPalinsestoPK().getIdAvvenimento(),
-                        filtraPercentualeSlider.getValue());
-        String probDispari = serv.getProbabilitaDispari(
-                        palinsestoSelected.getPalinsestoPK().getIdPalinsesto(),
-                        palinsestoSelected.getPalinsestoPK().getIdAvvenimento(),
-                        filtraPercentualeSlider.getValue());
-        JsonTableRow row = jsonToJsonTableRow(map, prob1);
-        labelPerc_1.setText(row.getColumnValue());
-        labelPerc_X.setText(jsonToJsonTableRow(map, probX).getColumnValue());
-        labelPerc_2.setText(jsonToJsonTableRow(map, prob2).getColumnValue());
-        labelPerc_12.setText(jsonToJsonTableRow(map, prob12).getColumnValue());
-        labelPerc_X2.setText(jsonToJsonTableRow(map, probX2).getColumnValue());
-        labelPerc_1X.setText(jsonToJsonTableRow(map, prob1X).getColumnValue());
-        labelPerc_Dispari.setText(jsonToJsonTableRow(map, probDispari).getColumnValue());
-        labelPerc_Pari.setText(jsonToJsonTableRow(map, probPari).getColumnValue());
-        labelPerc_Gol.setText(jsonToJsonTableRow(map, probGol).getColumnValue());
-        labelPerc_NoGol.setText(jsonToJsonTableRow(map, probNoGol).getColumnValue());
-        
-        loadStatsTeam(palinsestoSelected, 1, palinsestoSelected.getHomeTeam());
-        loadStatsTeam(palinsestoSelected, 2, palinsestoSelected.getAwayTeam());
-        
-    }
-    private void loadStatsTeam(Palinsesto palinsesto, int indexTab,String squadra) {
-        ApplicationContext ctx = ContextSpringFactory.getInstance().getContext();
-        IncontroService incontroService =  ctx.getBean(IncontroService.class);
-        tabRiepilogoPoisson.setTitleAt(indexTab, squadra);
-        Page<Incontro> incontros = incontroService.findIncontroByTeam(palinsesto.getIdManifestazione().getDescrizioneLunga(),squadra, 9);
-        for (Incontro incontro : incontros) {
-            System.out.println(incontro);
-        }
-        
+        loadStatsTeam(palinsestoSelected, 1, tableIncontriHomeTeam,palinsestoSelected.getHomeTeam());
+        loadStatsTeam(palinsestoSelected, 2, tableIncontriAwayTeam,palinsestoSelected.getAwayTeam());
+
     }
 
+    private void loadStatsTeam(Palinsesto palinsesto, int indexTab,JTable table, String squadra) {
+        ApplicationContext ctx = ContextSpringFactory.getInstance().getContext();
+        IncontroService incontroService = ctx.getBean(IncontroService.class);
+        tabRiepilogoPoisson.setTitleAt(indexTab, squadra);
+        ((IncontroTable)table).setTeam(squadra);
+        Page<Incontro> incontros = incontroService.findIncontroByTeam(palinsesto.getIdManifestazione().getDescrizioneLunga(), squadra, 9);
+       
+        IncontroTableModel model =new IncontroTableModel(incontros.getContent(), new IncontroTableModel.IncontroColumn[]{
+            IncontroTableModel.IncontroColumn.DATA_EVENTO,
+            IncontroTableModel.IncontroColumn.HOME_TEAM,
+            IncontroTableModel.IncontroColumn.AWAY_TEAM,
+            IncontroTableModel.IncontroColumn.GOL_HOME,
+            IncontroTableModel.IncontroColumn.GOL_AWAY,
+            IncontroTableModel.IncontroColumn.SEGNO_FINALE
+        });
+//        model.setIncontros(incontros.getContent());
+        table.setModel(model);;
+        model.fireTableDataChanged();
+        
+
+    }
 
     private JsonTableRow jsonToJsonTableRow(ObjectMapper map, String prob1) throws IOException {
         JsonTable t = map.readValue(
@@ -517,7 +717,7 @@ public class PoissonDialog extends javax.swing.JFrame {
 //            model.fireTableDataChanged();
                 changePalinsestoTableData();
             } catch (BeansException ex) {
-                
+
                 Logger.getLogger(PoissonDialog.class.getName()).log(Level.SEVERE, null, ex);
             } catch (SQLException ex) {
                 Logger.getLogger(PoissonDialog.class.getName()).log(Level.SEVERE, null, ex);
@@ -532,6 +732,8 @@ public class PoissonDialog extends javax.swing.JFrame {
     private void palinsestoTableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_palinsestoTableKeyReleased
         try {
             changePalinsestoTableData();
+            calcolaMatch(getPalinsestoRowSelected(palinsestoTable));
+
         } catch (BeansException ex) {
             Logger.getLogger(PoissonDialog.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
@@ -560,6 +762,14 @@ public class PoissonDialog extends javax.swing.JFrame {
     private javax.swing.JLabel labelPerc_Pari;
     private javax.swing.JLabel labelPerc_X;
     private javax.swing.JLabel labelPerc_X2;
+    private javax.swing.JLabel labelPerc_ov15;
+    private javax.swing.JLabel labelPerc_ov25;
+    private javax.swing.JLabel labelPerc_ov35;
+    private javax.swing.JLabel labelPerc_ov45;
+    private javax.swing.JLabel labelPerc_un15;
+    private javax.swing.JLabel labelPerc_un25;
+    private javax.swing.JLabel labelPerc_un35;
+    private javax.swing.JLabel labelPerc_un45;
     private javax.swing.JLabel label_1;
     private javax.swing.JLabel label_12;
     private javax.swing.JLabel label_1X;
@@ -570,6 +780,14 @@ public class PoissonDialog extends javax.swing.JFrame {
     private javax.swing.JLabel label_Pari;
     private javax.swing.JLabel label_X;
     private javax.swing.JLabel label_X2;
+    private javax.swing.JLabel label_ov15;
+    private javax.swing.JLabel label_ov25;
+    private javax.swing.JLabel label_ov35;
+    private javax.swing.JLabel label_ov45;
+    private javax.swing.JLabel label_un15;
+    private javax.swing.JLabel label_un25;
+    private javax.swing.JLabel label_un35;
+    private javax.swing.JLabel label_un45;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JScrollPane palinsestoScrollPane;
     private javax.swing.JTable palinsestoTable;
@@ -580,10 +798,13 @@ public class PoissonDialog extends javax.swing.JFrame {
     private javax.swing.JPanel panelStatsHomeTeam;
     private javax.swing.JScrollPane poissonScrollPane;
     private javax.swing.JTable poissonTable;
+    private javax.swing.JScrollPane scrollPaneStatsAwayTeam;
+    private javax.swing.JScrollPane scrollPaneStatsHomeTeam;
     private javax.swing.JSplitPane splitPane;
     private javax.swing.JTabbedPane tabRiepilogoPoisson;
+    private javax.swing.JTable tableIncontriAwayTeam;
+    private javax.swing.JTable tableIncontriHomeTeam;
     private javax.swing.JPanel topPanel;
     // End of variables declaration//GEN-END:variables
 
-    
 }
