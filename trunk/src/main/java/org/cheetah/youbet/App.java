@@ -8,6 +8,7 @@ import org.cheetah.youbet.entities.PercentualeSingoliEsiti;
 import org.cheetah.youbet.entities.Poisson;
 import org.cheetah.youbet.repositories.IncontroRepository;
 import org.cheetah.youbet.repositories.SerieRepository;
+import org.cheetah.youbet.service.GenericService;
 import org.cheetah.youbet.service.IncontroService;
 import org.cheetah.youbet.service.PercentualeSingoliEsitiService;
 import org.cheetah.youbet.service.PoissonService;
@@ -41,6 +42,7 @@ public class App {
             
             
             insertScores(ctx);
+            updateManifestazioneTable(ctx);
             insertBooks(ctx);
             calcolaStats(ctx);
 
@@ -85,6 +87,16 @@ public class App {
 
         DownloadScores ds = ctx.getBean(DownloadScores.class);
         ds.execute();
+    }
+
+    
+    /**
+     * Aggiorna la tabella delle manifestazioni con il nome lungo.
+     */
+    private static void updateManifestazioneTable(AnnotationConfigApplicationContext ctx) {
+        GenericService genericService = ctx.getBean(GenericService.class);
+        genericService.updateManifestazioneTable();
+        
     }
 
 }

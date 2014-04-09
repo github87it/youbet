@@ -20,4 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface PercentualeSingoliEsitiRepository extends JpaRepository<PercentualeSingoliEsiti, PercentualeSingoliEsitiPK> {
     
+    
+    
 }

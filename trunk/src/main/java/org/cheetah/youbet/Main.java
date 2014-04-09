@@ -46,12 +46,7 @@ public class Main {
 //        Hibernate4Module hbm = new Hibernate4Module();
 //        hbm.enable(Hibernate4Module.Feature.USE_TRANSIENT_ANNOTATION);
 //        mapper.registerModule(hbm);
-        System.out.println(ctx.getBean(GenericService.class).getProbabilita1(14984, 3, 5.0));
-        System.out.println(ctx.getBean(GenericService.class).getProbabilitaX(14984, 3, 5.0));
-        System.out.println(ctx.getBean(GenericService.class).getProbabilita2(14984, 3, 5.0));
-        System.out.println(ctx.getBean(GenericService.class).getProbabilita12(14984, 3, 5.0));
-        System.out.println(ctx.getBean(GenericService.class).getProbabilitaX2(14984, 3, 5.0));
-        System.out.println(ctx.getBean(GenericService.class).getProbabilita1X(14984, 3, 5.0));
+        
         
 //        System.out.println(mapper.writeValueAsString(r));
     }

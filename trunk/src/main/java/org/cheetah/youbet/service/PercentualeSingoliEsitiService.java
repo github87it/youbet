@@ -104,4 +104,8 @@ public class PercentualeSingoliEsitiService {
     public void deleteAll() {
         repository.deleteAll();
     }
+
+    public PercentualeSingoliEsiti findByPk(PercentualeSingoliEsitiPK percentualeSingoliEsitiPK) {
+        return repository.findOne(percentualeSingoliEsitiPK);
+    }
 }

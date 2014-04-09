@@ -30,92 +30,16 @@ public class GenericService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public String getProbabilita1(final int idPalinsesto, final int idAvvenimento, final double percentuale) throws SQLException, JsonProcessingException {
-        String sql = "SELECT ROUND(SUM(PERCENTUALE),2) FROM POISSON WHERE ID_AVVENIMENTO=? AND ID_PALINSESTO=?  AND PERCENTUALE>? AND  GOL_HOME>GOL_AWAY";
-        final String columnName = "VITTORIA_CASA";
-
-        return getData(sql, idAvvenimento, idPalinsesto, percentuale, columnName);
+    public void updateManifestazioneTable() {
+        String sql = "UPDATE "
+                + "MANIFESTAZIONE M "
+                + "set "
+                + "DESCRIZIONE_LUNGA=(SELECT distinct  COMPETIZIONE FROM INCONTRO I,PALINSESTO P WHERE P.ID_PALINSESTO=I.ID_PALINSESTO AND "
+                + "P.ID_AVVENIMENTO=I.ID_AVVENIMENTO AND M.ID_MANIFESTAZIONE=P.ID_MANIFESTAZIONE) ";
+        jdbcTemplate.update(sql);
     }
 
-    public String getProbabilitaX(final int idPalinsesto, final int idAvvenimento, final double percentuale) throws SQLException, JsonProcessingException {
-        String sql = "SELECT ROUND(SUM(PERCENTUALE),2) FROM POISSON WHERE ID_AVVENIMENTO=? AND ID_PALINSESTO=?  AND PERCENTUALE>? AND  GOL_HOME=GOL_AWAY";
-        final String columnName = "PAREGGIO";
-
-        return getData(sql, idAvvenimento, idPalinsesto, percentuale, columnName);
-    }
-
-    public String getProbabilita2(final int idPalinsesto, final int idAvvenimento, final double percentuale) throws SQLException, JsonProcessingException {
-        String sql = "SELECT ROUND(SUM(PERCENTUALE),2) FROM POISSON WHERE ID_AVVENIMENTO=? AND ID_PALINSESTO=?  AND PERCENTUALE>? AND  GOL_HOME<GOL_AWAY";
-        final String columnName = "VITTORIA_FUORI";
-
-        return getData(sql, idAvvenimento, idPalinsesto, percentuale, columnName);
-    }
-
-    public String getProbabilitaX2(final int idPalinsesto, final int idAvvenimento, final double percentuale) throws SQLException, JsonProcessingException {
-        String sql = "SELECT ROUND(SUM(PERCENTUALE),2) FROM POISSON WHERE ID_AVVENIMENTO=? AND ID_PALINSESTO=?  AND PERCENTUALE>? AND  GOL_HOME<=GOL_AWAY";
-        final String columnName = "DOPPIA_CHANCE_OUT";
-
-        return getData(sql, idAvvenimento, idPalinsesto, percentuale, columnName);
-    }
-
-    public String getProbabilita12(final int idPalinsesto, final int idAvvenimento, final double percentuale) throws SQLException, JsonProcessingException {
-        String sql = "SELECT ROUND(SUM(PERCENTUALE),2) FROM POISSON WHERE ID_AVVENIMENTO=? AND ID_PALINSESTO=?  AND PERCENTUALE>? AND  GOL_HOME<>GOL_AWAY";
-        final String columnName = "DOPPIA_CHANCE_IN_OUT";
-
-        return getData(sql, idAvvenimento, idPalinsesto, percentuale, columnName);
-    }
-    
-    public String getProbabilita1X(final int idPalinsesto, final int idAvvenimento, final double percentuale) throws SQLException, JsonProcessingException {
-        String sql = "SELECT ROUND(SUM(PERCENTUALE),2) FROM POISSON WHERE ID_AVVENIMENTO=? AND ID_PALINSESTO=?  AND PERCENTUALE>? AND  GOL_HOME>=GOL_AWAY";
-        final String columnName = "DOPPIA_CHANCE_IN";
-
-        return getData(sql, idAvvenimento, idPalinsesto, percentuale, columnName);
-    }
-    
-    public String getProbabilitaGol(final int idPalinsesto, final int idAvvenimento, final double percentuale) throws JsonProcessingException{
-        String sql = "SELECT ROUND(SUM(PERCENTUALE),2) FROM POISSON WHERE ID_AVVENIMENTO=? AND ID_PALINSESTO=?  AND PERCENTUALE>? AND  GOL_HOME<>0 and GOL_AWAY<>0";
-        final String columnName = "GOL";
-
-        return getData(sql, idAvvenimento, idPalinsesto, percentuale, columnName);
-    } 
-    public String getProbabilitaNoGol(final int idPalinsesto, final int idAvvenimento, final double percentuale) throws JsonProcessingException{
-        String sql = "SELECT ROUND(SUM(PERCENTUALE),2) FROM POISSON WHERE ID_AVVENIMENTO=? AND ID_PALINSESTO=?  AND PERCENTUALE>? AND  (GOL_HOME=0 or GOL_AWAY=0)";
-        final String columnName = "NO GOL";
-
-        return getData(sql, idAvvenimento, idPalinsesto, percentuale, columnName);
-    }
-
-    private String getData(String sql, final int idAvvenimento, final int idPalinsesto, final double percentuale, final String columnName) throws JsonProcessingException, DataAccessException {
-        JsonTable jsonTable = new JsonTable();
-
-        List<JsonTableRow> rows = jdbcTemplate.query(sql, new Object[]{idAvvenimento, idPalinsesto, percentuale}, new RowMapper<JsonTableRow>() {
-
-            public JsonTableRow mapRow(ResultSet rs, int rowNum) throws SQLException {
-                JsonTableRow row = new JsonTableRow();
-                row.setColumnName(columnName);
-                row.setColumnValue(rs.getString(1));
-                return row;
-            }
-        });
-        jsonTable.setRows(rows);
-        return new ObjectMapper().writeValueAsString(jsonTable);
-    }
-
-    public String getProbabilitaPari(int idPalinsesto, int idAvvenimento, int percentuale) throws JsonProcessingException {
-        String sql = "SELECT ROUND(SUM(PERCENTUALE),2) FROM POISSON WHERE ID_AVVENIMENTO=? AND ID_PALINSESTO=?  AND PERCENTUALE>? AND  mod(GOL_HOME+GOL_AWAY,2)=0";
-        final String columnName = "NO GOL";
-
-        return getData(sql, idAvvenimento, idPalinsesto, percentuale, columnName);
-        //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public String getProbabilitaDispari(int idPalinsesto, int idAvvenimento, int percentuale) throws JsonProcessingException {
-        String sql = "SELECT ROUND(SUM(PERCENTUALE),2) FROM POISSON WHERE ID_AVVENIMENTO=? AND ID_PALINSESTO=?  AND PERCENTUALE>?   AND  mod(GOL_HOME+GOL_AWAY,2)<>0";
-        final String columnName = "NO GOL";
-
-        return getData(sql, idAvvenimento, idPalinsesto, percentuale, columnName);
-    }
-    
+     
    
 
 }
