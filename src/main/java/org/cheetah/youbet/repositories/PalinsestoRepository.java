@@ -31,7 +31,7 @@ public interface PalinsestoRepository extends JpaRepository<Palinsesto, Palinses
             + "p.palinsestoPK.idPalinsesto=q.quotaPK.idPalinsesto and "
             + "p.palinsestoPK.idAvvenimento=q.quotaPK.idAvvenimento and "
             + "q.esito.esitoPK.idEsito=1 and "
-            + "q.esito.esitoPK.idClasse=3")
+            + "q.esito.esitoPK.idClasse=3 order by p.dataEvento asc,p.oraEvento asc")
     public List<Palinsesto> findPartiteDaGiocare(Date d,Time t);
 
     public List<Palinsesto> findByDataEventoAfter(Date d);

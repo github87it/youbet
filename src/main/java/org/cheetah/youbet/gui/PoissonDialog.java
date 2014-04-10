@@ -6,6 +6,8 @@
 package org.cheetah.youbet.gui;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.awt.Component;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -108,9 +110,11 @@ public class PoissonDialog extends javax.swing.JFrame {
         panelStatsHomeTeam = new javax.swing.JPanel();
         scrollPaneStatsHomeTeam = new javax.swing.JScrollPane();
         tableIncontriHomeTeam = new IncontroTable();
+        sliderNumPartiteHome = new javax.swing.JSlider();
         panelStatsAwayTeam = new javax.swing.JPanel();
         scrollPaneStatsAwayTeam = new javax.swing.JScrollPane();
         tableIncontriAwayTeam = new IncontroTable();
+        sliderNumPartiteAway = new javax.swing.JSlider();
         panelPoissonScrollPane = new javax.swing.JPanel();
         poissonScrollPane = new javax.swing.JScrollPane();
         poissonTable = new javax.swing.JTable();
@@ -118,8 +122,23 @@ public class PoissonDialog extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         filtraPercentualeSlider = new javax.swing.JSlider();
         filtraPercentualeLabel = new javax.swing.JLabel();
+        panelRiepilogoRisultati = new javax.swing.JPanel();
+        splitRiepilogo = new javax.swing.JSplitPane();
+        tabRiepilogoHomeTeam = new javax.swing.JTabbedPane();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        tabRiepilogoAwayTeam = new javax.swing.JTabbedPane();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
+        });
 
         mainPanel.setLayout(new java.awt.GridBagLayout());
 
@@ -491,6 +510,27 @@ public class PoissonDialog extends javax.swing.JFrame {
     gridBagConstraints.weighty = 1.0;
     panelStatsHomeTeam.add(scrollPaneStatsHomeTeam, gridBagConstraints);
 
+    sliderNumPartiteHome.setMajorTickSpacing(1);
+    sliderNumPartiteHome.setMaximum(15);
+    sliderNumPartiteHome.setMinimum(9);
+    sliderNumPartiteHome.setMinorTickSpacing(1);
+    sliderNumPartiteHome.setPaintLabels(true);
+    sliderNumPartiteHome.setPaintTicks(true);
+    sliderNumPartiteHome.setToolTipText("");
+    sliderNumPartiteHome.setValue(9);
+    sliderNumPartiteHome.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+    sliderNumPartiteHome.addChangeListener(new javax.swing.event.ChangeListener() {
+        public void stateChanged(javax.swing.event.ChangeEvent evt) {
+            sliderNumPartiteHomeStateChanged(evt);
+        }
+    });
+    gridBagConstraints = new java.awt.GridBagConstraints();
+    gridBagConstraints.gridx = 0;
+    gridBagConstraints.gridy = 1;
+    gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+    gridBagConstraints.weightx = 1.0;
+    panelStatsHomeTeam.add(sliderNumPartiteHome, gridBagConstraints);
+
     tabRiepilogoPoisson.addTab("SQUADRA CASA", panelStatsHomeTeam);
 
     panelStatsAwayTeam.setLayout(new java.awt.GridBagLayout());
@@ -507,6 +547,21 @@ public class PoissonDialog extends javax.swing.JFrame {
     gridBagConstraints.weightx = 1.0;
     gridBagConstraints.weighty = 1.0;
     panelStatsAwayTeam.add(scrollPaneStatsAwayTeam, gridBagConstraints);
+
+    sliderNumPartiteAway.setMajorTickSpacing(1);
+    sliderNumPartiteAway.setMaximum(15);
+    sliderNumPartiteAway.setMinimum(9);
+    sliderNumPartiteAway.setMinorTickSpacing(1);
+    sliderNumPartiteAway.setPaintLabels(true);
+    sliderNumPartiteAway.setPaintTicks(true);
+    sliderNumPartiteAway.setValue(9);
+    sliderNumPartiteAway.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+    gridBagConstraints = new java.awt.GridBagConstraints();
+    gridBagConstraints.gridx = 0;
+    gridBagConstraints.gridy = 1;
+    gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+    gridBagConstraints.weightx = 1.0;
+    panelStatsAwayTeam.add(sliderNumPartiteAway, gridBagConstraints);
 
     tabRiepilogoPoisson.addTab("SQUADRA OSPITE", panelStatsAwayTeam);
 
@@ -546,7 +601,6 @@ public class PoissonDialog extends javax.swing.JFrame {
     gridBagConstraints = new java.awt.GridBagConstraints();
     gridBagConstraints.gridx = 0;
     gridBagConstraints.gridy = 1;
-    gridBagConstraints.gridwidth = 3;
     gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
     gridBagConstraints.weightx = 1.0;
     gridBagConstraints.weighty = 1.0;
@@ -578,8 +632,73 @@ public class PoissonDialog extends javax.swing.JFrame {
     gridBagConstraints.gridx = 0;
     gridBagConstraints.gridy = 0;
     gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-    gridBagConstraints.weightx = 1.0;
+    gridBagConstraints.weightx = 0.5;
     mainPanel.add(topPanel, gridBagConstraints);
+
+    panelRiepilogoRisultati.setLayout(new java.awt.GridBagLayout());
+
+    splitRiepilogo.setDividerSize(100);
+    splitRiepilogo.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+
+    jPanel1.setLayout(new java.awt.GridBagLayout());
+
+    jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        new Object [][] {
+        },
+        new String [] {
+        }
+    ));
+    jScrollPane1.setViewportView(jTable1);
+
+    gridBagConstraints = new java.awt.GridBagConstraints();
+    gridBagConstraints.gridx = 0;
+    gridBagConstraints.gridy = 0;
+    gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+    gridBagConstraints.weightx = 1.0;
+    gridBagConstraints.weighty = 1.0;
+    jPanel1.add(jScrollPane1, gridBagConstraints);
+
+    tabRiepilogoHomeTeam.addTab("riep-sq1", jPanel1);
+
+    splitRiepilogo.setLeftComponent(tabRiepilogoHomeTeam);
+
+    jPanel2.setLayout(new java.awt.GridBagLayout());
+
+    jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        new Object [][] {
+        },
+        new String [] {
+        }
+    ));
+    jScrollPane2.setViewportView(jTable2);
+
+    gridBagConstraints = new java.awt.GridBagConstraints();
+    gridBagConstraints.gridx = 0;
+    gridBagConstraints.gridy = 0;
+    gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+    gridBagConstraints.weightx = 1.0;
+    gridBagConstraints.weighty = 1.0;
+    jPanel2.add(jScrollPane2, gridBagConstraints);
+
+    tabRiepilogoAwayTeam.addTab("riep-sq2", jPanel2);
+
+    splitRiepilogo.setRightComponent(tabRiepilogoAwayTeam);
+
+    gridBagConstraints = new java.awt.GridBagConstraints();
+    gridBagConstraints.gridx = 0;
+    gridBagConstraints.gridy = 0;
+    gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+    gridBagConstraints.weightx = 1.0;
+    gridBagConstraints.weighty = 1.0;
+    panelRiepilogoRisultati.add(splitRiepilogo, gridBagConstraints);
+
+    gridBagConstraints = new java.awt.GridBagConstraints();
+    gridBagConstraints.gridx = 2;
+    gridBagConstraints.gridy = 0;
+    gridBagConstraints.gridheight = 2;
+    gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+    gridBagConstraints.weightx = 0.5;
+    mainPanel.add(panelRiepilogoRisultati, gridBagConstraints);
 
     getContentPane().add(mainPanel, java.awt.BorderLayout.CENTER);
 
@@ -654,20 +773,19 @@ public class PoissonDialog extends javax.swing.JFrame {
         labelPerc_ov45.setText(Double.toString(pse.getOverQuattroCinque()));
         labelPerc_un45.setText(Double.toString(pse.getUnderQuattroCinque()));
 
-        
-        loadStatsTeam(palinsestoSelected, 1, tableIncontriHomeTeam,palinsestoSelected.getHomeTeam());
-        loadStatsTeam(palinsestoSelected, 2, tableIncontriAwayTeam,palinsestoSelected.getAwayTeam());
+        loadStatsTeam(palinsestoSelected, 1, tableIncontriHomeTeam, palinsestoSelected.getHomeTeam(), 9);
+        loadStatsTeam(palinsestoSelected, 2, tableIncontriAwayTeam, palinsestoSelected.getAwayTeam(), 9);
 
     }
 
-    private void loadStatsTeam(Palinsesto palinsesto, int indexTab,JTable table, String squadra) {
+    private void loadStatsTeam(Palinsesto palinsesto, int indexTab, JTable table, String squadra, int maxMatchNumber) {
         ApplicationContext ctx = ContextSpringFactory.getInstance().getContext();
         IncontroService incontroService = ctx.getBean(IncontroService.class);
         tabRiepilogoPoisson.setTitleAt(indexTab, squadra);
-        ((IncontroTable)table).setTeam(squadra);
-        Page<Incontro> incontros = incontroService.findIncontroByTeam(palinsesto.getIdManifestazione().getDescrizioneLunga(), squadra, 9);
-       
-        IncontroTableModel model =new IncontroTableModel(incontros.getContent(), new IncontroTableModel.IncontroColumn[]{
+        ((IncontroTable) table).setTeam(squadra);
+        Page<Incontro> incontros = incontroService.findIncontroByTeam(palinsesto.getIdManifestazione().getDescrizioneLunga(), squadra, maxMatchNumber);
+
+        IncontroTableModel model = new IncontroTableModel(incontros.getContent(), new IncontroTableModel.IncontroColumn[]{
             IncontroTableModel.IncontroColumn.DATA_EVENTO,
             IncontroTableModel.IncontroColumn.HOME_TEAM,
             IncontroTableModel.IncontroColumn.AWAY_TEAM,
@@ -678,17 +796,10 @@ public class PoissonDialog extends javax.swing.JFrame {
 //        model.setIncontros(incontros.getContent());
         table.setModel(model);;
         model.fireTableDataChanged();
-        
 
     }
 
-    private JsonTableRow jsonToJsonTableRow(ObjectMapper map, String prob1) throws IOException {
-        JsonTable t = map.readValue(
-                prob1, JsonTable.class);
-        JsonTableRow row = t.getRows().get(0);
-        return row;
-    }
-
+    
     private void initPoissonModel(PoissonTableModel model, Palinsesto palinsestoSelected) {
         model.setPalinsestoSelected(palinsestoSelected);
         model.setVisibleColumns(new PoissonTableModel.PoissonColumn[]{
@@ -743,6 +854,21 @@ public class PoissonDialog extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_palinsestoTableKeyReleased
 
+    private void sliderNumPartiteHomeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderNumPartiteHomeStateChanged
+
+        int index = tabRiepilogoPoisson.getSelectedIndex();
+        JSlider slider = (JSlider) evt.getSource();
+        loadStatsTeam(getPalinsestoRowSelected(palinsestoTable), index, index == 1 ? tableIncontriHomeTeam : tableIncontriAwayTeam, tabRiepilogoPoisson.getTitleAt(index), slider.getValue());
+
+    }//GEN-LAST:event_sliderNumPartiteHomeStateChanged
+
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+        
+        if (evt.getKeyCode() == KeyEvent.VK_UP) {
+            sliderNumPartiteHome.firePropertyChange("value", sliderNumPartiteHome.getValue(), sliderNumPartiteHome.getValue() + 1);
+        }        // TODO add your handling code here:
+    }//GEN-LAST:event_formKeyPressed
+
     /**
      * @param args the command line arguments
      */
@@ -751,7 +877,13 @@ public class PoissonDialog extends javax.swing.JFrame {
     private javax.swing.JLabel filtraPercentualeLabel;
     private javax.swing.JSlider filtraPercentualeSlider;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable2;
     private javax.swing.JLabel labelPerc_1;
     private javax.swing.JLabel labelPerc_12;
     private javax.swing.JLabel labelPerc_1X;
@@ -794,13 +926,19 @@ public class PoissonDialog extends javax.swing.JFrame {
     private javax.swing.JPanel panel1X2;
     private javax.swing.JPanel panelPoissonScrollPane;
     private javax.swing.JPanel panelRiepilogo;
+    private javax.swing.JPanel panelRiepilogoRisultati;
     private javax.swing.JPanel panelStatsAwayTeam;
     private javax.swing.JPanel panelStatsHomeTeam;
     private javax.swing.JScrollPane poissonScrollPane;
     private javax.swing.JTable poissonTable;
     private javax.swing.JScrollPane scrollPaneStatsAwayTeam;
     private javax.swing.JScrollPane scrollPaneStatsHomeTeam;
+    private javax.swing.JSlider sliderNumPartiteAway;
+    private javax.swing.JSlider sliderNumPartiteHome;
     private javax.swing.JSplitPane splitPane;
+    private javax.swing.JSplitPane splitRiepilogo;
+    private javax.swing.JTabbedPane tabRiepilogoAwayTeam;
+    private javax.swing.JTabbedPane tabRiepilogoHomeTeam;
     private javax.swing.JTabbedPane tabRiepilogoPoisson;
     private javax.swing.JTable tableIncontriAwayTeam;
     private javax.swing.JTable tableIncontriHomeTeam;

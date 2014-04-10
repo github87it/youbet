@@ -8,6 +8,9 @@
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
     <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
+  <Events>
+    <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="formKeyPressed"/>
+  </Events>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -38,7 +41,7 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-              <GridBagConstraints gridX="0" gridY="1" gridWidth="3" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="1.0" weightY="1.0"/>
+              <GridBagConstraints gridX="0" gridY="1" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="1.0" weightY="1.0"/>
             </Constraint>
           </Constraints>
 
@@ -517,6 +520,29 @@
                                 </Component>
                               </SubComponents>
                             </Container>
+                            <Component class="javax.swing.JSlider" name="sliderNumPartiteHome">
+                              <Properties>
+                                <Property name="majorTickSpacing" type="int" value="1"/>
+                                <Property name="maximum" type="int" value="15"/>
+                                <Property name="minimum" type="int" value="9"/>
+                                <Property name="minorTickSpacing" type="int" value="1"/>
+                                <Property name="paintLabels" type="boolean" value="true"/>
+                                <Property name="paintTicks" type="boolean" value="true"/>
+                                <Property name="toolTipText" type="java.lang.String" value=""/>
+                                <Property name="value" type="int" value="9"/>
+                                <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+                                  <Color id="Cursore mano"/>
+                                </Property>
+                              </Properties>
+                              <Events>
+                                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="sliderNumPartiteHomeStateChanged"/>
+                              </Events>
+                              <Constraints>
+                                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                                  <GridBagConstraints gridX="0" gridY="1" gridWidth="1" gridHeight="1" fill="2" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="1.0" weightY="0.0"/>
+                                </Constraint>
+                              </Constraints>
+                            </Component>
                           </SubComponents>
                         </Container>
                         <Container class="javax.swing.JPanel" name="panelStatsAwayTeam">
@@ -555,6 +581,25 @@
                                 </Component>
                               </SubComponents>
                             </Container>
+                            <Component class="javax.swing.JSlider" name="sliderNumPartiteAway">
+                              <Properties>
+                                <Property name="majorTickSpacing" type="int" value="1"/>
+                                <Property name="maximum" type="int" value="15"/>
+                                <Property name="minimum" type="int" value="9"/>
+                                <Property name="minorTickSpacing" type="int" value="1"/>
+                                <Property name="paintLabels" type="boolean" value="true"/>
+                                <Property name="paintTicks" type="boolean" value="true"/>
+                                <Property name="value" type="int" value="9"/>
+                                <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+                                  <Color id="Cursore mano"/>
+                                </Property>
+                              </Properties>
+                              <Constraints>
+                                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                                  <GridBagConstraints gridX="0" gridY="1" gridWidth="1" gridHeight="1" fill="2" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="1.0" weightY="0.0"/>
+                                </Constraint>
+                              </Constraints>
+                            </Component>
                           </SubComponents>
                         </Container>
                       </SubComponents>
@@ -600,7 +645,7 @@
         <Container class="javax.swing.JPanel" name="topPanel">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-              <GridBagConstraints gridX="0" gridY="0" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="1.0" weightY="0.0"/>
+              <GridBagConstraints gridX="0" gridY="0" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="0.5" weightY="0.0"/>
             </Constraint>
           </Constraints>
 
@@ -634,6 +679,122 @@
                 </Property>
               </Properties>
             </Component>
+          </SubComponents>
+        </Container>
+        <Container class="javax.swing.JPanel" name="panelRiepilogoRisultati">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+              <GridBagConstraints gridX="2" gridY="0" gridWidth="1" gridHeight="2" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="0.5" weightY="0.0"/>
+            </Constraint>
+          </Constraints>
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
+          <SubComponents>
+            <Container class="javax.swing.JSplitPane" name="splitRiepilogo">
+              <Properties>
+                <Property name="dividerSize" type="int" value="100"/>
+                <Property name="orientation" type="int" value="0"/>
+              </Properties>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                  <GridBagConstraints gridX="0" gridY="0" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="1.0" weightY="1.0"/>
+                </Constraint>
+              </Constraints>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout"/>
+              <SubComponents>
+                <Container class="javax.swing.JTabbedPane" name="tabRiepilogoHomeTeam">
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
+                      <JSplitPaneConstraints position="left"/>
+                    </Constraint>
+                  </Constraints>
+
+                  <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
+                  <SubComponents>
+                    <Container class="javax.swing.JPanel" name="jPanel1">
+                      <Constraints>
+                        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+                          <JTabbedPaneConstraints tabName="riep-sq1">
+                            <Property name="tabTitle" type="java.lang.String" value="riep-sq1"/>
+                          </JTabbedPaneConstraints>
+                        </Constraint>
+                      </Constraints>
+
+                      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
+                      <SubComponents>
+                        <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+                          <AuxValues>
+                            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+                          </AuxValues>
+                          <Constraints>
+                            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                              <GridBagConstraints gridX="0" gridY="0" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="1.0" weightY="1.0"/>
+                            </Constraint>
+                          </Constraints>
+
+                          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+                          <SubComponents>
+                            <Component class="javax.swing.JTable" name="jTable1">
+                              <Properties>
+                                <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                                  <Connection code="new javax.swing.table.DefaultTableModel(&#xa;    new Object [][] {&#xa;    },&#xa;    new String [] {&#xa;    }&#xa;)" type="code"/>
+                                </Property>
+                              </Properties>
+                            </Component>
+                          </SubComponents>
+                        </Container>
+                      </SubComponents>
+                    </Container>
+                  </SubComponents>
+                </Container>
+                <Container class="javax.swing.JTabbedPane" name="tabRiepilogoAwayTeam">
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
+                      <JSplitPaneConstraints position="right"/>
+                    </Constraint>
+                  </Constraints>
+
+                  <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
+                  <SubComponents>
+                    <Container class="javax.swing.JPanel" name="jPanel2">
+                      <Constraints>
+                        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+                          <JTabbedPaneConstraints tabName="riep-sq2">
+                            <Property name="tabTitle" type="java.lang.String" value="riep-sq2"/>
+                          </JTabbedPaneConstraints>
+                        </Constraint>
+                      </Constraints>
+
+                      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
+                      <SubComponents>
+                        <Container class="javax.swing.JScrollPane" name="jScrollPane2">
+                          <AuxValues>
+                            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+                          </AuxValues>
+                          <Constraints>
+                            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                              <GridBagConstraints gridX="0" gridY="0" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="1.0" weightY="1.0"/>
+                            </Constraint>
+                          </Constraints>
+
+                          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+                          <SubComponents>
+                            <Component class="javax.swing.JTable" name="jTable2">
+                              <Properties>
+                                <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                                  <Connection code="new javax.swing.table.DefaultTableModel(&#xa;    new Object [][] {&#xa;    },&#xa;    new String [] {&#xa;    }&#xa;)" type="code"/>
+                                </Property>
+                              </Properties>
+                            </Component>
+                          </SubComponents>
+                        </Container>
+                      </SubComponents>
+                    </Container>
+                  </SubComponents>
+                </Container>
+              </SubComponents>
+            </Container>
           </SubComponents>
         </Container>
       </SubComponents>

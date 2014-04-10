@@ -19,7 +19,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import static org.cheetah.youbet.util.helper.IncontroHelper.*;
 /**
  *
  * @author edoardo
@@ -30,8 +30,6 @@ public class IncontroService {
     @Autowired
     private IncontroRepository repository;
     private final int DEFAULT_ROWS_PER_PAGE = 15;
-    public static final int AWAY_TEAM = 2;
-    public static final int HOME_TEAM = 4;
     
     @Autowired
     SerieRepository serieRepository;

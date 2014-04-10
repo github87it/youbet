@@ -28,6 +28,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import static org.cheetah.youbet.util.helper.IncontroHelper.*;
+
 /**
  *
  * @author edoardo
@@ -58,8 +60,8 @@ public class Calculator {
             String awayTeam = palinsesto.getAwayTeam();
             Manifestazione m = palinsesto.getIdManifestazione();
 
-            IncontroService.Stat statHomeTeam = incontroService.getSumGoalByTeam(homeTeam, m.getDescrizioneLunga(), IncontroService.HOME_TEAM);
-            IncontroService.Stat statAwayTeam = incontroService.getSumGoalByTeam(awayTeam, m.getDescrizioneLunga(), IncontroService.AWAY_TEAM);
+            IncontroService.Stat statHomeTeam = incontroService.getSumGoalByTeam(homeTeam, m.getDescrizioneLunga(), HOME_TEAM);
+            IncontroService.Stat statAwayTeam = incontroService.getSumGoalByTeam(awayTeam, m.getDescrizioneLunga(), AWAY_TEAM);
             System.out.println("Incontro: " + homeTeam + " - " + awayTeam);
 
             //Cambio calcolo 14-03-2014
@@ -72,7 +74,7 @@ public class Calculator {
             //distribuzione della probabilità di fare gol della squadra di casa. E' contentuta in ht_gf_Poisson
             System.out.println("\t" + ht_gf_Poisson);
 
-            Map<Integer, Double> at_gf_Poisson = statAwayTeam.poisson(6, (statAwayTeam.mediaGfPartita()+statHomeTeam.mediaGsPartita())/2.0d);
+            Map<Integer, Double> at_gf_Poisson = statAwayTeam.poisson(6, (statAwayTeam.mediaGfPartita() + statHomeTeam.mediaGsPartita()) / 2.0d);
 //            Map<Integer, Double> ht_gs_Poisson = statHomeTeam.poisson(6, statHomeTeam.mediaGsPartita());
 
 //            Map<Integer, Double> at_gf_Poisson = statAwayTeam.poisson(6, statAwayTeam.mediaGfPartita());
