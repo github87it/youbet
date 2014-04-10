@@ -6,8 +6,15 @@
 package org.cheetah.youbet.gui;
 
 import java.awt.Component;
-import java.awt.event.MouseEvent;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFormattedTextField;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.table.TableCellRenderer;
@@ -44,8 +51,11 @@ public class MainFrame extends javax.swing.JFrame {
 
         mainPanel = new javax.swing.JPanel();
         showDataSelectorPanel = new javax.swing.JPanel();
-        labelTipoScommessa = new javax.swing.JLabel();
-        comboTipoScommessa = new javax.swing.JComboBox();
+        labelDataEvento = new javax.swing.JLabel();
+        txtDataEvento = new javax.swing.JFormattedTextField();
+        jLabel1 = new javax.swing.JLabel();
+        txtOraEvento = new javax.swing.JFormattedTextField();
+        bCaricaDatiPalinsesto = new javax.swing.JButton();
         mainScrollPane = new javax.swing.JScrollPane();
         mainTable = new javax.swing.JTable();
         mainBottomButtonBar = new javax.swing.JPanel();
@@ -70,17 +80,61 @@ public class MainFrame extends javax.swing.JFrame {
 
         showDataSelectorPanel.setLayout(new java.awt.GridBagLayout());
 
-        labelTipoScommessa.setText("Tipo Scommessa");
-        showDataSelectorPanel.add(labelTipoScommessa, new java.awt.GridBagConstraints());
+        labelDataEvento.setText("Data Evento");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.weightx = 0.2;
+        gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 10);
+        showDataSelectorPanel.add(labelDataEvento, gridBagConstraints);
 
-        comboTipoScommessa.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        txtDataEvento.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
+        txtDataEvento.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtDataEventoFocusLost(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 0.2;
+        gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 10);
+        showDataSelectorPanel.add(txtDataEvento, gridBagConstraints);
+        SimpleDateFormat df =(SimpleDateFormat)SimpleDateFormat.getDateInstance();
+        df.applyPattern("dd/MM/yyyy");
+        txtDataEvento.setText(df.format(new Date()));
+
+        jLabel1.setText("Ora Evento");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.weightx = 0.2;
+        gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 10);
+        showDataSelectorPanel.add(jLabel1, gridBagConstraints);
+
+        txtOraEvento.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("HH:mm"))));
+        txtOraEvento.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtOraEventoFocusLost(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.ipadx = 5;
-        gridBagConstraints.ipady = 5;
-        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weightx = 0.2;
         gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 10);
-        showDataSelectorPanel.add(comboTipoScommessa, gridBagConstraints);
+        showDataSelectorPanel.add(txtOraEvento, gridBagConstraints);
+        SimpleDateFormat tf =(SimpleDateFormat)SimpleDateFormat.getTimeInstance();
+        tf.applyPattern("HH:mm");
+        txtOraEvento.setText(tf.format(new Date()));
+
+        bCaricaDatiPalinsesto.setText("Carica dati");
+        bCaricaDatiPalinsesto.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                bCaricaDatiPalinsestoMouseClicked(evt);
+            }
+        });
+        showDataSelectorPanel.add(bCaricaDatiPalinsesto, new java.awt.GridBagConstraints());
 
         mainPanel.add(showDataSelectorPanel, java.awt.BorderLayout.NORTH);
 
@@ -160,15 +214,66 @@ public class MainFrame extends javax.swing.JFrame {
     private void mainTableMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mainTableMouseReleased
         if (SwingUtilities.isRightMouseButton(evt) && !evt.isPopupTrigger()) {
             JTable source = (JTable) evt.getSource();
-            
+
             int row = source.rowAtPoint(evt.getPoint());
 //            int column = source.columnAtPoint(evt.getPoint());
 
-                source.getSelectionModel().addSelectionInterval(row, row);
+            source.getSelectionModel().addSelectionInterval(row, row);
 //                source.changeSelection(row, column, false, false);
             new PalinsestoPopupMenu(source).show(evt.getComponent(), evt.getX(), evt.getY());
         }
     }//GEN-LAST:event_mainTableMouseReleased
+
+    private void txtDataEventoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtDataEventoFocusLost
+        JFormattedTextField source = (JFormattedTextField) evt.getSource();
+        SimpleDateFormat sdf = (SimpleDateFormat) SimpleDateFormat.getDateInstance();
+        sdf.applyPattern("dd/MM/yyyy");
+        try {
+            Date d = sdf.parse(source.getText());
+            Date today = sdf.parse(sdf.format(new Date()));
+            if (d.compareTo(today) < 0) {
+                JOptionPane.showMessageDialog(this, "La data non puo' essere inferiore alla data odierna.", "Data errata", JOptionPane.ERROR_MESSAGE);
+                source.setText(sdf.format(today));
+            } 
+        } catch (ParseException ex) {
+            JOptionPane.showMessageDialog(this, "La data dev'essere nel formato gg/mm/aaaa.", "Errore formato data", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_txtDataEventoFocusLost
+
+    private void loadPalinsesto(Date d) {
+        mainTable.setModel(new PalinsestoTableModel(palinsestoService.findPartiteDaGiocare(d)));
+    }
+
+    private void txtOraEventoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtOraEventoFocusLost
+        JFormattedTextField source = (JFormattedTextField) evt.getSource();
+        SimpleDateFormat sdf = (SimpleDateFormat) SimpleDateFormat.getTimeInstance();
+        sdf.applyPattern("HH:mm");
+        try {
+            Date d = sdf.parse(source.getText());
+        } catch (ParseException ex) {
+            JOptionPane.showMessageDialog(this, "L'ora dev'essere nel formato HH:mm.", "Errore formato ora", JOptionPane.ERROR_MESSAGE);
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtOraEventoFocusLost
+
+    private void bCaricaDatiPalinsestoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bCaricaDatiPalinsestoMouseClicked
+            SimpleDateFormat sdf = (SimpleDateFormat) SimpleDateFormat.getDateInstance();
+            SimpleDateFormat stf = (SimpleDateFormat) SimpleDateFormat.getTimeInstance();
+            sdf.applyPattern("dd/MM/yyyy");
+            stf.applyPattern("HH:mm");
+            GregorianCalendar dCalendar = (GregorianCalendar) GregorianCalendar.getInstance();
+        try {
+            dCalendar.setTime(sdf.parse(txtDataEvento.getText()));
+            String ora = txtOraEvento.getText().substring(0,txtOraEvento.getText().indexOf(":"));
+            String minuti = txtOraEvento.getText().substring(txtOraEvento.getText().indexOf(":")+1);
+            dCalendar.set(Calendar.HOUR, Integer.parseInt(ora));
+            dCalendar.set(Calendar.MINUTE, Integer.parseInt(minuti));
+            loadPalinsesto(dCalendar.getTime());
+        } catch (ParseException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
+    }//GEN-LAST:event_bCaricaDatiPalinsestoMouseClicked
 
     /**
      * @param args the command line arguments
@@ -218,17 +323,18 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton bCaricaDatiPalinsesto;
     private javax.swing.JButton buttonFirstPage;
     private javax.swing.JButton buttonLastPage;
     private javax.swing.JButton buttonNextPage;
     private javax.swing.JButton buttonPrevPage;
-    private javax.swing.JComboBox comboTipoScommessa;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JLabel labelDataEvento;
     private javax.swing.JLabel labelNumPagina;
     private javax.swing.JLabel labelPagina;
     private javax.swing.JLabel labelPaginaDi;
-    private javax.swing.JLabel labelTipoScommessa;
     private javax.swing.JLabel labelTotPagine;
     private javax.swing.JPanel mainBottomButtonBar;
     private javax.swing.JMenuBar mainMenuBar;
@@ -236,5 +342,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane mainScrollPane;
     private javax.swing.JTable mainTable;
     private javax.swing.JPanel showDataSelectorPanel;
+    private javax.swing.JFormattedTextField txtDataEvento;
+    private javax.swing.JFormattedTextField txtOraEvento;
     // End of variables declaration//GEN-END:variables
 }

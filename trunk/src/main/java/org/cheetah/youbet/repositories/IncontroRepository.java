@@ -63,4 +63,6 @@ public interface IncontroRepository extends JpaRepository<Incontro, String>{
     @Query("select i from Incontro i where i.competizione=?1 and (i.awayTeam=?2 or i.homeTeam=?2) order by i.dataEvento desc")
     public Page<Incontro> findIncontroByTeam(String competizione,String squadra, Pageable pageable);
     
+    
+    
 }

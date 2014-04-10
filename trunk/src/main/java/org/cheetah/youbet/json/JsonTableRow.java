@@ -7,6 +7,8 @@
 package org.cheetah.youbet.json;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -15,24 +17,16 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 @JsonAutoDetect
 public class JsonTableRow {
 
-    private String columnName ;
-    private String columnValue;
-
-    public String getColumnName() {
-        return columnName;
+    public List<JsonTableColumn> getColumns() {
+        return columns;
     }
 
-    public void setColumnName(String columnName) {
-        this.columnName = columnName;
+    public void setColumns(List<JsonTableColumn> columns) {
+        this.columns = columns;
     }
-
-    public String getColumnValue() {
-        return columnValue;
-    }
-
-    public void setColumnValue(String columnValue) {
-        this.columnValue = columnValue;
-    }
+    
+    private List<JsonTableColumn> columns;
+    
     
     
 }
