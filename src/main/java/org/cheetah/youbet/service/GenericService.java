@@ -61,10 +61,12 @@ public class GenericService {
     }
 
     public JsonTable findIncontroSquadraByRisultatoAndCompetizione(final String squadra, final String competizione, final int maxMatch,int typeTeam) {
+        System.out.println("TypeTeam: "+squadra+"-"+typeTeam);
         if(typeTeam!=HOME_TEAM && typeTeam!=AWAY_TEAM){
             throw new RuntimeException("Valore di typeTeam non valido!");
         }
         String team = (typeTeam==HOME_TEAM?"HOME_TEAM":"AWAY_TEAM");
+        System.out.println("Team: "+team);
         String sql = "select count(*) TOTALE,"+team+",GOL_HOME,GOL_AWAY FROM (SELECT * FROM INCONTRO WHERE "+team+"=? AND COMPETIZIONE=? ORDER BY DATA_EVENTO DESC LIMIT ?) A  GROUP BY "+team+",GOL_HOME,GOL_AWAY  ORDER BY 1 DESC";
         
         JsonTable table = new JsonTable();

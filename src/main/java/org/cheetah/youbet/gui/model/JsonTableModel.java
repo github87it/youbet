@@ -22,6 +22,8 @@ public class JsonTableModel extends AbstractTableModel{
     
     
     public int getRowCount() {
+        System.out.println("table: "+table);
+        System.out.println("rows: "+table.getRows());
         return table.getRows().size();
     }
 
@@ -30,7 +32,7 @@ public class JsonTableModel extends AbstractTableModel{
     }
 
     public Object getValueAt(int rowIndex, int columnIndex) {
-        return getRowCount()>=rowIndex?table.getRows().get(rowIndex).getColumns().get(columnIndex):null;
+        return getRowCount()>=rowIndex?table.getRows().get(rowIndex).getColumns().get(columnIndex).getColumnValue():null;
     }
 
     @Override
