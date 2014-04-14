@@ -56,7 +56,7 @@ public class Main {
 //        calcoloPesiSquadre(ctx,"PETERBOROUGH","GILLINGHAM","LEAGUE ONE");
 ///                calcoloPesiSquadre(ctx,"ESTUDIANTES","ARGENTINOS","CAMPIONATO ARGENTINO");
 //        calcoloPesiSquadre(ctx, "SLAVIA PRAGA", "JABLONEC", "CAMPIONATO CECO");
-        System.out.println(ctx.getBean(GenericService.class).findIncontroSquadraByRisultatoAndCompetizione("JUVENTUS", "CAMPIONATO ITALIANO SERIE A", 10,IncontroHelper.AWAY_TEAM));
+//        System.out.println(ctx.getBean(GenericService.class).findIncontroSquadraByRisultatoAndCompetizione("JUVENTUS", "CAMPIONATO ITALIANO SERIE A", 10,IncontroHelper.AWAY_TEAM));
 //        System.out.println(mapper.writeValueAsString(r));
     }
 
@@ -69,9 +69,9 @@ public class Main {
         double pesoH = calcolaPeso(incontrosH, homeTeam);
         double pesoA = calcolaPeso(incontrosA, awayTeam);
 
-        System.out.println("Peso home: " + pesoH);
-        System.out.println("Peso away: " + pesoA);
-        System.out.println("\t" + (pesoH + pesoA) / 2);
+//        System.out.println("Peso home: " + pesoH);
+//        System.out.println("Peso away: " + pesoA);
+//        System.out.println("\t" + (pesoH + pesoA) / 2);
     }
 
     private static double calcolaPeso(Page<Incontro> incontros, String team) {

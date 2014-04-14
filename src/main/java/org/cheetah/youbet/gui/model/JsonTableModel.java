@@ -22,8 +22,8 @@ public class JsonTableModel extends AbstractTableModel{
     
     
     public int getRowCount() {
-        System.out.println("table: "+table);
-        System.out.println("rows: "+table.getRows());
+//        System.out.println("table: "+table);
+//        System.out.println("rows: "+table.getRows());
         return table.getRows().size();
     }
 

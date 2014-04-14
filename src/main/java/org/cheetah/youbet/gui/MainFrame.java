@@ -202,7 +202,7 @@ public class MainFrame extends javax.swing.JFrame {
 
             int colCount = target.getColumnCount();
             for (int i = 0; i < colCount; i++) {
-                System.out.print(target.getModel().getValueAt(row, i) + " | ");
+//                System.out.print(target.getModel().getValueAt(row, i) + " | ");
             }
         }
 //         if(SwingUtilities.isRightMouseButton(evt) && evt.isPopupTrigger()){

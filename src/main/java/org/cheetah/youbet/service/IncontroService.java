@@ -136,6 +136,10 @@ public class IncontroService {
         return repository;
     }
 
+    public List<Incontro> findHeadToHead(String homeTeam, String awayTeam, String nomeCompetizione) {
+        return repository.findHeadToHead(homeTeam,awayTeam,nomeCompetizione);
+    }
+
     public static class Stat {
 
         //gol fatti
