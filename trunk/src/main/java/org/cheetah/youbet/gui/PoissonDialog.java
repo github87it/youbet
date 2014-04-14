@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import javax.swing.JSlider;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeEvent;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import org.cheetah.youbet.ContextSpringFactory;
@@ -25,6 +26,7 @@ import org.cheetah.youbet.entities.Palinsesto;
 import org.cheetah.youbet.entities.PercentualeSingoliEsiti;
 import org.cheetah.youbet.entities.PercentualeSingoliEsitiPK;
 import org.cheetah.youbet.gui.model.IncontroTableModel;
+import org.cheetah.youbet.gui.model.JsonTableModel;
 import org.cheetah.youbet.gui.model.PalinsestoTableModel;
 import org.cheetah.youbet.gui.model.PoissonTableModel;
 import org.cheetah.youbet.gui.popupmenu.PoissonPopupMenu;
@@ -33,6 +35,7 @@ import org.cheetah.youbet.json.JsonTableRow;
 import org.cheetah.youbet.service.GenericService;
 import org.cheetah.youbet.service.IncontroService;
 import org.cheetah.youbet.service.PercentualeSingoliEsitiService;
+import org.cheetah.youbet.util.helper.IncontroHelper;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Page;
@@ -126,12 +129,12 @@ public class PoissonDialog extends javax.swing.JFrame {
         splitRiepilogo = new javax.swing.JSplitPane();
         tabRiepilogoHomeTeam = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        scrollPaneRiepilogoSqHome = new javax.swing.JScrollPane();
+        tableRiepilogoSqHome = new javax.swing.JTable();
         tabRiepilogoAwayTeam = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        scrollPaneRiepilogoSqAway = new javax.swing.JScrollPane();
+        tableRiepilogoSqAway = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addKeyListener(new java.awt.event.KeyAdapter() {
@@ -556,6 +559,11 @@ public class PoissonDialog extends javax.swing.JFrame {
     sliderNumPartiteAway.setPaintTicks(true);
     sliderNumPartiteAway.setValue(9);
     sliderNumPartiteAway.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+    sliderNumPartiteAway.addChangeListener(new javax.swing.event.ChangeListener() {
+        public void stateChanged(javax.swing.event.ChangeEvent evt) {
+            sliderNumPartiteAwayStateChanged(evt);
+        }
+    });
     gridBagConstraints = new java.awt.GridBagConstraints();
     gridBagConstraints.gridx = 0;
     gridBagConstraints.gridy = 1;
@@ -642,13 +650,13 @@ public class PoissonDialog extends javax.swing.JFrame {
 
     jPanel1.setLayout(new java.awt.GridBagLayout());
 
-    jTable1.setModel(new javax.swing.table.DefaultTableModel(
+    tableRiepilogoSqHome.setModel(new javax.swing.table.DefaultTableModel(
         new Object [][] {
         },
         new String [] {
         }
     ));
-    jScrollPane1.setViewportView(jTable1);
+    scrollPaneRiepilogoSqHome.setViewportView(tableRiepilogoSqHome);
 
     gridBagConstraints = new java.awt.GridBagConstraints();
     gridBagConstraints.gridx = 0;
@@ -656,7 +664,7 @@ public class PoissonDialog extends javax.swing.JFrame {
     gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
     gridBagConstraints.weightx = 1.0;
     gridBagConstraints.weighty = 1.0;
-    jPanel1.add(jScrollPane1, gridBagConstraints);
+    jPanel1.add(scrollPaneRiepilogoSqHome, gridBagConstraints);
 
     tabRiepilogoHomeTeam.addTab("riep-sq1", jPanel1);
 
@@ -664,13 +672,13 @@ public class PoissonDialog extends javax.swing.JFrame {
 
     jPanel2.setLayout(new java.awt.GridBagLayout());
 
-    jTable2.setModel(new javax.swing.table.DefaultTableModel(
+    tableRiepilogoSqAway.setModel(new javax.swing.table.DefaultTableModel(
         new Object [][] {
         },
         new String [] {
         }
     ));
-    jScrollPane2.setViewportView(jTable2);
+    scrollPaneRiepilogoSqAway.setViewportView(tableRiepilogoSqAway);
 
     gridBagConstraints = new java.awt.GridBagConstraints();
     gridBagConstraints.gridx = 0;
@@ -678,7 +686,7 @@ public class PoissonDialog extends javax.swing.JFrame {
     gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
     gridBagConstraints.weightx = 1.0;
     gridBagConstraints.weighty = 1.0;
-    jPanel2.add(jScrollPane2, gridBagConstraints);
+    jPanel2.add(scrollPaneRiepilogoSqAway, gridBagConstraints);
 
     tabRiepilogoAwayTeam.addTab("riep-sq2", jPanel2);
 
@@ -709,6 +717,8 @@ public class PoissonDialog extends javax.swing.JFrame {
         if (SwingUtilities.isLeftMouseButton(evt)) {
             try {
                 changePalinsestoTableData();
+                changeSplitRiepilogoTableData();
+
                 calcolaMatch(getPalinsestoRowSelected(palinsestoTable));
 
             } catch (BeansException ex) {
@@ -799,7 +809,6 @@ public class PoissonDialog extends javax.swing.JFrame {
 
     }
 
-    
     private void initPoissonModel(PoissonTableModel model, Palinsesto palinsestoSelected) {
         model.setPalinsestoSelected(palinsestoSelected);
         model.setVisibleColumns(new PoissonTableModel.PoissonColumn[]{
@@ -841,21 +850,28 @@ public class PoissonDialog extends javax.swing.JFrame {
     }//GEN-LAST:event_filtraPercentualeSliderStateChanged
 
     private void palinsestoTableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_palinsestoTableKeyReleased
-        try {
-            changePalinsestoTableData();
-            calcolaMatch(getPalinsestoRowSelected(palinsestoTable));
+        if (evt.getKeyCode() == KeyEvent.VK_UP || evt.getKeyCode() == KeyEvent.VK_DOWN) {
+            try {
+                changePalinsestoTableData();
+                changeSplitRiepilogoTableData();
+                calcolaMatch(getPalinsestoRowSelected(palinsestoTable));
 
-        } catch (BeansException ex) {
-            Logger.getLogger(PoissonDialog.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(PoissonDialog.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(PoissonDialog.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (BeansException ex) {
+                Logger.getLogger(PoissonDialog.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(PoissonDialog.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(PoissonDialog.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_palinsestoTableKeyReleased
 
     private void sliderNumPartiteHomeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderNumPartiteHomeStateChanged
+        stateChangedSliderNumPartite(evt);
 
+    }
+
+    private void stateChangedSliderNumPartite(ChangeEvent evt) {
         int index = tabRiepilogoPoisson.getSelectedIndex();
         JSlider slider = (JSlider) evt.getSource();
         loadStatsTeam(getPalinsestoRowSelected(palinsestoTable), index, index == 1 ? tableIncontriHomeTeam : tableIncontriAwayTeam, tabRiepilogoPoisson.getTitleAt(index), slider.getValue());
@@ -863,11 +879,17 @@ public class PoissonDialog extends javax.swing.JFrame {
     }//GEN-LAST:event_sliderNumPartiteHomeStateChanged
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
-        
+
         if (evt.getKeyCode() == KeyEvent.VK_UP) {
             sliderNumPartiteHome.firePropertyChange("value", sliderNumPartiteHome.getValue(), sliderNumPartiteHome.getValue() + 1);
         }        // TODO add your handling code here:
     }//GEN-LAST:event_formKeyPressed
+
+    private void sliderNumPartiteAwayStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderNumPartiteAwayStateChanged
+        stateChangedSliderNumPartite(evt);
+        tabRiepilogoHomeTeam.setTitleAt(0, getPalinsestoRowSelected(palinsestoTable).getHomeTeam());
+        tabRiepilogoAwayTeam.setTitleAt(0, getPalinsestoRowSelected(palinsestoTable).getAwayTeam());
+    }//GEN-LAST:event_sliderNumPartiteAwayStateChanged
 
     /**
      * @param args the command line arguments
@@ -879,11 +901,7 @@ public class PoissonDialog extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSplitPane jSplitPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JLabel labelPerc_1;
     private javax.swing.JLabel labelPerc_12;
     private javax.swing.JLabel labelPerc_1X;
@@ -931,6 +949,8 @@ public class PoissonDialog extends javax.swing.JFrame {
     private javax.swing.JPanel panelStatsHomeTeam;
     private javax.swing.JScrollPane poissonScrollPane;
     private javax.swing.JTable poissonTable;
+    private javax.swing.JScrollPane scrollPaneRiepilogoSqAway;
+    private javax.swing.JScrollPane scrollPaneRiepilogoSqHome;
     private javax.swing.JScrollPane scrollPaneStatsAwayTeam;
     private javax.swing.JScrollPane scrollPaneStatsHomeTeam;
     private javax.swing.JSlider sliderNumPartiteAway;
@@ -942,7 +962,28 @@ public class PoissonDialog extends javax.swing.JFrame {
     private javax.swing.JTabbedPane tabRiepilogoPoisson;
     private javax.swing.JTable tableIncontriAwayTeam;
     private javax.swing.JTable tableIncontriHomeTeam;
+    private javax.swing.JTable tableRiepilogoSqAway;
+    private javax.swing.JTable tableRiepilogoSqHome;
     private javax.swing.JPanel topPanel;
     // End of variables declaration//GEN-END:variables
+
+    private void changeSplitRiepilogoTableData() {
+        try {
+            Palinsesto palinsestoSelected = getPalinsestoRowSelected(palinsestoTable);
+            ApplicationContext ctx = ContextSpringFactory.getInstance().getContext();
+            PoissonTableModel model = ctx.getBean(PoissonTableModel.class);
+            GenericService serv = ctx.getBean(GenericService.class);
+            JsonTableModel modelSqHome = new JsonTableModel();
+            modelSqHome.setTable(serv.findIncontroSquadraByRisultatoAndCompetizione(palinsestoSelected.getHomeTeam(), palinsestoSelected.getIdManifestazione().getDescrizioneLunga(), 10, IncontroHelper.HOME_TEAM));
+            tableRiepilogoSqHome.setModel(modelSqHome);
+            modelSqHome.fireTableDataChanged();
+            JsonTableModel modelSqAway = new JsonTableModel();
+            modelSqAway.setTable(serv.findIncontroSquadraByRisultatoAndCompetizione(palinsestoSelected.getAwayTeam(), palinsestoSelected.getIdManifestazione().getDescrizioneLunga(), 10, IncontroHelper.AWAY_TEAM));
+            tableRiepilogoSqAway.setModel(modelSqAway);
+            modelSqAway.fireTableDataChanged();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }

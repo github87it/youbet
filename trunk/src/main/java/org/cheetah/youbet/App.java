@@ -6,6 +6,7 @@ import org.cheetah.youbet.config.Config;
 import org.cheetah.youbet.entities.Incontro;
 import org.cheetah.youbet.entities.PercentualeSingoliEsiti;
 import org.cheetah.youbet.entities.Poisson;
+import org.cheetah.youbet.gui.MainFrame;
 import org.cheetah.youbet.repositories.IncontroRepository;
 import org.cheetah.youbet.repositories.SerieRepository;
 import org.cheetah.youbet.service.GenericService;
@@ -25,6 +26,13 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class App {
 
     public static void main(String[] args) throws IOException, Exception {
+        if (args != null && args.length > 0) {
+            if (args[0].equals("--gui")) {
+                MainFrame.main(args);
+                return;
+            }
+        }
+
         AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(Config.class);
 //        String s = "{palinsesto: '14554', avvenimento: '12', classe: '10', esito: '1', legmin: '1', legmax: '20', legmul: '1', blackmin: '0', blackmax: '0', desavvenimento: 'MILAN - BOLOGNA', desclasse: 'UNDER AND OVER 2,5', desesito: 'UNDER', handicap: '', datascad: '2014-02-14T20:45:00', eventolive: '0'}";
 //        ObjectMapper mapper = new ObjectMapper();
@@ -39,14 +47,11 @@ public class App {
 //        ManifestazioneService manifestazioneService = (ManifestazioneService) ctx.getBean("manifestazioneService");
 //        System.out.println(manifestazioneService.findAll());
         try {
-            
-            
+
             insertScores(ctx);
             updateManifestazioneTable(ctx);
             insertBooks(ctx);
             calcolaStats(ctx);
-
-            
 
         } catch (Exception exception) {
             System.out.println(exception.getMessage());
@@ -89,14 +94,13 @@ public class App {
         ds.execute();
     }
 
-    
     /**
      * Aggiorna la tabella delle manifestazioni con il nome lungo.
      */
     private static void updateManifestazioneTable(AnnotationConfigApplicationContext ctx) {
         GenericService genericService = ctx.getBean(GenericService.class);
         genericService.updateManifestazioneTable();
-        
+
     }
 
 }
