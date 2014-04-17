@@ -6,6 +6,7 @@
 
 package org.cheetah.youbet.repositories;
 
+import java.util.List;
 import org.cheetah.youbet.entities.Classe;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -18,5 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @Transactional
 public interface ClasseRepository extends JpaRepository<Classe, Integer>{
+
+    public List<Classe> findByIdClasseIn(List<Integer> classesIds);
     
 }
