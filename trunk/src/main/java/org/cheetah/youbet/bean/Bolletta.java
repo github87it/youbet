@@ -23,6 +23,16 @@ public class Bolletta {
     
     private List<Palinsesto> palinsestos = new ArrayList<Palinsesto>();
     
+    private List<Quota> quotasSelected = new ArrayList<Quota>();
+
+    public List<Quota> getQuotasSelected() {
+        return quotasSelected;
+    }
+
+    public void setQuotasSelected(List<Quota> quotasSelected) {
+        this.quotasSelected = quotasSelected;
+    }
+    
     private Map<Palinsesto,List<Quota>> giocata = new HashMap<Palinsesto, List<Quota>>();
 
     public List<Palinsesto> getPalinsestos() {
@@ -40,5 +50,9 @@ public class Bolletta {
         }
         quotas.add(quota);
         giocata.put(palinsesto, quotas);
+    }
+    
+    public void confirmGiocata(Quota quota){
+        quotasSelected.add(quota);
     }
 }

@@ -6,6 +6,7 @@
 package org.cheetah.youbet.gui;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JLabel;
 import javax.swing.JSlider;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
@@ -716,10 +718,8 @@ public class PoissonDialog extends javax.swing.JFrame {
     private void palinsestoTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_palinsestoTableMouseClicked
         if (SwingUtilities.isLeftMouseButton(evt)) {
             try {
-                changePalinsestoTableData();
-                changeSplitRiepilogoTableData();
 
-                calcolaMatch(getPalinsestoRowSelected(palinsestoTable));
+                palinesestoTableEvents();
 
             } catch (BeansException ex) {
                 Logger.getLogger(PoissonDialog.class.getName()).log(Level.SEVERE, null, ex);
@@ -735,6 +735,15 @@ public class PoissonDialog extends javax.swing.JFrame {
 
             new PoissonPopupMenu(palinsestos.get(row)).show(evt.getComponent(), evt.getX(), evt.getY());
         }
+    }
+
+    private void palinesestoTableEvents() throws BeansException, IOException, SQLException {
+        sliderNumPartiteAway.setValue(9);
+        sliderNumPartiteHome.setValue(9);
+        changePalinsestoTableData();
+        changeSplitRiepilogoTableData();
+        
+        calcolaMatch(getPalinsestoRowSelected(palinsestoTable));
     }
 
     private void changePalinsestoTableData() throws BeansException, SQLException, IOException {
@@ -764,28 +773,74 @@ public class PoissonDialog extends javax.swing.JFrame {
                         palinsestoSelected.getPalinsestoPK().getIdPalinsesto(),
                         palinsestoSelected.getPalinsestoPK().getIdAvvenimento()));
         labelPerc_1.setText(Double.toString(pse.getVittoriaCasa()));
+        setLabelColor(pse.getVittoriaCasa(),labelPerc_1);
+        
         labelPerc_X.setText(Double.toString(pse.getPareggio()));
+        setLabelColor(pse.getPareggio(),labelPerc_X);
+        
         labelPerc_2.setText(Double.toString(pse.getVittoriaFuori()));
+        setLabelColor(pse.getVittoriaFuori(),labelPerc_2);
+        
         labelPerc_12.setText(Double.toString(pse.getDoppiaChanceInOut()));
+        setLabelColor(pse.getDoppiaChanceInOut(),labelPerc_12);
+        
         labelPerc_X2.setText(Double.toString(pse.getDoppiaChanceOut()));
+        setLabelColor(pse.getDoppiaChanceOut(),labelPerc_X2);
+        
         labelPerc_1X.setText(Double.toString(pse.getDoppiaChanceIn()));
+        setLabelColor(pse.getDoppiaChanceIn(),labelPerc_1X);
+        
         labelPerc_Dispari.setText(Double.toString(pse.getDispari()));
+        setLabelColor(pse.getDispari(),labelPerc_Dispari);
+        
         labelPerc_Pari.setText(Double.toString(pse.getPari()));
+        setLabelColor(pse.getPari(),labelPerc_Pari);
+        
         labelPerc_Gol.setText(Double.toString(pse.getGol()));
+        setLabelColor(pse.getGol(),labelPerc_Gol);
+        
         labelPerc_NoGol.setText(Double.toString(pse.getNoGol()));
+        setLabelColor(pse.getNoGol(),labelPerc_NoGol);
+        
         labelPerc_NoGol.setText(Double.toString(pse.getNoGol()));
+        setLabelColor(pse.getNoGol(),labelPerc_NoGol);
+        
         labelPerc_ov15.setText(Double.toString(pse.getOverUnoCinque()));
+        setLabelColor(pse.getOverUnoCinque(),labelPerc_ov15);
+        
         labelPerc_un15.setText(Double.toString(pse.getUnderUnoCinque()));
+        setLabelColor(pse.getUnderUnoCinque(),labelPerc_un15);
+        
         labelPerc_ov25.setText(Double.toString(pse.getOverDueCinque()));
+        setLabelColor(pse.getOverDueCinque(),labelPerc_ov25);
+        
         labelPerc_un25.setText(Double.toString(pse.getUnderDueCinque()));
+        setLabelColor(pse.getUnderDueCinque(),labelPerc_un25);
+        
         labelPerc_ov35.setText(Double.toString(pse.getOverTreCinque()));
+        setLabelColor(pse.getOverTreCinque(),labelPerc_ov35);
+        
         labelPerc_un35.setText(Double.toString(pse.getUnderTreCinque()));
+        setLabelColor(pse.getUnderTreCinque(),labelPerc_un35);
+        
         labelPerc_ov45.setText(Double.toString(pse.getOverQuattroCinque()));
+        setLabelColor(pse.getOverQuattroCinque(),labelPerc_ov45);
+        
         labelPerc_un45.setText(Double.toString(pse.getUnderQuattroCinque()));
+        setLabelColor(pse.getUnderQuattroCinque(),labelPerc_un45);
 
         loadStatsTeam(palinsestoSelected, 1, tableIncontriHomeTeam, palinsestoSelected.getHomeTeam(), 9);
         loadStatsTeam(palinsestoSelected, 2, tableIncontriAwayTeam, palinsestoSelected.getAwayTeam(), 9);
 
+    }
+
+    private void setLabelColor(double value,JLabel label) {
+        if(value>=80.0d){
+            label.setForeground(Color.RED);
+        }else{
+            label.setForeground(Color.BLACK);
+            
+        }
     }
 
     private void loadStatsTeam(Palinsesto palinsesto, int indexTab, JTable table, String squadra, int maxMatchNumber) {
@@ -852,10 +907,7 @@ public class PoissonDialog extends javax.swing.JFrame {
     private void palinsestoTableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_palinsestoTableKeyReleased
         if (evt.getKeyCode() == KeyEvent.VK_UP || evt.getKeyCode() == KeyEvent.VK_DOWN) {
             try {
-                changePalinsestoTableData();
-                changeSplitRiepilogoTableData();
-                calcolaMatch(getPalinsestoRowSelected(palinsestoTable));
-
+                palinesestoTableEvents();
             } catch (BeansException ex) {
                 Logger.getLogger(PoissonDialog.class.getName()).log(Level.SEVERE, null, ex);
             } catch (SQLException ex) {

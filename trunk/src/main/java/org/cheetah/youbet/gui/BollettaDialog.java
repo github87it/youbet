@@ -7,9 +7,12 @@ package org.cheetah.youbet.gui;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JTable;
+import org.cheetah.youbet.ContextSpringFactory;
 import org.cheetah.youbet.bean.Bolletta;
 import org.cheetah.youbet.entities.Palinsesto;
 import org.cheetah.youbet.gui.model.PalinsestoTableModel;
+import org.cheetah.youbet.service.GenericService;
 
 /**
  *
@@ -64,20 +67,32 @@ public class BollettaDialog extends javax.swing.JDialog implements Cloneable {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         splitPaneBolletta = new javax.swing.JSplitPane();
         scrollPaneBolletta = new javax.swing.JScrollPane();
         tableBolletta = new javax.swing.JTable();
+        panelClassiRadioButton1 = new org.cheetah.youbet.gui.component.PanelClassiRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setBounds(new java.awt.Rectangle(0, 22, 1024, 800));
+        setPreferredSize(new java.awt.Dimension(1024, 800));
         getContentPane().setLayout(new java.awt.GridBagLayout());
+
+        splitPaneBolletta.setResizeWeight(0.5);
 
         tableBolletta.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {},
             new String [] {}
         ));
+        tableBolletta.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableBollettaMouseClicked(evt);
+            }
+        });
         scrollPaneBolletta.setViewportView(tableBolletta);
 
         splitPaneBolletta.setLeftComponent(scrollPaneBolletta);
+        splitPaneBolletta.setRightComponent(panelClassiRadioButton1);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -90,8 +105,19 @@ public class BollettaDialog extends javax.swing.JDialog implements Cloneable {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void tableBollettaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableBollettaMouseClicked
+        JTable table =  (JTable) evt.getSource();
+        GenericService service = ContextSpringFactory.getInstance().getContext().getBean(GenericService.class);
+        Palinsesto palinsesto = ((PalinsestoTableModel)table.getModel()).getPalinsestos().get(table.getSelectedRow());
+        panelClassiRadioButton1 = new org.cheetah.youbet.gui.component.PanelClassiRadioButton(service.findQuotaByPalinsesto(palinsesto),palinsesto);
+        splitPaneBolletta.setRightComponent(panelClassiRadioButton1);
+
+    }//GEN-LAST:event_tableBollettaMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroup1;
+    private org.cheetah.youbet.gui.component.PanelClassiRadioButton panelClassiRadioButton1;
     private javax.swing.JScrollPane scrollPaneBolletta;
     private javax.swing.JSplitPane splitPaneBolletta;
     private javax.swing.JTable tableBolletta;

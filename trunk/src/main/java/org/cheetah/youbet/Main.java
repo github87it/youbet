@@ -5,11 +5,13 @@
  */
 package org.cheetah.youbet;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.cheetah.youbet.config.Config;
 import org.cheetah.youbet.entities.Incontro;
+import org.cheetah.youbet.entities.Palinsesto;
+import org.cheetah.youbet.entities.PalinsestoPK;
 import org.cheetah.youbet.service.GenericService;
 import org.cheetah.youbet.service.IncontroService;
-import org.cheetah.youbet.util.helper.IncontroHelper;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.data.domain.Page;
@@ -58,6 +60,11 @@ public class Main {
 //        calcoloPesiSquadre(ctx, "SLAVIA PRAGA", "JABLONEC", "CAMPIONATO CECO");
 //        System.out.println(ctx.getBean(GenericService.class).findIncontroSquadraByRisultatoAndCompetizione("JUVENTUS", "CAMPIONATO ITALIANO SERIE A", 10,IncontroHelper.AWAY_TEAM));
 //        System.out.println(mapper.writeValueAsString(r));
+        GenericService service = ctx.getBean(GenericService.class);
+        Palinsesto  p = new Palinsesto(new PalinsestoPK(15007,10));
+        ObjectMapper mapper = new ObjectMapper();
+//        String s = mapper.writeValueAsString(service.findQuotaByPalinsesto(p));
+//        System.out.println(s);
     }
 
     private static void calcoloPesiSquadre(ApplicationContext ctx, String homeTeam, String awayTeam, String competizione) {
