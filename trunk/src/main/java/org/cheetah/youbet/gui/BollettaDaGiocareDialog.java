@@ -6,15 +6,31 @@
 
 package org.cheetah.youbet.gui;
 
-import org.cheetah.youbet.ContextSpringFactory;
+import java.util.ArrayList;
+import javax.swing.JTable;
 import org.cheetah.youbet.bean.Bolletta;
+import org.cheetah.youbet.entities.Quota;
 import org.cheetah.youbet.gui.model.QuotaTableModel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author edoardo
  */
+@Component
 public class BollettaDaGiocareDialog extends javax.swing.JDialog {
+    
+    @Autowired
+    private Bolletta bolletta;
+
+    public Bolletta getBolletta() {
+        return bolletta;
+    }
+
+    public void setBolletta(Bolletta bolletta) {
+        this.bolletta = bolletta;
+    }
 
     /**
      * Creates new form BollettaDaGiocareDialog
@@ -34,18 +50,18 @@ public class BollettaDaGiocareDialog extends javax.swing.JDialog {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        panelBolletta = new javax.swing.JPanel();
+        scrollPaneBolletta = new javax.swing.JScrollPane();
+        tableGiocata = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        jPanel1.setLayout(new java.awt.GridBagLayout());
+        panelBolletta.setLayout(new java.awt.GridBagLayout());
 
         QuotaTableModel model = createModel();
-        jTable1.setModel(model);
-        jScrollPane1.setViewportView(jTable1);
+        tableGiocata.setModel(model);
+        scrollPaneBolletta.setViewportView(tableGiocata);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -53,7 +69,7 @@ public class BollettaDaGiocareDialog extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        jPanel1.add(jScrollPane1, gridBagConstraints);
+        panelBolletta.add(scrollPaneBolletta, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -61,7 +77,7 @@ public class BollettaDaGiocareDialog extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        getContentPane().add(jPanel1, gridBagConstraints);
+        getContentPane().add(panelBolletta, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -69,21 +85,33 @@ public class BollettaDaGiocareDialog extends javax.swing.JDialog {
   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JPanel panelBolletta;
+    private javax.swing.JScrollPane scrollPaneBolletta;
+    private javax.swing.JTable tableGiocata;
     // End of variables declaration//GEN-END:variables
 
-    private QuotaTableModel createModel() {
-        Bolletta bolletta = ContextSpringFactory.getInstance().getContext().getBean(Bolletta.class);
-        QuotaTableModel model = new QuotaTableModel(bolletta.getQuotasSelected(), new QuotaTableModel.QuotaColumn[]{
+    public JTable getTableGiocata() {
+        return tableGiocata;
+    }
+
+    public void setTableGiocata(JTable tableGiocata) {
+        this.tableGiocata = tableGiocata;
+    }
+
+    public QuotaTableModel createModel() {
+        System.out.println("Bolletta: "+bolletta);
+        QuotaTableModel.QuotaColumn[] visibleColumns = new QuotaTableModel.QuotaColumn[]{
             QuotaTableModel.QuotaColumn.ID_PALINSESTO,
             QuotaTableModel.QuotaColumn.ID_AVVENIMENTO,
             QuotaTableModel.QuotaColumn.DESCRIZIONE_CLASSE,
             QuotaTableModel.QuotaColumn.DESCRIZIONE_ESITO,
             QuotaTableModel.QuotaColumn.QUOTA
-        });
+        };
+        QuotaTableModel model = new QuotaTableModel(new ArrayList<Quota>(), visibleColumns);
+        if(bolletta!=null){
+        model = new QuotaTableModel(bolletta.getQuotasSelected(),visibleColumns );
         model.fireTableDataChanged();
+        }
         return model;
     }
 }

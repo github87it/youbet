@@ -5,10 +5,11 @@
  */
 package org.cheetah.youbet.gui.model;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import javax.swing.table.AbstractTableModel;
 import org.cheetah.youbet.entities.Palinsesto;
 
@@ -18,7 +19,7 @@ import org.cheetah.youbet.entities.Palinsesto;
  */
 public class PalinsestoTableModel extends AbstractTableModel {
 
-    private List<Palinsesto> palinsestos = new ArrayList<Palinsesto>();
+    private Set<Palinsesto> palinsestos = new TreeSet<Palinsesto>();
     private static final PalinsestoColumn[] DEFAUL_VISIBLE_COLUMNS= new PalinsestoColumn[]{
         PalinsestoColumn.ID_PALINSESTO, 
         PalinsestoColumn.ID_AVVENIMENTO, 
@@ -47,10 +48,10 @@ public class PalinsestoTableModel extends AbstractTableModel {
         columns.put(PalinsestoColumn.ID_MANIFESTAZIONE, "Manifestazione");
     }
 
-    public PalinsestoTableModel(List<Palinsesto> palinsestos) {
+    public PalinsestoTableModel(Set<Palinsesto> palinsestos) {
         this.palinsestos=palinsestos;
     }
-    public PalinsestoTableModel(List<Palinsesto> palinsestos,PalinsestoColumn[] visibleColumns) {
+    public PalinsestoTableModel(Set<Palinsesto> palinsestos,PalinsestoColumn[] visibleColumns) {
         this.palinsestos=palinsestos;
         this.visibleColumns=visibleColumns;
     }
@@ -65,23 +66,24 @@ public class PalinsestoTableModel extends AbstractTableModel {
 
     public Object getValueAt(int rowIndex, int columnIndex) {
         PalinsestoColumn column = visibleColumns[columnIndex];
+        Palinsesto palinsesto = palinsestos.toArray(new Palinsesto[0])[rowIndex];
         switch(column){
             case ID_PALINSESTO:
-                return palinsestos.get(rowIndex).getPalinsestoPK().getIdPalinsesto();
+                return palinsesto.getPalinsestoPK().getIdPalinsesto();
             case ID_AVVENIMENTO:
-                return palinsestos.get(rowIndex).getPalinsestoPK().getIdAvvenimento();
+                return palinsesto.getPalinsestoPK().getIdAvvenimento();
             case DESCRIZIONE:
-                return palinsestos.get(rowIndex).getDescrizione();
+                return palinsesto.getDescrizione();
             case HOME_TEAM:
-                return palinsestos.get(rowIndex).getHomeTeam();
+                return palinsesto.getHomeTeam();
             case AWAY_TEAM:
-                return palinsestos.get(rowIndex).getAwayTeam();
+                return palinsesto.getAwayTeam();
             case DATA_EVENTO:
-                return palinsestos.get(rowIndex).getDataEvento();
+                return palinsesto.getDataEvento();
             case ORA_EVENTO:
-                return palinsestos.get(rowIndex).getOraEvento();
+                return palinsesto.getOraEvento();
             case ID_MANIFESTAZIONE:
-                return palinsestos.get(rowIndex).getIdManifestazione().getDescrizione();
+                return palinsesto.getIdManifestazione().getDescrizione();
         }
         return new Object();
     }
@@ -94,7 +96,7 @@ public class PalinsestoTableModel extends AbstractTableModel {
     public String getColumnName(int column) {
         return columns.get(visibleColumns[column]);
     }
-    public List<Palinsesto> getPalinsestos() {
+    public Set<Palinsesto> getPalinsestos() {
         return palinsestos;
     }
     

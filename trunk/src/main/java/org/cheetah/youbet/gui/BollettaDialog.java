@@ -7,6 +7,7 @@ package org.cheetah.youbet.gui;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import javax.swing.JTable;
 import org.cheetah.youbet.ContextSpringFactory;
 import org.cheetah.youbet.bean.Bolletta;
@@ -32,7 +33,7 @@ public class BollettaDialog extends javax.swing.JDialog implements Cloneable {
 //        updateModel();
     }
 
-    private void updateModel(List<Palinsesto> palinsestos) {
+    private void updateModel(Set<Palinsesto> palinsestos) {
         PalinsestoTableModel model = createModel(palinsestos);
         tableBolletta.setModel(model);
         model.fireTableDataChanged();
@@ -41,7 +42,7 @@ public class BollettaDialog extends javax.swing.JDialog implements Cloneable {
     
    
 
-    private PalinsestoTableModel createModel(List<Palinsesto> palinsestos) {
+    private PalinsestoTableModel createModel(Set<Palinsesto> palinsestos) {
         PalinsestoTableModel model = new PalinsestoTableModel(palinsestos,
                 new PalinsestoTableModel.PalinsestoColumn[]{
                     PalinsestoTableModel.PalinsestoColumn.DATA_EVENTO,
@@ -108,7 +109,7 @@ public class BollettaDialog extends javax.swing.JDialog implements Cloneable {
     private void tableBollettaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableBollettaMouseClicked
         JTable table =  (JTable) evt.getSource();
         GenericService service = ContextSpringFactory.getInstance().getContext().getBean(GenericService.class);
-        Palinsesto palinsesto = ((PalinsestoTableModel)table.getModel()).getPalinsestos().get(table.getSelectedRow());
+        Palinsesto palinsesto = ((PalinsestoTableModel)table.getModel()).getPalinsestos().toArray(new Palinsesto[0])[table.getSelectedRow()];
         panelClassiRadioButton1 = new org.cheetah.youbet.gui.component.PanelClassiRadioButton(service.findQuotaByPalinsesto(palinsesto),palinsesto);
         splitPaneBolletta.setRightComponent(panelClassiRadioButton1);
 

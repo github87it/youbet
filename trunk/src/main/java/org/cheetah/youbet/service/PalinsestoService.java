@@ -6,11 +6,15 @@
 package org.cheetah.youbet.service;
 
 import java.sql.Time;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import org.cheetah.youbet.entities.Palinsesto;
 import org.cheetah.youbet.entities.PalinsestoPK;
 import org.cheetah.youbet.repositories.PalinsestoRepository;
+import org.cheetah.youbet.util.comparators.PalinsestoComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,8 +40,12 @@ public class PalinsestoService {
     }
     
     
-    public List<Palinsesto> findPartiteDaGiocare(Date d){
-        
-        return repository.findPartiteDaGiocare(d, new Time(d.getTime()));
+    public Set<Palinsesto> findPartiteDaGiocare(Date d){
+        Set<Palinsesto> _palinsestos = new TreeSet<Palinsesto>(new PalinsestoComparator());
+        List<Palinsesto> palinsestos= repository.findPartiteDaGiocare(d, new Time(d.getTime()));
+        for (Palinsesto palinsesto : palinsestos) {
+            _palinsestos.add(palinsesto);
+        }
+        return _palinsestos;
     }
 }
