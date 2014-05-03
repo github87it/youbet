@@ -5,14 +5,13 @@
  */
 package org.cheetah.youbet.gui;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JLabel;
@@ -32,8 +31,6 @@ import org.cheetah.youbet.gui.model.JsonTableModel;
 import org.cheetah.youbet.gui.model.PalinsestoTableModel;
 import org.cheetah.youbet.gui.model.PoissonTableModel;
 import org.cheetah.youbet.gui.popupmenu.PoissonPopupMenu;
-import org.cheetah.youbet.json.JsonTable;
-import org.cheetah.youbet.json.JsonTableRow;
 import org.cheetah.youbet.service.GenericService;
 import org.cheetah.youbet.service.IncontroService;
 import org.cheetah.youbet.service.PercentualeSingoliEsitiService;
@@ -48,12 +45,12 @@ import org.springframework.data.domain.Page;
  */
 public class PoissonDialog extends javax.swing.JFrame {
 
-    private List<Palinsesto> palinsestos;
+    private Set<Palinsesto> palinsestos;
 
     /**
      * Creates new form PoissonFrame
      */
-    public PoissonDialog(List<Palinsesto> palinsestos) {
+    public PoissonDialog(Set<Palinsesto> palinsestos) {
         this.palinsestos = palinsestos;
         initComponents();
     }
@@ -733,7 +730,7 @@ public class PoissonDialog extends javax.swing.JFrame {
             int row = palinsestoTable.rowAtPoint(evt.getPoint());
             palinsestoTable.getSelectionModel().addSelectionInterval(row, row);
 
-            new PoissonPopupMenu(palinsestos.get(row)).show(evt.getComponent(), evt.getX(), evt.getY());
+            new PoissonPopupMenu(palinsestos.toArray(new Palinsesto[0])[row]).show(evt.getComponent(), evt.getX(), evt.getY());
         }
     }
 
@@ -875,7 +872,7 @@ public class PoissonDialog extends javax.swing.JFrame {
     }//GEN-LAST:event_palinsestoTableMouseClicked
 
     private Palinsesto getPalinsestoRowSelected(JTable table) {
-        Palinsesto palinsestoSelected = palinsestos.get(table.getSelectedRow());
+        Palinsesto palinsestoSelected = palinsestos.toArray(new Palinsesto[0])[table.getSelectedRow()];
         return palinsestoSelected;
     }
 

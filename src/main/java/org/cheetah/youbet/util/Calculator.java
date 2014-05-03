@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import org.cheetah.youbet.entities.Incontro;
 import org.cheetah.youbet.entities.Manifestazione;
@@ -52,7 +53,7 @@ public class Calculator {
         Map<String, Double> poisson = new TreeMap<String, Double>();
         List<Poisson> stats = new ArrayList<Poisson>();
 
-        List<Palinsesto> palinsestos = palinsestoService.findPartiteDaGiocare(new Date());
+        Set<Palinsesto> palinsestos = palinsestoService.findPartiteDaGiocare(new Date());
         System.out.println(palinsestos.size());
         for (Palinsesto palinsesto : palinsestos) {
 
@@ -67,14 +68,14 @@ public class Calculator {
             //Cambio calcolo 14-03-2014
 //            Map<Integer, Double> ht_gf_Poisson = statHomeTeam.poisson(6, statHomeTeam.mediaGfPartita());
 //            Map<Integer, Double> at_gs_Poisson = statAwayTeam.poisson(6, statAwayTeam.mediaGsPartita());
-            Map<Integer, Double> ht_gf_Poisson = statHomeTeam.poisson(6, (statHomeTeam.mediaGfPartita() + statAwayTeam.mediaGsPartita()) / 2.0d);
+            Map<Integer, Double> ht_gf_Poisson = statHomeTeam.poisson(4, (statHomeTeam.mediaGfPartita() + statAwayTeam.mediaGsPartita()) / 2.0d);
 
 //            System.out.println(ht_gf_Poisson);
 //            mediaPoissonByGol(at_gs_Poisson, ht_gf_Poisson);
             //distribuzione della probabilità di fare gol della squadra di casa. E' contentuta in ht_gf_Poisson
             System.out.println("\t" + ht_gf_Poisson);
 
-            Map<Integer, Double> at_gf_Poisson = statAwayTeam.poisson(6, (statAwayTeam.mediaGfPartita() + statHomeTeam.mediaGsPartita()) / 2.0d);
+            Map<Integer, Double> at_gf_Poisson = statAwayTeam.poisson(4, (statAwayTeam.mediaGfPartita() + statHomeTeam.mediaGsPartita()) / 2.0d);
 //            Map<Integer, Double> ht_gs_Poisson = statHomeTeam.poisson(6, statHomeTeam.mediaGsPartita());
 
 //            Map<Integer, Double> at_gf_Poisson = statAwayTeam.poisson(6, statAwayTeam.mediaGfPartita());

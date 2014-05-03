@@ -21,7 +21,7 @@ public class QuotaTableModel extends AbstractTableModel {
 
     private List<Quota> quotas = new ArrayList<Quota>();
 
-    private static final QuotaTableModel.QuotaColumn[] DEFAUL_VISIBLE_COLUMNS = new QuotaTableModel.QuotaColumn[]{
+    private static final QuotaTableModel.QuotaColumn[] DEFAULT_VISIBLE_COLUMNS = new QuotaTableModel.QuotaColumn[]{
         QuotaTableModel.QuotaColumn.RADIO_BUTTON_OBJECT,
         QuotaTableModel.QuotaColumn.ID_PALINSESTO,
         QuotaTableModel.QuotaColumn.ID_AVVENIMENTO,
@@ -31,7 +31,7 @@ public class QuotaTableModel extends AbstractTableModel {
         QuotaTableModel.QuotaColumn.DESCRIZIONE_CLASSE,
         QuotaTableModel.QuotaColumn.DESCRIZIONE_ESITO};
 
-    private QuotaColumn[] visibleColumns = DEFAUL_VISIBLE_COLUMNS;
+    private QuotaColumn[] visibleColumns = DEFAULT_VISIBLE_COLUMNS;
 
     private static Map<QuotaTableModel.QuotaColumn, String> columns = new HashMap<QuotaTableModel.QuotaColumn, String>();
 
@@ -51,7 +51,7 @@ public class QuotaTableModel extends AbstractTableModel {
     }
 
     public QuotaTableModel(List<Quota> quotas) {
-        this(quotas, DEFAUL_VISIBLE_COLUMNS);
+        this(quotas, DEFAULT_VISIBLE_COLUMNS);
 
     }
 

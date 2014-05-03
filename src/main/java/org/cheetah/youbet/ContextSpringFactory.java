@@ -18,6 +18,9 @@ public class ContextSpringFactory {
     
     private AnnotationConfigApplicationContext ctx = null;
     
+    
+    private static ContextSpringFactory factory=null;
+    
     private ContextSpringFactory() {
         this.ctx=new AnnotationConfigApplicationContext(Config.class);
     }
@@ -27,11 +30,11 @@ public class ContextSpringFactory {
     }
     
     public static ContextSpringFactory getInstance() {
-        return ContextSpringFactoryHolder.INSTANCE;
+        if(factory==null){
+            factory=new ContextSpringFactory();
+        }
+        return factory;
     }
     
-    private static class ContextSpringFactoryHolder {
-
-        private static final ContextSpringFactory INSTANCE = new ContextSpringFactory();
-    }
+    
 }

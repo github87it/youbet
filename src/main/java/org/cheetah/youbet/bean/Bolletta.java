@@ -10,8 +10,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import org.cheetah.youbet.entities.Palinsesto;
 import org.cheetah.youbet.entities.Quota;
+import org.cheetah.youbet.util.comparators.PalinsestoComparator;
 import org.springframework.stereotype.Component;
 
 /**
@@ -21,7 +24,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class Bolletta {
     
-    private List<Palinsesto> palinsestos = new ArrayList<Palinsesto>();
+    private Set<Palinsesto> palinsestos = new TreeSet<Palinsesto>(new PalinsestoComparator());
     
     private List<Quota> quotasSelected = new ArrayList<Quota>();
 
@@ -35,7 +38,7 @@ public class Bolletta {
     
     private Map<Palinsesto,List<Quota>> giocata = new HashMap<Palinsesto, List<Quota>>();
 
-    public List<Palinsesto> getPalinsestos() {
+    public Set<Palinsesto> getPalinsestos() {
         return palinsestos;
     }
     
