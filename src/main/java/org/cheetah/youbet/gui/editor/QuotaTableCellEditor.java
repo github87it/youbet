@@ -46,6 +46,7 @@ public class QuotaTableCellEditor extends DefaultCellEditor{
                                 ((QuotaTableModel)table.getModel()).
                                         getQuotas().
                                         get(table.getSelectedRow()));
+                System.out.println("");
             }
         });   
         if (((Boolean) value).booleanValue())   
