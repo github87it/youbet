@@ -26,8 +26,8 @@ http://www.springframework.org/schema/data/jpa
       <beans:property name="url" value="jdbc:mysql://10.211.55.3:3306/ubet?zeroDateTimeBehavior=convertToNull"/>
 
     </beans:bean>
- 
-    <beans:bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+    
+<beans:bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
         <beans:property name="dataSource" ref="dataSource"/>
     </beans:bean>
  
