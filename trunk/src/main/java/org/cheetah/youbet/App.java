@@ -60,6 +60,8 @@ public class App {
             exception.printStackTrace();
         }
 
+        System.out.println("Processo finito!!");
+       System.exit(0);
     }
 
     private static void calcolaSerie(AbstractApplicationContext ctx) throws BeansException {
