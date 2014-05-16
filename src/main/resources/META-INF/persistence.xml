@@ -21,7 +21,7 @@
       <property name="hibernate.connection.username" value="ubet"/>
       <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
       <property name="hibernate.connection.password" value="ubet"/>
-      <property name="hibernate.connection.url" value="jdbc:mysql://10.211.55.3:3306/ubet?zeroDateTimeBehavior=convertToNull"/>
+      <property name="hibernate.connection.url" value="jdbc:mysql://127.0.0.1:3306/ubet?zeroDateTimeBehavior=convertToNull"/>
       <!--      <property name="hibernate.show_sql" value="true"/>
       <property name="hibernate.format_sql" value="true"/>-->
       <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect"/>
@@ -29,7 +29,7 @@
       <property name="hibernate.default_batch_fetch_size" value="4"/>
     </properties>
     <!--    <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://10.211.55.3:3306/ubet?zeroDateTimeBehavior=convertToNull"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://127.0.0.1:3306/ubet?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.password" value="password"/>
       <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
       <property name="javax.persistence.jdbc.user" value="ubet"/>
