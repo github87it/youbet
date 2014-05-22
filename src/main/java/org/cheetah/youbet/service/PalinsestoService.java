@@ -6,11 +6,11 @@
 package org.cheetah.youbet.service;
 
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import org.cheetah.youbet.entities.Manifestazione;
 import org.cheetah.youbet.entities.Palinsesto;
 import org.cheetah.youbet.entities.PalinsestoPK;
 import org.cheetah.youbet.repositories.PalinsestoRepository;
@@ -39,13 +39,22 @@ public class PalinsestoService {
         return repository.findOne(new PalinsestoPK(idPalinsesto, idAvvenimento));
     }
     
+//     public Set<Palinsesto> findPartiteDaGiocare(Date d){
+//         return findPartiteDaGiocare(d, null);
+//     }
     
-    public Set<Palinsesto> findPartiteDaGiocare(Date d){
-        Set<Palinsesto> _palinsestos = new TreeSet<Palinsesto>(new PalinsestoComparator());
+    
+    public List<Palinsesto> findPartiteDaGiocare(Date d,PalinsestoComparator palinsestoComparator){
+        List<Palinsesto> _palinsestos = new ArrayList<Palinsesto>();
         List<Palinsesto> palinsestos= repository.findPartiteDaGiocare(d, new Time(d.getTime()));
         for (Palinsesto palinsesto : palinsestos) {
             _palinsestos.add(palinsesto);
         }
+        Collections.sort(palinsestos, palinsestoComparator);
         return _palinsestos;
+    }
+
+    public List<Palinsesto> findByIdManifestazione(Manifestazione manifestazione) {
+        return repository.findByIdManifestazione(manifestazione);
     }
 }

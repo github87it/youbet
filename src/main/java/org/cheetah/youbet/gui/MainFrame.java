@@ -23,6 +23,7 @@ import org.cheetah.youbet.ContextSpringFactory;
 import org.cheetah.youbet.gui.model.PalinsestoTableModel;
 import org.cheetah.youbet.gui.popupmenu.PalinsestoPopupMenu;
 import org.cheetah.youbet.service.PalinsestoService;
+import org.cheetah.youbet.util.comparators.PalinsestoComparator;
 
 /**
  *
@@ -138,7 +139,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         mainPanel.add(showDataSelectorPanel, java.awt.BorderLayout.NORTH);
 
-        mainTable.setModel(new PalinsestoTableModel(        palinsestoService.findPartiteDaGiocare(new Date())) );
+        mainTable.setModel(new PalinsestoTableModel(        palinsestoService.findPartiteDaGiocare(new Date(),new PalinsestoComparator())) );
         mainTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         mainTable.setColumnSelectionAllowed(true);
         mainTable.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -241,7 +242,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_txtDataEventoFocusLost
 
     private void loadPalinsesto(Date d) {
-        mainTable.setModel(new PalinsestoTableModel(palinsestoService.findPartiteDaGiocare(d)));
+        mainTable.setModel(new PalinsestoTableModel(palinsestoService.findPartiteDaGiocare(d,new PalinsestoComparator())));
     }
 
     private void txtOraEventoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtOraEventoFocusLost

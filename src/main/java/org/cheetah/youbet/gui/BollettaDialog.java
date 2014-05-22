@@ -33,7 +33,7 @@ public class BollettaDialog extends javax.swing.JDialog implements Cloneable {
 //        updateModel();
     }
 
-    private void updateModel(Set<Palinsesto> palinsestos) {
+    private void updateModel(List<Palinsesto> palinsestos) {
         PalinsestoTableModel model = createModel(palinsestos);
         tableBolletta.setModel(model);
         model.fireTableDataChanged();
@@ -42,7 +42,7 @@ public class BollettaDialog extends javax.swing.JDialog implements Cloneable {
     
    
 
-    private PalinsestoTableModel createModel(Set<Palinsesto> palinsestos) {
+    private PalinsestoTableModel createModel(List<Palinsesto> palinsestos) {
         PalinsestoTableModel model = new PalinsestoTableModel(palinsestos,
                 new PalinsestoTableModel.PalinsestoColumn[]{
                     PalinsestoTableModel.PalinsestoColumn.DATA_EVENTO,

@@ -25,6 +25,7 @@ import org.cheetah.youbet.repositories.SerieRepository;
 import org.cheetah.youbet.service.IncontroService;
 import org.cheetah.youbet.service.PalinsestoService;
 import org.cheetah.youbet.service.PercentualeSingoliEsitiService;
+import org.cheetah.youbet.util.comparators.PalinsestoComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -53,7 +54,7 @@ public class Calculator {
         Map<String, Double> poisson = new TreeMap<String, Double>();
         List<Poisson> stats = new ArrayList<Poisson>();
 
-        Set<Palinsesto> palinsestos = palinsestoService.findPartiteDaGiocare(new Date());
+        List<Palinsesto> palinsestos = palinsestoService.findPartiteDaGiocare(new Date(),new PalinsestoComparator(PalinsestoComparator.ORDER_BY_ID_PALINSESTO_ID_AVVENIMENTO));
         System.out.println(palinsestos.size());
         for (Palinsesto palinsesto : palinsestos) {
 

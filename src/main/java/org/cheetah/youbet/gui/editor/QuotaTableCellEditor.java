@@ -35,20 +35,7 @@ public class QuotaTableCellEditor extends DefaultCellEditor{
             boolean isSelected, int row, int column) {   
         if (value == null)   
             return checkBox;   
-        checkBox.addItemListener(new ItemListener() {
-
-            public void itemStateChanged(ItemEvent e) {
-                
-                ContextSpringFactory.getInstance()
-                        .getContext()
-                        .getBean(Bolletta.class)
-                        .confirmGiocata(
-                                ((QuotaTableModel)table.getModel()).
-                                        getQuotas().
-                                        get(table.getSelectedRow()));
-                System.out.println("");
-            }
-        });   
+//        checkBox
         if (((Boolean) value).booleanValue())   
             checkBox.setSelected(true);   
         else 

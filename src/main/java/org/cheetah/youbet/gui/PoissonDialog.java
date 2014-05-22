@@ -45,12 +45,12 @@ import org.springframework.data.domain.Page;
  */
 public class PoissonDialog extends javax.swing.JFrame {
 
-    private Set<Palinsesto> palinsestos;
+    private List<Palinsesto> palinsestos;
 
     /**
      * Creates new form PoissonFrame
      */
-    public PoissonDialog(Set<Palinsesto> palinsestos) {
+    public PoissonDialog(List<Palinsesto> palinsestos) {
         this.palinsestos = palinsestos;
         initComponents();
     }

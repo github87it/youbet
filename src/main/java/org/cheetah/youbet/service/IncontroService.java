@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import org.cheetah.youbet.entities.Incontro;
+import org.cheetah.youbet.entities.IncontroPK;
 import org.cheetah.youbet.entities.Palinsesto;
 import org.cheetah.youbet.repositories.IncontroRepository;
 import org.cheetah.youbet.repositories.SerieRepository;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import static org.cheetah.youbet.util.helper.IncontroHelper.*;
+
 /**
  *
  * @author edoardo
@@ -30,7 +32,7 @@ public class IncontroService {
     @Autowired
     private IncontroRepository repository;
     private final int DEFAULT_ROWS_PER_PAGE = 15;
-    
+
     @Autowired
     SerieRepository serieRepository;
 
@@ -51,11 +53,8 @@ public class IncontroService {
 //            Calculator.calcolaSerie(incontro, ht, at,serieRepository);
 //
 //        }
-
         return result;
     }
-
-
 
     public Page<Incontro> findByHomeTeam(String homeTeam, Pageable pageable) {
         return getRepository().findByHomeTeam(homeTeam, pageable);
@@ -89,10 +88,10 @@ public class IncontroService {
         stat.setGiocate(incontros.getSize());
         return stat;
     }
-    
-    public Page<Incontro> findIncontroByTeam(Palinsesto p,int teamType,int maxResults){
+
+    public Page<Incontro> findIncontroByTeam(Palinsesto p, int teamType, int maxResults) {
         Page<Incontro> incontros = null;
-        switch(teamType){
+        switch (teamType) {
             case HOME_TEAM:
                 return repository.findByHomeTeamAndCompetizione(p.getHomeTeam(), p.getIdManifestazione().getDescrizioneLunga(), new PageRequest(0, maxResults));
             case AWAY_TEAM:
@@ -100,9 +99,9 @@ public class IncontroService {
         }
         return null;
     }
-    
-    public Page<Incontro> findIncontroByTeam(String competizione,String squadra,int maxResults){
-        return repository.findIncontroByTeam(competizione,squadra, new PageRequest(0, maxResults));
+
+    public Page<Incontro> findIncontroByTeam(String competizione, String squadra, int maxResults) {
+        return repository.findIncontroByTeam(competizione, squadra, new PageRequest(0, maxResults));
     }
 
     public Stat getSumGoalByTeam(String team, String competizione, int teamType) {
@@ -137,7 +136,11 @@ public class IncontroService {
     }
 
     public List<Incontro> findHeadToHead(String homeTeam, String awayTeam, String nomeCompetizione) {
-        return repository.findHeadToHead(homeTeam,awayTeam,nomeCompetizione);
+        return repository.findHeadToHead(homeTeam, awayTeam, nomeCompetizione);
+    }
+
+    public Incontro findByPk(int idPalinsesto, int idAvvenimento) {
+        return repository.findOne(new IncontroPK(idPalinsesto, idAvvenimento));
     }
 
     public static class Stat {

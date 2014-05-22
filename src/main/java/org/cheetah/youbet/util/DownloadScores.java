@@ -122,7 +122,7 @@ public class DownloadScores {
                 System.out.println("Pal. " + palinsesto);
                 List<Incontro> incontros = createAvvenimentos(palinsesto, competizione, data, rows);//, competizione);
                 for (Incontro incontro : incontros) {
-                    Palinsesto _palinsesto_ = palinsestoService.findByPk(incontro.getIncontroPK().getIdPalinsesto(), incontro.getIncontroPK().getIdAvvenimento());
+                    Palinsesto _palinsesto_ = palinsestoService.findByPk(incontro.getIncontroPK().getIdAvvenimento(), incontro.getIncontroPK().getIdPalinsesto());
                     if (_palinsesto_ != null) {
                         Manifestazione m = _palinsesto_.getIdManifestazione();
                         m.setDescrizioneLunga(incontro.getCompetizione());
@@ -133,6 +133,7 @@ public class DownloadScores {
                 }
                 
                 incontroService.saveAll(incontros);
+                
 //                addAll(palinsestos, incontros);
 //                incontroService.saveAll(incontros);
 //                p.setAvvenimentos(avvenimentos);

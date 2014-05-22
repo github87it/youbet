@@ -9,6 +9,7 @@ package org.cheetah.youbet.repositories;
 import java.sql.Time;
 import java.util.Date;
 import java.util.List;
+import org.cheetah.youbet.entities.Manifestazione;
 import org.cheetah.youbet.entities.Palinsesto;
 import org.cheetah.youbet.entities.PalinsestoPK;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -35,6 +36,8 @@ public interface PalinsestoRepository extends JpaRepository<Palinsesto, Palinses
     public List<Palinsesto> findPartiteDaGiocare(Date d,Time t);
 
     public List<Palinsesto> findByDataEventoAfter(Date d);
+
+    public List<Palinsesto> findByIdManifestazione(Manifestazione manifestazione);
     
     
     
