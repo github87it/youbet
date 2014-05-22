@@ -7,6 +7,8 @@ package org.cheetah.youbet.gui.component;
 
 import java.awt.Component;
 import java.awt.GridBagConstraints;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ButtonGroup;
@@ -16,6 +18,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
 import org.cheetah.youbet.ContextSpringFactory;
+import org.cheetah.youbet.bean.Bolletta;
 import org.cheetah.youbet.entities.Classe;
 import org.cheetah.youbet.entities.Palinsesto;
 import org.cheetah.youbet.entities.Quota;
@@ -123,13 +126,13 @@ public class PanelClassiRadioButton extends javax.swing.JPanel {
 
     private void buttonVediBollettaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonVediBollettaActionPerformed
         BollettaDaGiocareDialog b = ContextSpringFactory.getInstance().getContext().getBean(BollettaDaGiocareDialog.class);
-        if(!b.isShowing()){
+        if (!b.isShowing()) {
             b.setVisible(true);
-        }else{
+        } else {
             b.getTableGiocata().setModel(b.createModel());
-            
+
         }
-        
+
         // TODO add your handling code here:
     }//GEN-LAST:event_buttonVediBollettaActionPerformed
 
@@ -168,16 +171,39 @@ public class PanelClassiRadioButton extends javax.swing.JPanel {
                     tableQuota.setModel(model);
                     tableQuota.getColumnModel().getColumn(0).setCellRenderer(new TableCellRenderer() {
 
-                        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                        public Component getTableCellRendererComponent(final JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                             boolean marked = (Boolean) value;
                             JCheckBox rendererComponent = new JCheckBox();
+                            rendererComponent.addItemListener(new ItemListener() {
+
+                                public void itemStateChanged(ItemEvent e) {
+                                    Bolletta bolletta = ContextSpringFactory.getInstance()
+                                                .getContext()
+                                                .getBean(Bolletta.class);
+                                    if (((JCheckBox) e.getSource()).isSelected()) {
+                                        
+                                                bolletta.confirmGiocata(
+                                                        ((QuotaTableModel) table.getModel()).
+                                                        getQuotas().
+                                                        get(table.getSelectedRow()));
+                                        System.out.println(e.getItem());
+                                    }else{
+                                        bolletta.cancelGiocata(
+                                                        ((QuotaTableModel) table.getModel()).
+                                                        getQuotas().
+                                                        get(table.getSelectedRow()));
+                                    }
+
+                                }
+                            });
+                            table.getColumnModel().getColumn(0).setCellEditor(new QuotaTableCellEditor(rendererComponent));
                             if (marked) {
                                 rendererComponent.setSelected(true);
                             }
                             return rendererComponent;
                         }
                     });
-                    tableQuota.getColumnModel().getColumn(0).setCellEditor(new QuotaTableCellEditor(new JCheckBox()));
+//                    tableQuota.getColumnModel().getColumn(0).setCellEditor(new QuotaTableCellEditor(new JCheckBox()));
                     model.fireTableDataChanged();
 
                 }

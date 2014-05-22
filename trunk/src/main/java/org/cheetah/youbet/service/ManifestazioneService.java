@@ -39,4 +39,8 @@ public class ManifestazioneService {
         return repository.saveAndFlush(m);
     }
 
+    public List<Manifestazione> findByDescrizioneLungaIsNull() {
+        return repository.findByDescrizioneLungaIsNull();
+    }
+
 }

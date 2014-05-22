@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import org.cheetah.youbet.entities.Palinsesto;
 import org.cheetah.youbet.entities.Quota;
+import org.cheetah.youbet.gui.model.QuotaTableModel;
 import org.cheetah.youbet.util.comparators.PalinsestoComparator;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +25,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class Bolletta {
     
-    private Set<Palinsesto> palinsestos = new TreeSet<Palinsesto>(new PalinsestoComparator());
+    private List<Palinsesto> palinsestos = new ArrayList<Palinsesto>();
     
     private List<Quota> quotasSelected = new ArrayList<Quota>();
 
@@ -38,7 +39,7 @@ public class Bolletta {
     
     private Map<Palinsesto,List<Quota>> giocata = new HashMap<Palinsesto, List<Quota>>();
 
-    public Set<Palinsesto> getPalinsestos() {
+    public List<Palinsesto> getPalinsestos() {
         return palinsestos;
     }
     
@@ -57,5 +58,14 @@ public class Bolletta {
     
     public void confirmGiocata(Quota quota){
         quotasSelected.add(quota);
+        System.out.println("Quote selezionate:" +quotasSelected.size());
     }
+
+    public void cancelGiocata(Quota quota) {
+        
+        quotasSelected.remove(quota);
+        System.out.println("Quote selezionate:" +quotasSelected.size());
+    }
+
+    
 }

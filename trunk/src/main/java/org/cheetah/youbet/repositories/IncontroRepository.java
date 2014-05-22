@@ -9,6 +9,7 @@ package org.cheetah.youbet.repositories;
 import java.util.Date;
 import java.util.List;
 import org.cheetah.youbet.entities.Incontro;
+import org.cheetah.youbet.entities.IncontroPK;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @Transactional
-public interface IncontroRepository extends JpaRepository<Incontro, String>{
+public interface IncontroRepository extends JpaRepository<Incontro, IncontroPK>{
     
     @Query("select max(i.dataEvento) from Incontro i ")
     public Date findByMaxDate();    

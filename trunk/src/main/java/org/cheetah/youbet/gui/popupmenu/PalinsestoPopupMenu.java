@@ -7,8 +7,9 @@ package org.cheetah.youbet.gui.popupmenu;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
@@ -33,13 +34,14 @@ public class PalinsestoPopupMenu extends JPopupMenu {
         menuItemDistribuzionePoisson.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                Set<Palinsesto> palinsestos = new TreeSet<Palinsesto>(new PalinsestoComparator());
+                List<Palinsesto> palinsestos = new ArrayList<Palinsesto>();
                 for(int r = 0;r<source.getRowCount();r++){
                     if(source.getSelectionModel().isSelectedIndex(r)){
                         //aggiungo il palinsesto nella lista di quelli selezionati
                         palinsestos.add(((PalinsestoTableModel)source.getModel()).getPalinsestos().toArray(new Palinsesto[0])[r]);
                     }
                 }
+                Collections.sort(palinsestos, new PalinsestoComparator());
                 PoissonDialog pf = new PoissonDialog(palinsestos);
                 pf.setVisible(true);
             }

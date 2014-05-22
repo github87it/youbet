@@ -6,6 +6,7 @@
 
 package org.cheetah.youbet.repositories;
 
+import java.util.List;
 import org.cheetah.youbet.entities.Manifestazione;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -18,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @Transactional
 public interface ManifestazioneRepository extends JpaRepository<Manifestazione, Integer>{
+
+    public List<Manifestazione> findByDescrizioneLungaIsNull();
  
     
 }

@@ -23,7 +23,7 @@ http://www.springframework.org/schema/data/jpa
       <beans:property name="username" value="ubet"/>
       <beans:property name="driverClassName" value="com.mysql.jdbc.Driver"/>
       <beans:property name="password" value="ubet"/>
-      <beans:property name="url" value="jdbc:mysql://127.0.0.1:3306/ubet?zeroDateTimeBehavior=convertToNull"/>
+      <beans:property name="url" value="jdbc:mysql://10.211.55.3:3306/ubet?zeroDateTimeBehavior=convertToNull"/>
 
     </beans:bean>
     

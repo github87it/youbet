@@ -5,6 +5,7 @@
  */
 package org.cheetah.youbet.gui.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,7 @@ import org.cheetah.youbet.entities.Palinsesto;
  */
 public class PalinsestoTableModel extends AbstractTableModel {
 
-    private Set<Palinsesto> palinsestos = new TreeSet<Palinsesto>();
+    private List<Palinsesto> palinsestos = new ArrayList<Palinsesto>();
     private static final PalinsestoColumn[] DEFAUL_VISIBLE_COLUMNS= new PalinsestoColumn[]{
         PalinsestoColumn.ID_PALINSESTO, 
         PalinsestoColumn.ID_AVVENIMENTO, 
@@ -48,10 +49,10 @@ public class PalinsestoTableModel extends AbstractTableModel {
         columns.put(PalinsestoColumn.ID_MANIFESTAZIONE, "Manifestazione");
     }
 
-    public PalinsestoTableModel(Set<Palinsesto> palinsestos) {
+    public PalinsestoTableModel(List<Palinsesto> palinsestos) {
         this.palinsestos=palinsestos;
     }
-    public PalinsestoTableModel(Set<Palinsesto> palinsestos,PalinsestoColumn[] visibleColumns) {
+    public PalinsestoTableModel(List<Palinsesto> palinsestos,PalinsestoColumn[] visibleColumns) {
         this.palinsestos=palinsestos;
         this.visibleColumns=visibleColumns;
     }
@@ -96,7 +97,7 @@ public class PalinsestoTableModel extends AbstractTableModel {
     public String getColumnName(int column) {
         return columns.get(visibleColumns[column]);
     }
-    public Set<Palinsesto> getPalinsestos() {
+    public List<Palinsesto> getPalinsestos() {
         return palinsestos;
     }
     

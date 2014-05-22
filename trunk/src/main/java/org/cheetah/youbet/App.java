@@ -3,12 +3,16 @@ package org.cheetah.youbet;
 import java.io.IOException;
 import java.util.List;
 import org.cheetah.youbet.entities.Incontro;
+import org.cheetah.youbet.entities.Manifestazione;
+import org.cheetah.youbet.entities.Palinsesto;
 import org.cheetah.youbet.entities.PercentualeSingoliEsiti;
 import org.cheetah.youbet.entities.Poisson;
 import org.cheetah.youbet.gui.MainFrame;
 import org.cheetah.youbet.repositories.SerieRepository;
 import org.cheetah.youbet.service.GenericService;
 import org.cheetah.youbet.service.IncontroService;
+import org.cheetah.youbet.service.ManifestazioneService;
+import org.cheetah.youbet.service.PalinsestoService;
 import org.cheetah.youbet.service.PercentualeSingoliEsitiService;
 import org.cheetah.youbet.service.PoissonService;
 import org.cheetah.youbet.util.Aggregator;
@@ -27,13 +31,13 @@ public class App {
         AbstractApplicationContext ctx = ContextSpringFactory.getInstance().getContext();
         if (args != null && args.length > 0) {
             if (args[0].equals("--gui")) {
-                updateManifestazioneTable(ctx);
 
                 MainFrame.main(args);
                 return;
             }
-            if(args[0].equals("--stats")){
+            if (args[0].equals("--stats")) {
                 calcolaStats(ctx);
+
                 return;
             }
         }
@@ -50,10 +54,19 @@ public class App {
 //        ManifestazioneService manifestazioneService = (ManifestazioneService) ctx.getBean("manifestazioneService");
 //        System.out.println(manifestazioneService.findAll());
         try {
-
+            long begin = System.currentTimeMillis();
+            System.out.println("Insert scores");
             insertScores(ctx);
+            System.out.println("Insert scores done in "+(System.currentTimeMillis()-begin));
+            begin = System.currentTimeMillis();
+            System.out.println("Insert books");
             insertBooks(ctx);
+            System.out.println("Insert books done in "+(System.currentTimeMillis()-begin));
+            begin = System.currentTimeMillis();
+            System.out.println("Calculate stats");
             calcolaStats(ctx);
+            System.out.println("Calculate stats done in "+(System.currentTimeMillis()-begin));
+            updateManifestazioneTable(ctx);
 
         } catch (Exception exception) {
 //            System.out.println(exception.getMessage());
@@ -61,7 +74,7 @@ public class App {
         }
 
         System.out.println("Processo finito!!");
-       System.exit(0);
+        System.exit(0);
     }
 
     private static void calcolaSerie(AbstractApplicationContext ctx) throws BeansException {
@@ -102,8 +115,32 @@ public class App {
      * Aggiorna la tabella delle manifestazioni con il nome lungo.
      */
     private static void updateManifestazioneTable(AbstractApplicationContext ctx) {
-        GenericService genericService = ctx.getBean(GenericService.class);
-        genericService.updateManifestazioneTable();
+        ManifestazioneService ms = ctx.getBean(ManifestazioneService.class);
+        PalinsestoService ps = ctx.getBean(PalinsestoService.class);
+        IncontroService is = ctx.getBean(IncontroService.class);
+        List<Manifestazione> manifestaziones = ms.findByDescrizioneLungaIsNull();
+
+        for (Manifestazione manifestazione : manifestaziones) {
+            List<Palinsesto> palinsestos = ps.findByIdManifestazione(manifestazione);
+            if (palinsestos != null && palinsestos.size() > 0) {
+                Incontro incontro = null;
+                for (int i = 0; incontro == null && i<palinsestos.size(); i++) {
+                    Palinsesto p = palinsestos.get(i);
+                    incontro = is.findByPk(p.getPalinsestoPK().getIdPalinsesto(), p.getPalinsestoPK().getIdAvvenimento());
+                }
+                if (incontro != null) {
+                    manifestazione.setDescrizioneLunga(incontro.getCompetizione());
+                    ms.save(manifestazione);
+                }
+            }
+            if (manifestazione.getDescrizioneLunga() == null) {
+                System.out.println("Manifestazione con id " + manifestazione.getIdManifestazione() + " senza descrizione!!");
+            }
+        }
+
+        System.out.println(manifestaziones);
+//        GenericService genericService = ctx.getBean(GenericService.class);
+//        genericService.updateManifestazioneTable();
 
     }
 
