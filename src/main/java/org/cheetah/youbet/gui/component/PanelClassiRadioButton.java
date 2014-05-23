@@ -10,13 +10,16 @@ import java.awt.GridBagConstraints;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.ButtonGroup;
-import javax.swing.DefaultCellEditor;
 import javax.swing.JCheckBox;
 import javax.swing.JRadioButton;
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableModel;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.cheetah.youbet.ContextSpringFactory;
 import org.cheetah.youbet.bean.Bolletta;
 import org.cheetah.youbet.entities.Classe;
@@ -26,6 +29,7 @@ import org.cheetah.youbet.gui.BollettaDaGiocareDialog;
 import org.cheetah.youbet.gui.editor.QuotaTableCellEditor;
 import org.cheetah.youbet.gui.model.QuotaTableModel;
 import org.cheetah.youbet.service.GenericService;
+import org.springframework.beans.BeansException;
 
 /**
  *
@@ -36,14 +40,14 @@ public class PanelClassiRadioButton extends javax.swing.JPanel {
     private static final int DEFAULT_ELEMENTS_PER_ROW = 3;
 
     private int elementsPerRow = DEFAULT_ELEMENTS_PER_ROW;
-    private Palinsesto palinsestos;
+    private Palinsesto palinsesto;
 
     /**
      * Creates new form DynamicPanelRadioButton
      */
     public PanelClassiRadioButton(List<Classe> classes, int elementsPerRows, Palinsesto palinsesto) {
         this.elementsPerRow = elementsPerRows;
-        this.palinsestos = palinsesto;
+        this.palinsesto = palinsesto;
         initComponents();
         addRadio(classes);
     }
@@ -128,10 +132,9 @@ public class PanelClassiRadioButton extends javax.swing.JPanel {
         BollettaDaGiocareDialog b = ContextSpringFactory.getInstance().getContext().getBean(BollettaDaGiocareDialog.class);
         if (!b.isShowing()) {
             b.setVisible(true);
-        } else {
-            b.getTableGiocata().setModel(b.createModel());
-
         }
+        b.setBolletta(getBolletta());
+        b.getTableGiocata().setModel(b.createModel());
 
         // TODO add your handling code here:
     }//GEN-LAST:event_buttonVediBollettaActionPerformed
@@ -151,60 +154,90 @@ public class PanelClassiRadioButton extends javax.swing.JPanel {
         int x = 0;
         int y = 0;
         int counter = 0;
+        Map<String, QuotaTableModel> modelsMap = new HashMap<String, QuotaTableModel>();
+        //per non avere problemi quando viene selezionata/deselezionata la quota, memorizzo le checkbox
+        final Map<String, List<JCheckBox>> checkBoxesContainer = new HashMap<String, List<JCheckBox>>();
         for (int i = 0; i < classes.size(); i++) {
             JRadioButton jRadioButton1 = new javax.swing.JRadioButton();
 
             jRadioButton1.setText(classes.get(i).getDescrizione());
             jRadioButton1.setName(Integer.toString(classes.get(i).getIdClasse()));
+
+            int idClasse = Integer.parseInt(Integer.toString(classes.get(i).getIdClasse()));
+            GenericService ser = ContextSpringFactory.getInstance().getContext().getBean(GenericService.class);
+            final List<Quota> visibleQuota = ser.findQuotaByPalinsestoAndClasse(palinsesto, idClasse);
+            QuotaTableModel model = new QuotaTableModel(visibleQuota);
+            model.setVisibleColumns(new QuotaTableModel.QuotaColumn[]{
+                QuotaTableModel.QuotaColumn.RADIO_BUTTON_OBJECT,
+                QuotaTableModel.QuotaColumn.DESCRIZIONE_ESITO,
+                QuotaTableModel.QuotaColumn.QUOTA
+            });
+
+            modelsMap.put(Integer.toString(classes.get(i).getIdClasse()), model);
+            final Map _amap_ = modelsMap;
             jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    JRadioButton radio = (JRadioButton) evt.getSource();
-                    int idClasse = Integer.parseInt(radio.getName());
-                    GenericService ser = ContextSpringFactory.getInstance().getContext().getBean(GenericService.class);
-                    List<Quota> visibleQuota = ser.findQuotaByPalinsestoAndClasse(palinsestos, idClasse);
-                    QuotaTableModel model = new QuotaTableModel(visibleQuota);
-                    model.setVisibleColumns(new QuotaTableModel.QuotaColumn[]{
-                        QuotaTableModel.QuotaColumn.RADIO_BUTTON_OBJECT,
-                        QuotaTableModel.QuotaColumn.DESCRIZIONE_ESITO,
-                        QuotaTableModel.QuotaColumn.QUOTA
-                    });
-                    tableQuota.setModel(model);
+                    final JRadioButton radio = (JRadioButton) evt.getSource();
+                    //qui va preso il model per il radio button
+                    final QuotaTableModel _model_ = (QuotaTableModel) _amap_.get(radio.getName());
+                    tableQuota.setModel(_model_);
+                    List<JCheckBox> checkBoxs = checkBoxesContainer.get(radio.getName());
+                    if (checkBoxs == null) {
+                        checkBoxs = new ArrayList<JCheckBox>();
+                        for (Quota quota : visibleQuota) {
+                            JCheckBox chk = null;
+                            checkBoxs.add(chk = new JCheckBox());
+                            chk.setName(RandomStringUtils.randomAlphabetic(6));
+                        }
+                        checkBoxesContainer.put(radio.getName(), checkBoxs);
+                    }
+                    final List<JCheckBox> _check_ = checkBoxs;
                     tableQuota.getColumnModel().getColumn(0).setCellRenderer(new TableCellRenderer() {
-
                         public Component getTableCellRendererComponent(final JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                             boolean marked = (Boolean) value;
-                            JCheckBox rendererComponent = new JCheckBox();
+                            JCheckBox rendererComponent = _check_.get(row);
+
                             rendererComponent.addItemListener(new ItemListener() {
 
                                 public void itemStateChanged(ItemEvent e) {
-                                    Bolletta bolletta = ContextSpringFactory.getInstance()
-                                                .getContext()
-                                                .getBean(Bolletta.class);
-                                    if (((JCheckBox) e.getSource()).isSelected()) {
-                                        
-                                                bolletta.confirmGiocata(
-                                                        ((QuotaTableModel) table.getModel()).
-                                                        getQuotas().
-                                                        get(table.getSelectedRow()));
-                                        System.out.println(e.getItem());
-                                    }else{
-                                        bolletta.cancelGiocata(
-                                                        ((QuotaTableModel) table.getModel()).
-                                                        getQuotas().
-                                                        get(table.getSelectedRow()));
+                                    Bolletta bolletta = getBolletta();
+                                    if (table.getSelectedRow() > -1) {
+                                        Quota quotaSelected
+                                                = ((QuotaTableModel) table.getModel()).
+                                                getQuotas().
+                                                get(table.getSelectedRow());
+                                        if (((JCheckBox) e.getSource()).isSelected()) {
+
+                                            bolletta.confirmGiocata(quotaSelected);
+                                            bolletta.addGiocata(palinsesto, quotaSelected);
+                                        } else {
+                                            bolletta.cancelGiocata(
+                                                    ((QuotaTableModel) table.getModel()).
+                                                    getQuotas().
+                                                    get(table.getSelectedRow()));
+                                            bolletta.removeGiocata(palinsesto, quotaSelected);
+                                        }
                                     }
 
                                 }
                             });
                             table.getColumnModel().getColumn(0).setCellEditor(new QuotaTableCellEditor(rendererComponent));
-                            if (marked) {
+                            if ((Boolean) value) {
+                                System.out.println("Checkbox name: " + rendererComponent.getName());
                                 rendererComponent.setSelected(true);
                             }
+//                            for (int r = 0; r < ((QuotaTableModel) tableQuota.getModel()).getQuotas().size(); r++) {
+//                                Quota quota = ((QuotaTableModel) tableQuota.getModel()).getQuotas().get(r);
+//                                if (getBolletta().getGiocata().get(quota.getPalinsesto()) != null && getBolletta().getGiocata().get(quota.getPalinsesto()).contains(quota)) {
+//                                    rendererComponent.setSelected(true);
+//
+//                                }
+//                            }
                             return rendererComponent;
                         }
                     });
 //                    tableQuota.getColumnModel().getColumn(0).setCellEditor(new QuotaTableCellEditor(new JCheckBox()));
-                    model.fireTableDataChanged();
+                    _model_.fireTableDataChanged();
 
                 }
             });
@@ -231,5 +264,12 @@ public class PanelClassiRadioButton extends javax.swing.JPanel {
             buttonGroup.add(jRadioButton1);
         }
         repaint();
+    }
+
+    private Bolletta getBolletta() throws BeansException {
+        Bolletta bolletta = ContextSpringFactory.getInstance()
+                .getContext()
+                .getBean(Bolletta.class);
+        return bolletta;
     }
 }
