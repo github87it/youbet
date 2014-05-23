@@ -9,8 +9,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.swing.JCheckBox;
 import javax.swing.table.AbstractTableModel;
+import org.cheetah.youbet.ContextSpringFactory;
+import org.cheetah.youbet.bean.Bolletta;
 import org.cheetah.youbet.entities.Quota;
 
 /**
@@ -73,10 +74,20 @@ public class QuotaTableModel extends AbstractTableModel {
         return visibleColumns.length;
     }
 
+   
+    
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch (visibleColumns[columnIndex]) {
             case RADIO_BUTTON_OBJECT:
-                return new Boolean(false);
+//////                Bolletta bolletta = ContextSpringFactory.getInstance()
+//////                        .getContext()
+//////                        .getBean(Bolletta.class);
+//////                /**
+////                 * Provo a selzionare in automatico le checkbox
+////                 */
+//                
+//
+                return false;
             case QUOTA:
                 return quotas.get(rowIndex).getQuota();
             case ID_ESITO:
@@ -111,8 +122,6 @@ public class QuotaTableModel extends AbstractTableModel {
     public void setVisibleColumns(QuotaColumn[] visibleColumns) {
         this.visibleColumns = visibleColumns;
     }
-    
-    
 
     public enum QuotaColumn {
 

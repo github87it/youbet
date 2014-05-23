@@ -3,12 +3,27 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.cheetah.youbet.gui;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JTable;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.cheetah.youbet.bean.Bolletta;
+import org.cheetah.youbet.entities.Palinsesto;
 import org.cheetah.youbet.entities.Quota;
 import org.cheetah.youbet.gui.model.QuotaTableModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +35,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class BollettaDaGiocareDialog extends javax.swing.JDialog {
-    
+
     @Autowired
     private Bolletta bolletta;
 
@@ -36,7 +51,7 @@ public class BollettaDaGiocareDialog extends javax.swing.JDialog {
      * Creates new form BollettaDaGiocareDialog
      */
     public BollettaDaGiocareDialog() {
-        
+
         initComponents();
     }
 
@@ -53,6 +68,8 @@ public class BollettaDaGiocareDialog extends javax.swing.JDialog {
         panelBolletta = new javax.swing.JPanel();
         scrollPaneBolletta = new javax.swing.JScrollPane();
         tableGiocata = new javax.swing.JTable();
+        jPanel1 = new javax.swing.JPanel();
+        stampaButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -79,14 +96,48 @@ public class BollettaDaGiocareDialog extends javax.swing.JDialog {
         gridBagConstraints.weighty = 1.0;
         getContentPane().add(panelBolletta, gridBagConstraints);
 
+        stampaButton.setToolTipText("Stampa la bolletta in formato excel");
+        stampaButton.setLabel("Stampa");
+        stampaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stampaButtonActionPerformed(evt);
+            }
+        });
+        jPanel1.add(stampaButton);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        getContentPane().add(jPanel1, gridBagConstraints);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-  
+    private void stampaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stampaButtonActionPerformed
+        // TODO add your handling code here:
+        JFileChooser fileChooser = new JFileChooser();
+        if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            try {
+                byte[] b = stampaBolletta(getBolletta());
+                FileOutputStream fout = new FileOutputStream(file);
+                fout.write(b);
+                fout.flush();
+                fout.close();
+                // save to file
+            } catch (IOException ex) {
+                Logger.getLogger(BollettaDaGiocareDialog.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_stampaButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel panelBolletta;
     private javax.swing.JScrollPane scrollPaneBolletta;
+    private javax.swing.JButton stampaButton;
     private javax.swing.JTable tableGiocata;
     // End of variables declaration//GEN-END:variables
 
@@ -99,7 +150,6 @@ public class BollettaDaGiocareDialog extends javax.swing.JDialog {
     }
 
     public QuotaTableModel createModel() {
-        System.out.println("Bolletta: "+bolletta);
         QuotaTableModel.QuotaColumn[] visibleColumns = new QuotaTableModel.QuotaColumn[]{
             QuotaTableModel.QuotaColumn.ID_PALINSESTO,
             QuotaTableModel.QuotaColumn.ID_AVVENIMENTO,
@@ -107,11 +157,47 @@ public class BollettaDaGiocareDialog extends javax.swing.JDialog {
             QuotaTableModel.QuotaColumn.DESCRIZIONE_ESITO,
             QuotaTableModel.QuotaColumn.QUOTA
         };
-        QuotaTableModel model = new QuotaTableModel(new ArrayList<Quota>(), visibleColumns);
-        if(bolletta!=null){
-        model = new QuotaTableModel(bolletta.getQuotasSelected(),visibleColumns );
-        model.fireTableDataChanged();
+        Bolletta bolletta = getBolletta();
+        System.out.println("Bolletta: " + bolletta);
+
+        QuotaTableModel model = new QuotaTableModel(bolletta != null ? bolletta.getQuotasSelected() : new ArrayList<Quota>(), visibleColumns);
+        if (bolletta != null) {
+            model = new QuotaTableModel(bolletta.getQuotasSelected(), visibleColumns);
+            model.fireTableDataChanged();
         }
         return model;
+    }
+
+    private byte[] stampaBolletta(Bolletta bolletta) throws IOException {
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFSheet worksheet = workbook.createSheet("Bolletta");
+        Map<Palinsesto,List<Quota>> giocata = bolletta.getGiocata();
+        
+        Set<Palinsesto> keys = giocata.keySet();
+        
+        Iterator<Palinsesto> itKeys = keys.iterator();
+        for (int i=0;itKeys.hasNext();i++) {
+            Palinsesto p = itKeys.next();
+            HSSFRow row = worksheet.createRow(i);
+            HSSFCell idPalCell = row.createCell(0);
+            idPalCell.setCellValue(Integer.toString(p.getPalinsestoPK().getIdPalinsesto()));
+            HSSFCell idAvvCell = row.createCell(1);
+            idAvvCell.setCellValue(Integer.toString(p.getPalinsestoPK().getIdAvvenimento()));
+            
+            List<Quota> quotas = giocata.get(p);
+            int col = 2;
+            for(int q = 0; q<quotas.size();q++){
+                Quota quota = quotas.get(q);
+                HSSFCell esitoCell = row.createCell(col);
+                esitoCell.setCellValue(quota.getEsito().getDescesito());
+                col=col+1;
+            }
+            
+        }
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        workbook.write(out);
+        out.flush();
+        out.close();
+        return out.toByteArray();
     }
 }
